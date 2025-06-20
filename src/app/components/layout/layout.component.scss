@@ -1,0 +1,28 @@
+@use '@angular/material' as mat;
+@use '../../styles/_mixins.scss' as m;
+@use '../_variables.scss' as v;
+
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  color: v.$layout-text;
+}
+
+.main-content {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  overflow: visible;
+
+  router-outlet + * {
+    display: block;
+    transition: v.$layout-transition;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
+}

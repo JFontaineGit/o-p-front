@@ -1,0 +1,365 @@
+@use '@angular/material' as mat;
+@use '../../styles/_mixins.scss' as m;
+@use '../_variables.scss' as v;
+
+.navbar {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: v.$navbar-background;
+  color: v.$navbar-text;
+  border-bottom: 1px solid v.$navbar-border;
+  box-shadow: v.$navbar-shadow;
+  height: 4rem;
+  font-family: v.$font-family-base;
+  -webkit-font-smoothing: antialiased;
+  font-smooth: always;
+
+  &.mat-toolbar {
+    padding: 0;
+    margin: 0;
+    min-height: 4rem;
+  }
+
+  &__container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+    height: 100%;
+    @include m.flex-between;
+    overflow: visible;
+    position: relative;
+  }
+
+  &__brand {
+    flex-shrink: 0;
+    margin-right: 2rem;
+  }
+
+  &__logo {
+    @include m.flex-center;
+    gap: 0.5rem;
+    color: v.$navbar-text !important;
+    text-decoration: none;
+    padding: 0.5rem;
+    border-radius: v.$navbar-radius;
+    transition: v.$navbar-transition;
+
+    &:hover {
+      background-color: color-mix(in srgb, v.$navbar-text 10%, transparent);
+    }
+  }
+
+  &__logo-icon {
+    font-size: 1.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: v.$navbar-border;
+  }
+
+  &__logo-text {
+    font-size: v.$font-size-logo;
+    font-weight: v.$font-weight-bold;
+    letter-spacing: v.$letter-spacing;
+  }
+
+  /* Desktop navigation */
+  &__nav {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+    
+    @media (max-width: 768px) {
+      display: none !important;
+    }
+  }
+
+  &__nav-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__nav-link {
+    color: v.$navbar-text !important;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: v.$navbar-radius;
+    font-weight: v.$font-weight-regular;
+    transition: v.$navbar-transition;
+    @include m.focus-ring;
+
+    &:hover {
+      background-color: color-mix(in srgb, v.$navbar-text 10%, transparent);
+    }
+
+    &--primary {
+      background-color: v.$navbar-primary !important;
+      color: white !important;
+
+      &:hover {
+        background-color: v.$navbar-primary-hover !important;
+      }
+    }
+  }
+
+  &__nav-text {
+    font-size: v.$font-size-nav;
+    font-weight: v.$font-weight-regular;
+    letter-spacing: v.$letter-spacing;
+    text-transform: v.$text-transform;
+  }
+
+  /* Desktop actions */
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    margin-left: 2rem;
+    
+    @media (max-width: 768px) {
+      display: none !important;
+    }
+  }
+
+  &__actions-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__action-link {
+    color: v.$navbar-text !important;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: v.$navbar-radius;
+    font-weight: v.$font-weight-regular;
+    transition: v.$navbar-transition;
+    @include m.focus-ring;
+    position: relative;
+
+    &:hover {
+      background-color: color-mix(in srgb, v.$navbar-text 10%, transparent);
+    }
+
+    &--cart {
+      @include m.flex-center;
+      gap: 0.5rem;
+    }
+  }
+
+  &__action-btn {
+    &--primary {
+      background-color: v.$navbar-primary !important;
+      color: white !important;
+
+      &:hover {
+        background-color: v.$navbar-primary-hover !important;
+      }
+    }
+  }
+
+  &__action-icon {
+    font-size: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &__action-text {
+    font-size: v.$font-size-nav;
+    font-weight: v.$font-weight-regular;
+  }
+
+  &__badge {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    background-color: v.$navbar-primary;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: v.$font-weight-bold;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.75rem;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    @include m.flex-center;
+    line-height: 1;
+  }
+
+  &__user-icon {
+    font-size: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  /* Dropdown user menu */
+  &__dropdown-trigger {
+    color: v.$navbar-text !important;
+    position: relative;
+    z-index: 1001;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    transition: v.$navbar-transition;
+
+    &:hover {
+      background-color: color-mix(in srgb, v.$navbar-text 10%, transparent);
+    }
+
+    &.mat-icon-button {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  &__dropdown-menu {
+    margin-top: 0.5rem;
+    
+    .mat-menu-panel {
+      z-index: 2000 !important;
+      top: 100%;
+      min-width: 12rem;
+      background-color: v.$layout-background;
+      border: 1px solid v.$navbar-border;
+      border-radius: v.$navbar-radius;
+      box-shadow: v.$navbar-shadow;
+      margin-top: 0.25rem;
+    }
+  }
+
+  &__dropdown-item {
+    color: v.$layout-text !important;
+    padding: 0.75rem 1rem;
+    font-size: v.$font-size-nav;
+    font-weight: v.$font-weight-regular;
+    @include m.flex-center;
+    gap: 0.75rem;
+    justify-content: flex-start;
+    transition: v.$layout-transition;
+
+    &:hover {
+      background-color: color-mix(in srgb, v.$layout-text 5%, transparent);
+    }
+
+    &--logout {
+      color: v.$navbar-secondary !important;
+      border-top: 1px solid v.$navbar-border;
+
+      &:hover {
+        background-color: color-mix(in srgb, v.$navbar-secondary 10%, transparent);
+      }
+    }
+  }
+
+  &__dropdown-icon {
+    font-size: 1.125rem;
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  /* Hamburger toggle */
+  &__mobile-toggle {
+    display: none !important;
+    @include m.button-reset;
+    @include m.flex-center;
+    padding: 0.5rem;
+    border-radius: 50%;
+    color: v.$navbar-text;
+    transition: v.$navbar-transition;
+    @include m.focus-ring;
+
+    &:hover {
+      background-color: color-mix(in srgb, v.$navbar-text 10%, transparent);
+    }
+
+    &.mat-icon-button {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      display: flex !important;
+    }
+  }
+
+  /* Mobile sidenav */
+  &__mobile-menu.mat-sidenav {
+    width: 100%;
+    background-color: v.$navbar-background;
+    margin: 0;
+    border-left: 1px solid v.$navbar-border;
+  }
+
+  &__mobile-content {
+    padding: 1rem;
+  }
+
+  &__mobile-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+
+    &:last-child {
+      margin-bottom: 0;
+      padding-top: 2rem;
+      border-top: 1px solid v.$navbar-border;
+    }
+  }
+
+  &__mobile-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    font-family: v.$font-family-base;
+    font-size: v.$font-size-nav;
+    font-weight: v.$font-weight-regular;
+    letter-spacing: v.$letter-spacing;
+    text-transform: v.$text-transform;
+    border-radius: v.$navbar-radius;
+    background: none;
+    color: v.$navbar-text-dark !important;
+    text-decoration: none;
+    transition: v.$navbar-transition;
+    @include m.focus-ring;
+
+    &:hover {
+      background-color: color-mix(in srgb, v.$navbar-text 10%, transparent);
+    }
+
+    &--primary {
+      background-color: v.$navbar-primary !important;
+      color: white !important;
+
+      &:hover {
+        background-color: v.$navbar-primary-hover !important;
+      }
+    }
+  }
+
+  &__mobile-badge {
+    background-color: v.$navbar-primary;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: v.$font-weight-bold;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.75rem;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    @include m.flex-center;
+    line-height: 1;
+  }
+}
+
+.navbar__nav-group--hidden,
+.navbar__actions-group--hidden,
+.navbar__mobile-section--hidden,
+.navbar__badge--hidden,
+.navbar__mobile-badge--hidden {
+  display: none !important;
+}

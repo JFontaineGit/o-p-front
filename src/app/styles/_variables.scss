@@ -1,0 +1,77 @@
+/* Variables globales para toda la aplicación */
+
+/* Layout y contenedores */
+$global-max-width: 1200px;
+$global-padding: 1rem;
+$global-padding-mobile: 0.5rem;
+
+/* Colores base */
+$global-white: #ffffff;
+$global-black: #000000;
+$global-gray-light: #f1f1f1;
+$global-gray: #c1c1c1;
+$global-gray-dark: #a8a8a8;
+$global-background: #f9fafb;
+$global-text: #1f2937;
+
+/* Fuentes globales */
+$global-font-family: 'Arial', 'Helvetica Neue', sans-serif;
+$global-font-size-base: 1rem;
+$global-line-height: 1.6;
+$global-font-weight-normal: 400;
+$global-font-weight-medium: 500;
+$global-font-weight-bold: 600;
+
+/* Espaciado */
+$global-spacing-xs: 0.25rem;
+$global-spacing-sm: 0.5rem;
+$global-spacing-md: 1rem;
+$global-spacing-lg: 1.5rem;
+$global-spacing-xl: 2rem;
+$global-spacing-xxl: 3rem;
+
+/* Bordes y radios */
+$global-border-width: 1px;
+$global-border-color: #e5e7eb;
+$global-radius-sm: 0.25rem;
+$global-radius: 0.5rem;
+$global-radius-lg: 0.75rem;
+
+/* Sombras */
+$global-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$global-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+$global-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+/* Z-index layers */
+$z-base: 1;
+$z-dropdown: 100;
+$z-sticky: 500;
+$z-navbar: 1000;
+$z-dropdown-menu: 1002;
+$z-modal-backdrop: 2000;
+$z-modal: 2001;
+
+/* Breakpoints */
+$breakpoint-xs: 480px;
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
+
+/* Transiciones */
+$global-transition-fast: all 0.15s ease;
+$global-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+$global-transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+/* Scrollbar */
+$scrollbar-width: 8px;
+$scrollbar-track-color: #f1f1f1;
+$scrollbar-thumb-color: #c1c1c1;
+$scrollbar-thumb-hover-color: #a8a8a8;
+$scrollbar-radius: 4px;
+
+/* Focus ring */
+$focus-ring-color: #3b82f6;
+$focus-ring-width: 2px;
+$focus-ring-offset: 2px;

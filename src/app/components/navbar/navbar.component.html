@@ -1,0 +1,91 @@
+<mat-toolbar class="navbar">
+  <div class="navbar__container">
+    <!-- Logo/Home -->
+    <div class="navbar__brand">
+      <a routerLink="/home" class="navbar__logo" mat-button>
+        <mat-icon class="navbar__logo-icon">flight_takeoff</mat-icon>
+        <span class="navbar__logo-text">App</span>
+      </a>
+    </div>
+
+    <!-- Navigation Items - Desktop -->
+    <div class="navbar__nav">
+      <div class="navbar__nav-group navbar__nav-group--logged-in" [class.navbar__nav-group--hidden]="!isLoggedIn">
+        <a routerLink="/productos" mat-button class="navbar__nav-link">
+          <span class="navbar__nav-text">Explorar</span>
+        </a>
+        <a routerLink="/paquetes" mat-button class="navbar__nav-link">
+          <span class="navbar__nav-text">Paquetes</span>
+        </a>
+        <a routerLink="/armar-viaje/paso-1" mat-raised-button class="navbar__nav-link navbar__nav-link">
+          <span class="navbar__nav-text">Armar viaje</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right Side Actions - Desktop -->
+    <div class="navbar__actions">
+      <div class="navbar__actions-group navbar__actions-group--guest" [class.navbar__actions-group--hidden]="isLoggedIn">
+        <a routerLink="/registro" mat-button class="navbar__action-link">
+          <span class="navbar__action-text">Registrarse</span>
+        </a>
+        <a routerLink="/login" mat-raised-button color="primary" class="navbar__action-btn navbar__action-btn--primary">
+          <span class="navbar__action-text">Iniciar sesión</span>
+        </a>
+      </div>
+      <div class="navbar__actions-group navbar__actions-group--logged-in" [class.navbar__actions-group--hidden]="!isLoggedIn">
+        <a routerLink="/carrito" mat-button class="navbar__action-link navbar__action-link--cart">
+          <mat-icon class="navbar__action-icon">shopping_cart</mat-icon>
+          <span class="navbar__action-text">Carrito</span>
+          <span class="navbar__badge" [class.navbar__badge--hidden]="cartItemCount === 0">
+            {{ cartItemCount }}
+          </span>
+        </a>
+        <button mat-icon-button [matMenuTriggerFor]="userMenu" class="navbar__dropdown-trigger" (click)="toggleUserMenu()">
+          <mat-icon class="navbar__user-icon">person</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu" class="navbar__dropdown-menu">
+          <a routerLink="/mis-pedidos" mat-menu-item class="navbar__dropdown-item">
+            <mat-icon class="navbar__dropdown-icon">list_alt</mat-icon>
+            <span>Mis pedidos</span>
+          </a>
+          <button mat-menu-item class="navbar__dropdown-item navbar__dropdown-item--logout" (click)="logout()">
+            <mat-icon class="navbar__dropdown-icon">logout</mat-icon>
+            <span>Cerrar sesión</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button mat-icon-button class="navbar__mobile-toggle" (click)="toggleMobileMenu()" aria-label="Toggle mobile menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<!-- Mobile Menu (Sidenav) -->
+<mat-sidenav #sidenav mode="over" position="end" class="navbar__mobile-menu">
+  <div class="navbar__mobile-content">
+    <div class="navbar__mobile-section" [class.navbar__mobile-section--hidden]="!isLoggedIn">
+      <a routerLink="/productos" mat-button class="navbar__mobile-link" (click)="closeMobileMenu()">Explorar</a>
+      <a routerLink="/paquetes" mat-button class="navbar__mobile-link" (click)="closeMobileMenu()">Paquetes</a>
+      <a routerLink="/armar-viaje/paso-1" mat-raised-button class="navbar__mobile-link navbar__mobile-link" (click)="closeMobileMenu()">
+        Armar viaje
+      </a>
+      <a routerLink="/carrito" mat-button class="navbar__mobile-link" (click)="closeMobileMenu()">
+        Carrito
+        <span class="navbar__mobile-badge" [class.navbar__mobile-badge--hidden]="cartItemCount === 0">
+          {{ cartItemCount }}
+        </span>
+      </a>
+      <a routerLink="/mis-pedidos" mat-button class="navbar__mobile-link" (click)="closeMobileMenu()">Mis pedidos</a>
+    </div>
+    <div class="navbar__mobile-section" [class.navbar__mobile-section--hidden]="isLoggedIn">
+      <a routerLink="/registro" mat-button class="navbar__mobile-link" (click)="closeMobileMenu()">Registrarse</a>
+      <a routerLink="/login" mat-raised-button color="primary" class="navbar__mobile-link navbar__mobile-link--primary" (click)="closeMobileMenu()">
+        Iniciar sesión
+      </a>
+    </div>
+  </div>
+</mat-sidenav>
