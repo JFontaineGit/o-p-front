@@ -1,0 +1,374 @@
+@use 'sass:color';
+@use '../_auth-variables.scss' as *;
+
+.travel-login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg;
+  font-family: $font-family;
+  position: relative;
+
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-xl;
+  border: $border-width solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
+}
+
+// Header elegante
+.auth-header {
+  padding: $spacing-2xl $spacing-xl $spacing-lg;
+  text-align: center;
+  border-bottom: $border-width solid $gray-100;
+
+  .logo {
+    margin-bottom: $spacing-lg;
+    
+    svg {
+      color: $primary-color;
+      width: 40px;
+      height: 40px;
+      filter: drop-shadow(0 2px 4px rgba(14, 165, 233, 0.2));
+    }
+  }
+
+  h1 {
+    margin: 0 0 $spacing-sm;
+    font-size: $font-size-xl;
+    font-weight: 700;
+    color: $gray-800;
+    line-height: 1.2;
+    background: linear-gradient(135deg, $primary-color, $secondary-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  p {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $gray-600;
+    line-height: 1.5;
+  }
+}
+
+// Feedback mejorado
+.feedback-message {
+  margin: $spacing-lg $spacing-xl 0;
+  padding: $spacing-md;
+  border-radius: $border-radius-sm;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  position: relative;
+
+  &--success {
+    background: linear-gradient(135deg, rgba($success-color, 0.1), rgba($success-color, 0.05));
+    color: $success-color;
+    border: $border-width solid rgba($success-color, 0.2);
+  }
+
+  &--error {
+    background: linear-gradient(135deg, rgba($danger-color, 0.1), rgba($danger-color, 0.05));
+    color: $danger-color;
+    border: $border-width solid rgba($danger-color, 0.2);
+  }
+
+  &__icon {
+    flex-shrink: 0;
+  }
+
+  &__text {
+    flex: 1;
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: $spacing-xs;
+    border-radius: 4px;
+    transition: $transition-fast;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Formulario moderno
+.auth-form {
+  padding: $spacing-xl;
+}
+
+.form-group {
+  margin-bottom: $spacing-lg;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: $spacing-sm;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $gray-700;
+  letter-spacing: 0.025em;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px $spacing-md;
+  font-size: $font-size-base;
+  border: 2px solid $gray-200;
+  border-radius: $border-radius-sm;
+  background-color: $white;
+  color: $gray-800;
+  transition: $transition;
+  font-family: $font-family;
+
+  &::placeholder {
+    color: $gray-400;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+    transform: translateY(-1px);
+  }
+
+  &:hover:not(:focus) {
+    border-color: $gray-300;
+  }
+
+  &--error {
+    border-color: $danger-color;
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba($danger-color, 0.1);
+    }
+  }
+}
+
+// Input de contraseña
+.password-input {
+  position: relative;
+
+  .form-input {
+    padding-right: 50px;
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: $spacing-md;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: $gray-400;
+    cursor: pointer;
+    padding: $spacing-sm;
+    border-radius: 6px;
+    transition: $transition;
+    
+    &:hover {
+      color: $gray-600;
+      background-color: $gray-100;
+    }
+    
+    &:focus {
+      outline: none;
+      color: $primary-color;
+      background-color: rgba($primary-color, 0.1);
+    }
+  }
+}
+
+// Opciones del formulario
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-xl;
+  gap: $spacing-md;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-sm;
+  }
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  color: $gray-600;
+  
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: $primary-color;
+  }
+}
+
+.forgot-password {
+  color: $primary-color;
+  text-decoration: none;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  transition: $transition;
+  
+  &:hover {
+    color: $primary-hover;
+    text-decoration: underline;
+  }
+}
+
+// Botón principal
+.btn-primary {
+  width: 100%;
+  padding: 16px $spacing-lg;
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  color: $white;
+  border: none;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  font-family: $font-family;
+  letter-spacing: 0.025em;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, $primary-hover, color.adjust($secondary-color, $lightness: 10%));
+    transform: translateY(-2px);
+    box-shadow: $box-shadow-lg;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+  }
+
+  &:disabled {
+    background: linear-gradient(135deg, $gray-400, $gray-500);
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.loading-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba($white, 0.3);
+  border-top-color: $white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+// Footer
+.auth-footer {
+  text-align: center;
+  margin-top: $spacing-xl;
+
+  p {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $gray-600;
+    
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      font-weight: 600;
+      transition: $transition;
+      
+      &:hover {
+        color: $primary-hover;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.error-message {
+  margin-top: $spacing-sm;
+  font-size: $font-size-sm;
+  color: $danger-color;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+// Animaciones
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .travel-login-container {
+    padding: $spacing-md;
+  }
+
+  .auth-header {
+    padding: $spacing-lg $spacing-lg $spacing-md;
+  }
+
+  .auth-form {
+    padding: $spacing-lg;
+  }
+
+  .feedback-message {
+    margin: $spacing-md $spacing-lg 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    max-width: 100%;
+  }
+
+  .auth-header h1 {
+    font-size: $font-size-lg;
+  }
+
+  .form-input {
+    font-size: 16px; // Evita zoom en iOS
+  }
+}

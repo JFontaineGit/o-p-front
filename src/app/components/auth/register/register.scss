@@ -1,0 +1,439 @@
+@use 'sass:color';
+@use '../_auth-variables.scss' as *;
+
+.travel-register-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg;
+  font-family: $font-family;
+  position: relative;
+
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+}
+
+.register-card {
+  width: 100%;
+  max-width: 600px;
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-xl;
+  border: $border-width solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
+}
+
+.register-header {
+  padding: $spacing-2xl $spacing-xl $spacing-lg;
+  text-align: center;
+  border-bottom: $border-width solid $gray-100;
+
+  .logo {
+    margin-bottom: $spacing-lg;
+    
+    svg {
+      color: $primary-color;
+      width: 40px;
+      height: 40px;
+      filter: drop-shadow(0 2px 4px rgba(14, 165, 233, 0.2));
+    }
+  }
+
+  h1 {
+    margin: 0 0 $spacing-sm;
+    font-size: $font-size-xl;
+    font-weight: 700;
+    color: $gray-800;
+    line-height: 1.2;
+    background: linear-gradient(135deg, $primary-color, $accent-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  p {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $gray-600;
+    line-height: 1.5;
+  }
+}
+
+.register-form {
+  padding: $spacing-xl;
+}
+
+// Progreso del formulario
+.form-progress {
+  margin-bottom: $spacing-xl;
+  padding: $spacing-lg;
+  background: linear-gradient(135deg, rgba($primary-color, 0.05), rgba($secondary-color, 0.05));
+  border-radius: $border-radius-sm;
+  border: $border-width solid rgba($primary-color, 0.1);
+
+  .progress-bar {
+    height: 6px;
+    background-color: $gray-200;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: $spacing-sm;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, $primary-color, $secondary-color);
+    border-radius: 3px;
+    animation: progress 2s ease-in-out infinite;
+  }
+
+  .progress-text {
+    font-size: $font-size-sm;
+    color: $primary-color;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    
+    &::before {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border: 2px solid $primary-color;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+// Secciones del formulario
+.form-section {
+  margin-bottom: $spacing-2xl;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.section-title {
+  margin: 0 0 $spacing-lg;
+  font-size: $font-size-lg;
+  font-weight: 700;
+  color: $gray-800;
+  padding-bottom: $spacing-sm;
+  border-bottom: 2px solid $gray-200;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, $primary-color, $secondary-color);
+    border-radius: 1px;
+  }
+}
+
+// Layout de filas
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-lg;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  margin-bottom: $spacing-lg;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: $spacing-sm;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $gray-700;
+  letter-spacing: 0.025em;
+}
+
+.required {
+  color: $danger-color;
+  font-weight: 700;
+}
+
+.optional {
+  color: $gray-500;
+  font-weight: 400;
+  font-size: $font-size-xs;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px $spacing-md;
+  font-size: $font-size-base;
+  border: 2px solid $gray-200;
+  border-radius: $border-radius-sm;
+  background-color: $white;
+  color: $gray-800;
+  transition: $transition;
+  font-family: $font-family;
+
+  &::placeholder {
+    color: $gray-400;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+    transform: translateY(-1px);
+  }
+
+  &:hover:not(:focus) {
+    border-color: $gray-300;
+  }
+
+  &--error {
+    border-color: $danger-color;
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba($danger-color, 0.1);
+    }
+  }
+}
+
+// Input de contraseña
+.password-input {
+  position: relative;
+
+  .form-input {
+    padding-right: 50px;
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: $spacing-md;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: $gray-400;
+    cursor: pointer;
+    padding: $spacing-sm;
+    border-radius: 6px;
+    transition: $transition;
+    
+    &:hover {
+      color: $gray-600;
+      background-color: $gray-100;
+    }
+    
+    &:focus {
+      outline: none;
+      color: $primary-color;
+      background-color: rgba($primary-color, 0.1);
+    }
+  }
+}
+
+// Medidor de fortaleza de contraseña
+.password-strength {
+  margin-top: $spacing-sm;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+
+  .strength-bar {
+    flex: 1;
+    height: 6px;
+    background-color: $gray-200;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .strength-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: $transition;
+    
+    &.weak {
+      background: linear-gradient(90deg, $danger-color, color.adjust($danger-color, $lightness: 10%));
+    }
+    
+    &.medium {
+      background: linear-gradient(90deg, $warning-color, color.adjust($warning-color, $lightness: 10%));
+    }
+    
+    &.strong {
+      background: linear-gradient(90deg, $success-color, color.adjust($success-color, $lightness: 10%));
+    }
+  }
+
+  .strength-text {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    min-width: 70px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    
+    &.weak { color: $danger-color; }
+    &.medium { color: $warning-color; }
+    &.strong { color: $success-color; }
+  }
+}
+
+// Acciones del formulario
+.form-actions {
+  margin-top: $spacing-2xl;
+  padding-top: $spacing-lg;
+  border-top: $border-width solid $gray-100;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 16px $spacing-lg;
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  color: $white;
+  border: none;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  font-family: $font-family;
+  letter-spacing: 0.025em;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, $primary-hover, color.adjust($secondary-color, $lightness: 10%));
+    transform: translateY(-2px);
+    box-shadow: $box-shadow-lg;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+  }
+
+  &:disabled {
+    background: linear-gradient(135deg, $gray-400, $gray-500);
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.loading-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba($white, 0.3);
+  border-top-color: $white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+// Footer
+.auth-footer {
+  text-align: center;
+  margin-top: $spacing-xl;
+
+  p {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $gray-600;
+    
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      font-weight: 600;
+      transition: $transition;
+      
+      &:hover {
+        color: $primary-hover;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.error-message {
+  margin-top: $spacing-sm;
+  font-size: $font-size-sm;
+  color: $danger-color;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+// Animaciones
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 100%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .travel-register-container {
+    padding: $spacing-md;
+  }
+
+  .register-header {
+    padding: $spacing-lg $spacing-lg $spacing-md;
+  }
+
+  .register-form {
+    padding: $spacing-lg;
+  }
+
+  .feedback-message {
+    margin: $spacing-md $spacing-lg 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-card {
+    max-width: 100%;
+  }
+
+  .register-header h1 {
+    font-size: $font-size-lg;
+  }
+
+  .form-input {
+    font-size: 16px; // Evita zoom en iOS
+  }
+}
