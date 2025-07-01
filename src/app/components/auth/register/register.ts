@@ -4,7 +4,8 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../../services/auth/auth.service';
-import { UserRegister, UserRead } from '../../../services/interfaces/auth.interfaces';
+import { UserRegister } from '../../../services/interfaces/auth.interfaces';
+import { UserRead } from '../../../services/interfaces/user.interfaces';
 
 @Component({
   selector: 'app-register',
