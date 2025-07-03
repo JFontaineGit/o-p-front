@@ -153,10 +153,10 @@
 
         <!-- Guest Actions -->
         <div class="auth-actions" *ngIf="!isLoggedIn">
-          <a routerLink="/inicio-sesion" mat-button class="btn btn--primary">
+          <a routerLink="/login" mat-button class="btn btn--primary">
             Iniciar sesión
           </a>
-          <a routerLink="/registrarse" mat-button class="btn btn--secondary">
+          <a routerLink="/register" mat-button class="btn btn--secondary">
             Registrarse
           </a>
         </div>
@@ -257,11 +257,11 @@
 
       <!-- Guest Actions -->
       <div class="mobile-section" *ngIf="!isLoggedIn">
-        <a routerLink="/inicio-sesion" mat-button class="mobile-link mobile-link--primary" (click)="closeMobileMenu()">
+        <a routerLink="/login" mat-button class="mobile-link mobile-link--primary" (click)="closeMobileMenu()">
           <mat-icon>login</mat-icon>
           <span>Iniciar sesión</span>
         </a>
-        <a routerLink="/registrarse" mat-button class="mobile-link" (click)="closeMobileMenu()">
+        <a routerLink="/register" mat-button class="mobile-link" (click)="closeMobileMenu()">
           <mat-icon>person_add</mat-icon>
           <span>Registrarse</span>
         </a>
