@@ -7,6 +7,15 @@ export const routes: Routes = [
         component: LayoutComponent,
         children: [
             {
+                path: '',
+                redirectTo: 'home', 
+                pathMatch: 'full' 
+            },
+            {
+                path: 'home',
+                loadComponent: () => import('./components/home/home').then(m => m.Home)
+            },
+            {
                 path: 'register',
                 loadComponent: () => import('./components/auth/register/register').then(m => m.Register)
             },
