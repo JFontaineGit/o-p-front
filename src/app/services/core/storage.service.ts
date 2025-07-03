@@ -13,7 +13,6 @@ export enum StorageKeys {
   Carrito = 'carrito',
   ViajeArmado = 'viajePersonalizado',
 }
-
 /**
  * Servicio para gestionar operaciones de almacenamiento local (localStorage o en memoria).
  * Compatible con SSR usando un fallback en memoria cuando localStorage no está disponible.

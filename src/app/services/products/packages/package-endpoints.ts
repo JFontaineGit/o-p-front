@@ -1,0 +1,16 @@
+export const PACKAGE_ENDPOINTS = {
+  LIST: 'packages/',
+  CREATE: 'packages/',
+  GET: 'packages/{package_id}',
+  UPDATE: 'packages/{package_id}',
+  DELETE: 'packages/{package_id}',
+  COMPONENTS_LIST: 'packages/{package_id}/components',
+  COMPONENTS_CREATE: 'packages/{package_id}/components',
+  COMPONENTS_UPDATE: 'packages/{package_id}/components/{component_id}',
+  COMPONENTS_DELETE: 'packages/{package_id}/components/{component_id}',
+  SEARCH_FEATURED: 'packages/search/featured',
+  SEARCH_BY_PRICE_RANGE: 'packages/search/by-price-range',
+  SEARCH_BY_DURATION: 'packages/search/by-duration',
+  STATS_OVERVIEW: 'packages/stats/overview',
+  CATEGORY_PACKAGES: 'packages/{category_id}/packages',
+};
