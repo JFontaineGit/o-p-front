@@ -56,7 +56,10 @@
 
 .planet-logo {
   @include mq.nav-logo-responsive;
-  transition: nav.$navbar-transition;
+  
+  &{
+    transition: nav.$navbar-transition;
+  }
 
   &:hover {
     transform: scale(1.05);
@@ -107,7 +110,10 @@
 
 .nav-link {
   @include mixins.nav-link;
-  color: nav.$navbar-text;
+
+  &{
+    color: nav.$navbar-text;
+  }
 
   &:hover {
     background-color: nav.$navbar-hover-bg;
@@ -374,8 +380,11 @@
 
 .mobile-overlay {
   @include mixins.mobile-overlay(nav.$navbar-height);
-  z-index: nav.$navbar-overlay-z-index;
 
+  &{
+     z-index: nav.$navbar-overlay-z-index;
+  }
+   
   &.mobile-overlay--visible {
     opacity: 1;
     visibility: visible;

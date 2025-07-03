@@ -84,14 +84,14 @@ $large-desktop: 1200px;
 @mixin nav-container {
   max-width: $large-desktop;
   margin: 0 auto;
-  padding: 0 1.25rem;
+  padding: 0.6rem;
 
   @include mobile-only {
-    padding: 0 1rem;
+    padding: 0.6rem;
   }
 
   @include xl-desktop-up {
-    padding: 0 2rem;
+    padding: 0.6rem;
   }
 }
 

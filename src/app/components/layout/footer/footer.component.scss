@@ -167,7 +167,10 @@
 
 .newsletter-form {
   @include mixins.newsletter-form;
-  margin-bottom: 1.5rem;
+  
+  &{
+    margin-bottom: 1.5rem;
+  }
 }
 
 .newsletter-input {
