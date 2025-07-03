@@ -12,6 +12,13 @@
   justify-content: space-between;
 }
 
+@mixin flex-inline($gap: 1rem, $align: center, $justify: center) {
+  display: inline-flex;
+  align-items: $align;
+  justify-content: $justify;
+  gap: $gap;
+}
+
 @mixin button-reset {
   background: none;
   border: none;

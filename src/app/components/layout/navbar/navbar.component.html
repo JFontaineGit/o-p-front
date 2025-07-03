@@ -1,0 +1,280 @@
+<header class="header">
+  <div class="container">
+    <div class="header__content">
+      
+      <!-- Logo/Brand - Left -->
+      <div class="header__left">
+        <div class="logo">
+          <div class="logo-container">
+            <svg class="planet-logo" viewBox="0 0 100 100" width="40" height="40">
+              <!-- Planeta -->
+              <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+              <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+              <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+              <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+              <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+              <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+              
+              <!-- Avión -->
+              <g transform="translate(70,30) rotate(45)">
+                <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+              </g>
+              
+              <!-- Estela del avión -->
+              <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+            </svg>
+          </div>
+          <h1>
+            <a routerLink="/home" class="logo-link">Air ipet 57</a>
+          </h1>
+        </div>
+      </div>
+
+      <!-- Navigation - Center -->
+      <div class="header__center" [class.header__center--hidden]="isMobile">
+        <nav class="main-nav">
+          <a routerLink="/paquetes" 
+             class="nav-link" 
+             routerLinkActive="nav-link--active">
+            Paquetes
+          </a>
+          <a routerLink="/vuelos" 
+             class="nav-link" 
+             routerLinkActive="nav-link--active">
+            Vuelos
+          </a>
+          <a routerLink="/contacto" 
+             class="nav-link" 
+             routerLinkActive="nav-link--active">
+            Contacto
+          </a>
+          <a routerLink="/experiencias" 
+             class="nav-link" 
+             routerLinkActive="nav-link--active">
+            Experiencias
+          </a>
+        </nav>
+      </div>
+
+      <!-- Actions - Right -->
+      <div class="header__right" [class.header__right--hidden]="isMobile">
+        
+        <!-- User Menu -->
+        <div class="user-menu" *ngIf="isLoggedIn">
+          <button 
+            mat-icon-button
+            [matMenuTriggerFor]="userMenu" 
+            class="user-btn"
+            [class.user-btn--active]="isUserMenuOpen"
+            (menuOpened)="onUserMenuOpened()"
+            (menuClosed)="onUserMenuClosed()"
+            aria-label="Menú de usuario">
+            <mat-icon>person</mat-icon>
+          </button>
+          
+          <mat-menu #userMenu="matMenu" class="user-dropdown" xPosition="before" yPosition="below">
+            <div class="user-dropdown-header">
+              <div class="user-avatar">
+                <mat-icon>person</mat-icon>
+              </div>
+              <div class="user-info">
+                <span class="user-name">{{ userData.name }}</span>
+                <span class="user-email">{{ userData.email }}</span>
+              </div>
+            </div>
+            
+            <mat-divider></mat-divider>
+            
+            <a routerLink="/perfil" mat-menu-item class="dropdown-item">
+              <mat-icon>person</mat-icon>
+              <span>Mi Perfil</span>
+            </a>
+            
+            <a routerLink="/mis-pedidos" mat-menu-item class="dropdown-item">
+              <mat-icon>receipt_long</mat-icon>
+              <span>Mis Pedidos</span>
+            </a>
+            
+            <mat-divider></mat-divider>
+            
+            <button mat-menu-item class="dropdown-item dropdown-item--logout" (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Cerrar Sesión</span>
+            </button>
+          </mat-menu>
+        </div>
+
+        <!-- Cart Menu -->
+        <div class="cart-menu" *ngIf="isLoggedIn">
+          <button 
+            mat-icon-button
+            [matMenuTriggerFor]="cartMenu" 
+            class="cart-btn"
+            aria-label="Carrito de compras">
+            <mat-icon 
+              [matBadge]="cartItemCount" 
+              [matBadgeHidden]="cartItemCount === 0"
+              matBadgeColor="primary"
+              matBadgeSize="small">
+              shopping_cart
+            </mat-icon>
+          </button>
+          
+          <mat-menu #cartMenu="matMenu" class="cart-dropdown" xPosition="before" yPosition="below">
+            <div class="cart-dropdown-header">
+              <h4>Carrito de Compras</h4>
+            </div>
+            
+            <div class="cart-dropdown-content">
+              <div class="empty-cart" *ngIf="cartItemCount === 0">
+                <mat-icon>shopping_cart</mat-icon>
+                <p>Tu carrito está vacío</p>
+                <a routerLink="/paquetes" mat-button color="primary" class="btn-small">
+                  Explorar Paquetes
+                </a>
+              </div>
+              
+              <div class="cart-items" *ngIf="cartItemCount > 0">
+                <p>Tienes {{ cartItemCount }} productos en tu carrito</p>
+              </div>
+            </div>
+            
+            <mat-divider *ngIf="cartItemCount > 0"></mat-divider>
+            
+            <div class="cart-dropdown-footer" *ngIf="cartItemCount > 0">
+              <a routerLink="/carrito" mat-button color="primary" class="btn-full">
+                Ver Carrito Completo
+              </a>
+            </div>
+          </mat-menu>
+        </div>
+
+        <!-- Guest Actions -->
+        <div class="auth-actions" *ngIf="!isLoggedIn">
+          <a routerLink="/inicio-sesion" mat-button class="btn btn--primary">
+            Iniciar sesión
+          </a>
+          <a routerLink="/registrarse" mat-button class="btn btn--secondary">
+            Registrarse
+          </a>
+        </div>
+
+        <!-- Debug Toggle (remover en producción) -->
+        <button mat-icon-button (click)="toggleLogin()" class="debug-btn" title="Toggle Login State">
+          <mat-icon>{{ isLoggedIn ? 'logout' : 'login' }}</mat-icon>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button 
+        mat-icon-button 
+        class="mobile-toggle" 
+        [class.mobile-toggle--hidden]="!isMobile"
+        (click)="toggleMobileMenu()" 
+        [attr.aria-expanded]="sidenav?.opened"
+        aria-label="Abrir menú de navegación">
+        <mat-icon>
+          {{ sidenav?.opened ? 'close' : 'menu' }}
+        </mat-icon>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<div 
+  class="mobile-overlay" 
+  [class.mobile-overlay--visible]="sidenav?.opened"
+  (click)="closeMobileMenu()">
+</div>
+
+<!-- Mobile Menu (Sidenav) -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav 
+    #sidenav 
+    mode="over" 
+    position="end" 
+    class="mobile-menu"
+    [fixedInViewport]="true"
+    [fixedTopGap]="64">
+    
+    <div class="mobile-content">
+      <!-- User Section (when logged in) -->
+      <div class="mobile-user-section" *ngIf="isLoggedIn">
+        <div class="mobile-user-info">
+          <div class="mobile-user-avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+          <div class="mobile-user-details">
+            <span class="mobile-user-name">{{ userData.name }}</span>
+            <span class="mobile-user-email">{{ userData.email }}</span>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="mobile-section">
+        <a routerLink="/paquetes" mat-button class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon>card_travel</mat-icon>
+          <span>Paquetes</span>
+        </a>
+        <a routerLink="/vuelos" mat-button class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon>flight</mat-icon>
+          <span>Vuelos</span>
+        </a>
+        <a routerLink="/contacto" mat-button class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon>contact_mail</mat-icon>
+          <span>Contacto</span>
+        </a>
+        <a routerLink="/experiencias" mat-button class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon>explore</mat-icon>
+          <span>Experiencias</span>
+        </a>
+      </div>
+
+      <!-- Logged In Actions -->
+      <div class="mobile-section" *ngIf="isLoggedIn">
+        <mat-divider></mat-divider>
+        
+        <a routerLink="/carrito" mat-button class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon [matBadge]="cartItemCount" [matBadgeHidden]="cartItemCount === 0" matBadgeSize="small">
+            shopping_cart
+          </mat-icon>
+          <span>Carrito</span>
+        </a>
+        <a routerLink="/perfil" mat-button class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon>person</mat-icon>
+          <span>Mi Perfil</span>
+        </a>
+        <a routerLink="/mis-pedidos" mat-button class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon>receipt_long</mat-icon>
+          <span>Mis Pedidos</span>
+        </a>
+      </div>
+
+      <!-- Guest Actions -->
+      <div class="mobile-section" *ngIf="!isLoggedIn">
+        <a routerLink="/inicio-sesion" mat-button class="mobile-link mobile-link--primary" (click)="closeMobileMenu()">
+          <mat-icon>login</mat-icon>
+          <span>Iniciar sesión</span>
+        </a>
+        <a routerLink="/registrarse" mat-button class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon>person_add</mat-icon>
+          <span>Registrarse</span>
+        </a>
+      </div>
+
+      <!-- Logout (when logged in) -->
+      <div class="mobile-section mobile-section--logout" *ngIf="isLoggedIn">
+        <mat-divider></mat-divider>
+        <button mat-button class="mobile-link mobile-link--logout" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

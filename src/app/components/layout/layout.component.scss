@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 @use '../../styles/_mixins.scss' as m;
-@use '../_variables.scss' as v;
+@use './_variables.scss' as v;
 
 .layout-wrapper {
   display: flex;

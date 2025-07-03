@@ -1,0 +1,274 @@
+<footer class="footer">
+  <div class="container">
+    <!-- Contenido principal del footer -->
+    <div class="footer-content">
+      
+      <!-- Sección de marca y descripción -->
+      <div class="footer-section footer-section--brand">
+        <div class="footer-logo">
+          <div class="logo-container">
+            <svg class="planet-logo" viewBox="0 0 100 100" width="60" height="60">
+              <!-- Planeta -->
+              <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+              <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+              <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+              <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+              <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+              <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+              
+              <!-- Avión -->
+              <g transform="translate(70,30) rotate(45)">
+                <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+              </g>
+              
+              <!-- Estela del avión -->
+              <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+            </svg>
+          </div>
+          <div class="logo-text">
+            <h3>Air ipet 57</h3>
+            <p>Tu aventura comienza aquí</p>
+          </div>
+        </div>
+        
+        <p class="footer-description">
+          Descubre el mundo con nosotros. Ofrecemos los mejores paquetes turísticos y alojamientos únicos para hacer de tu viaje una experiencia inolvidable.
+        </p>
+        
+        <div class="social-links">
+          <a 
+            *ngFor="let social of socialLinks" 
+            [href]="social.url" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="social-link"
+            [attr.aria-label]="'Síguenos en ' + social.label">
+            <mat-icon>{{ social.icon }}</mat-icon>
+          </a>
+          <!-- X (Twitter) con símbolo especial -->
+          <a 
+            href="https://twitter.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="social-link"
+            aria-label="Síguenos en X (Twitter)">
+            <span class="social-x">𝕏</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Destinos -->
+      <div class="footer-section">
+        <h4 class="footer-section-title">Destinos</h4>
+        <ul class="footer-links">
+          <li *ngFor="let link of destinationLinks">
+            <a [routerLink]="link.route" class="footer-link">{{ link.label }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Servicios -->
+      <div class="footer-section">
+        <h4 class="footer-section-title">Servicios</h4>
+        <ul class="footer-links">
+          <li *ngFor="let link of serviceLinks">
+            <a [routerLink]="link.route" class="footer-link">{{ link.label }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Soporte -->
+      <div class="footer-section">
+        <h4 class="footer-section-title">Soporte</h4>
+        <ul class="footer-links">
+          <li *ngFor="let link of supportLinks">
+            <a [routerLink]="link.route" class="footer-link">{{ link.label }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Newsletter y Contacto -->
+      <div class="footer-section footer-section--newsletter">
+        <h4 class="footer-section-title">Newsletter</h4>
+        <p class="newsletter-description">
+          Suscríbete para recibir ofertas exclusivas y consejos de viaje.
+        </p>
+        
+        <form [formGroup]="newsletterForm" (ngSubmit)="onNewsletterSubmit()" class="newsletter-form">
+          <mat-form-field appearance="outline" class="newsletter-input">
+            <input 
+              matInput 
+              type="email" 
+              placeholder="Tu email" 
+              formControlName="email"
+              [class.error]="isEmailInvalid">
+            <mat-error *ngIf="emailControl?.hasError('required')">
+              El email es requerido
+            </mat-error>
+            <mat-error *ngIf="emailControl?.hasError('email')">
+              Ingresa un email válido
+            </mat-error>
+          </mat-form-field>
+          
+          <button 
+            mat-raised-button 
+            type="submit" 
+            class="newsletter-button"
+            [disabled]="newsletterForm.invalid || isNewsletterLoading">
+            <mat-icon *ngIf="!isNewsletterLoading">send</mat-icon>
+            <mat-icon *ngIf="isNewsletterLoading" class="loading-icon">hourglass_empty</mat-icon>
+          </button>
+        </form>
+        
+        <div *ngIf="newsletterMessage" class="newsletter-message" 
+             [class.success]="newsletterMessage.includes('Gracias')"
+             [class.error]="newsletterMessage.includes('Error')">
+          {{ newsletterMessage }}
+        </div>
+
+        <!-- Información de contacto -->
+        <div class="contact-info">
+          <div *ngFor="let contact of contactInfo" class="contact-item">
+            <a *ngIf="contact.href; else noLink" [href]="contact.href" class="contact-link">
+              <mat-icon class="contact-icon">{{ contact.icon }}</mat-icon>
+              <span>{{ contact.text }}</span>
+            </a>
+            <ng-template #noLink>
+              <div class="contact-text">
+                <mat-icon class="contact-icon">{{ contact.icon }}</mat-icon>
+                <span>{{ contact.text }}</span>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección inferior con selectores -->
+    <div class="footer-middle">
+      <!-- Selectores de idioma y moneda -->
+      <div class="footer-selectors">
+        <!-- Selector de idioma -->
+        <button 
+          class="footer-selector-button" 
+          (click)="openLanguageDialog()"
+          aria-label="Seleccionar idioma">
+          <mat-icon class="selector-icon">language</mat-icon>
+          <span class="selector-text">{{ selectedLanguage.name }}</span>
+          <mat-icon class="selector-arrow">keyboard_arrow_down</mat-icon>
+        </button>
+
+        <!-- Selector de moneda -->
+        <button 
+          class="footer-selector-button" 
+          (click)="openCurrencyDialog()"
+          aria-label="Seleccionar moneda">
+          <mat-icon class="selector-icon">attach_money</mat-icon>
+          <span class="selector-text">{{ selectedCurrency.code }}</span>
+          <mat-icon class="selector-arrow">keyboard_arrow_down</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer bottom -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p class="copyright">
+          © {{ currentYear }} Air ipet 57. Todos los derechos reservados.
+        </p>
+        
+        <div class="footer-legal-links">
+          <a routerLink="/privacidad" class="legal-link">Políticas de privacidad</a>
+          <span class="separator">•</span>
+          <a routerLink="/terminos" class="legal-link">Términos y condiciones</a>
+        </div>
+        
+        <div class="payment-methods">
+          <span class="payment-label">Métodos de pago:</span>
+          <div class="payment-icons">
+            <mat-icon *ngFor="let method of paymentMethods" 
+                     class="payment-icon" 
+                     [attr.title]="method.label">
+              {{ method.icon }}
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Dialog para selector de idioma -->
+<div class="dialog-overlay" 
+     [class.dialog-overlay--open]="isLanguageDialogOpen"
+     (click)="closeLanguageDialog()">
+  <div class="dialog" (click)="$event.stopPropagation()">
+    <div class="dialog-header">
+      <h3 class="dialog-title">Seleccionar idioma</h3>
+      <button 
+        mat-icon-button
+        class="dialog-close" 
+        (click)="closeLanguageDialog()"
+        aria-label="Cerrar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="dialog-content">
+      <div class="dialog-options">
+        <button 
+          *ngFor="let language of languages" 
+          class="dialog-option"
+          [class.dialog-option--selected]="language.code === selectedLanguage.code"
+          (click)="selectLanguage(language)">
+          <span class="option-flag">{{ language.flag }}</span>
+          <span class="option-text">{{ language.name }}</span>
+          <mat-icon 
+            *ngIf="language.code === selectedLanguage.code"
+            class="option-check">
+            check
+          </mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Dialog para selector de moneda -->
+<div class="dialog-overlay" 
+     [class.dialog-overlay--open]="isCurrencyDialogOpen"
+     (click)="closeCurrencyDialog()">
+  <div class="dialog" (click)="$event.stopPropagation()">
+    <div class="dialog-header">
+      <h3 class="dialog-title">Seleccionar moneda</h3>
+      <button 
+        mat-icon-button
+        class="dialog-close" 
+        (click)="closeCurrencyDialog()"
+        aria-label="Cerrar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="dialog-content">
+      <div class="dialog-options">
+        <button 
+          *ngFor="let currency of currencies" 
+          class="dialog-option"
+          [class.dialog-option--selected]="currency.code === selectedCurrency.code"
+          (click)="selectCurrency(currency)">
+          <span class="option-symbol">{{ currency.symbol }}</span>
+          <div class="option-info">
+            <span class="option-code">{{ currency.code }}</span>
+            <span class="option-name">{{ currency.name }}</span>
+          </div>
+          <mat-icon 
+            *ngIf="currency.code === selectedCurrency.code"
+            class="option-check">
+            check
+          </mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

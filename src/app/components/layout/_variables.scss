@@ -1,0 +1,102 @@
+// Variables específicas para navegación
+$navbar-primary: #1e40af;
+$navbar-primary-hover: color-mix(in srgb, #1e40af 90%, white);
+$navbar-secondary: #64748b;
+$navbar-background: #003b95;
+$navbar-text: #ffffff;
+$navbar-text-dark: #030303;
+$navbar-text-light: #6b7280;
+$navbar-border: #e5e7eb;
+$navbar-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+$navbar-radius: 0.5rem;
+$navbar-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Variables adicionales para navegación
+$navbar-height: 64px;
+$navbar-mobile-height: 56px;
+$navbar-z-index: 1000;
+$navbar-overlay-z-index: 1500;
+$navbar-sidenav-z-index: 2000;
+$navbar-logo-size: 40px;
+$navbar-logo-size-mobile: 36px;
+$navbar-avatar-size: 40px;
+$navbar-avatar-size-mobile: 36px;
+$navbar-badge-size: 18px;
+$navbar-dropdown-width: 280px;
+$navbar-cart-dropdown-width: 320px;
+$navbar-mobile-menu-width: 320px;
+$navbar-mobile-menu-width-max: 85vw;
+
+// Estados y efectos
+$navbar-hover-bg: rgba(255, 255, 255, 0.1);
+$navbar-active-bg: rgba(255, 255, 255, 0.15);
+$navbar-focus-color: #60a5fa;
+$navbar-danger-color: #dc2626;
+$navbar-danger-hover: rgba(220, 38, 38, 0.1);
+$navbar-success-color: #16a34a;
+$navbar-warning-color: #f59e0b;
+
+// Gradientes
+$navbar-user-gradient: linear-gradient(135deg, $navbar-primary, $navbar-primary-hover);
+$navbar-dropdown-gradient: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+$navbar-mobile-header-gradient: linear-gradient(135deg, $navbar-background 0%, color-mix(in srgb, $navbar-background 90%, white) 100%);
+
+$font-family-base: 'Arial', 'Helvetica Neue', sans-serif; 
+$font-size-base: 1rem; 
+$font-size-logo: 1.25rem;
+$font-size-nav: 0.875rem; 
+$font-size-btn: 1rem; 
+$font-weight-regular: 400; 
+$font-weight-bold: 600; 
+$letter-spacing: 0;
+$text-transform: capitalize;
+
+$layout-background: #f9fafb;
+$layout-text: #1f2937;
+$layout-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Variables específicas para footer
+$footer-bg: #1e1e1e;
+$footer-text: #e5e5e5;
+$footer-text-secondary: #a3a3a3;
+$footer-accent: #3b82f6;
+$footer-accent-hover: color-mix(in srgb, #3b82f6 80%, white);
+$footer-border: #374151;
+$footer-overlay: rgba(0, 0, 0, 0.8);
+$footer-radius: 0.5rem;
+$footer-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+$footer-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Variables adicionales para footer
+$footer-padding: 3rem 0 2rem;
+$footer-padding-mobile: 2rem 0 1.5rem;
+$footer-section-gap: 2rem;
+$footer-section-gap-mobile: 1.5rem;
+$footer-link-padding: 0.5rem 0;
+$footer-social-size: 40px;
+$footer-social-size-mobile: 36px;
+$footer-logo-size: 32px;
+$footer-input-height: 48px;
+$footer-button-height: 48px;
+
+// Colores adicionales
+$footer-bg-light: #2a2a2a;
+$footer-bg-dark: #1a1a1a;
+$footer-success: #10b981;
+$footer-error: #ef4444;
+$footer-warning: #f59e0b;
+$footer-info: #3b82f6;
+
+// Gradientes
+$footer-gradient: linear-gradient(135deg, $footer-bg 0%, $footer-bg-light 100%);
+$footer-social-gradient: linear-gradient(135deg, $footer-accent, $footer-accent-hover);
+$footer-newsletter-gradient: linear-gradient(135deg, $footer-accent 0%, #1d4ed8 100%);
+
+// Sombras
+$footer-card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$footer-input-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+$footer-button-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+// Z-index
+$footer-z-index: 100;
+$footer-overlay-z-index: 150;
