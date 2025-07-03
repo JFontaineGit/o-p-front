@@ -1,0 +1,44 @@
+<section class="search-bar-section">
+  <div class="container">
+    <div class="filters-header">
+      <h3 class="filters-title">Filtrar alojamientos</h3>
+      <button 
+        type="button"
+        class="clear-filters-btn"
+        (click)="onClearFilters()">
+        <span class="material-icons">clear</span>
+        Limpiar filtros
+      </button>
+    </div>
+
+    <form [formGroup]="filtersForm" class="filters-grid">
+      <app-filter-input
+        label="Tipo de alojamiento"
+        [options]="accommodationTypeOptions"
+        [formControl]="accommodationTypeControl"
+        placeholder="Todos">
+      </app-filter-input>
+
+      <app-filter-input
+        label="Precio máximo por noche"
+        [options]="priceOptions"
+        [formControl]="maxPriceControl"
+        placeholder="Sin límite">
+      </app-filter-input>
+
+      <app-filter-input
+        label="Huéspedes"
+        [options]="guestsOptions"
+        [formControl]="guestsControl"
+        placeholder="Cualquiera">
+      </app-filter-input>
+
+      <app-filter-input
+        label="Ordenar por"
+        [options]="sortOptions"
+        [formControl]="sortByControl"
+        placeholder="Seleccionar...">
+      </app-filter-input>
+    </form>
+  </div>
+</section>

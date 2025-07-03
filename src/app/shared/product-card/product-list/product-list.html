@@ -1,0 +1,24 @@
+<section class="products-section">
+  <div class="container">
+    <h3 class="section-title">
+      <a href="#" class="section-link">
+        Disponibles en París el mes que viene 
+        <i class="fas fa-chevron-right"></i>
+      </a>
+    </h3>
+    
+    <div class="products-grid">
+      <app-product-card
+        *ngFor="let product of products; trackBy: trackByProductId"
+        [id]="product.id"
+        [title]="product.title"
+        [description]="product.description"
+        [price]="product.price"
+        [imageUrl]="product.imageUrl"
+        [isFavorite]="favoriteIds.has(product.id)"
+        (addToCart)="onAddToCart($event)"
+        (toggleFavorite)="onToggleFavorite($event)">
+      </app-product-card>
+    </div>
+  </div>
+</section>

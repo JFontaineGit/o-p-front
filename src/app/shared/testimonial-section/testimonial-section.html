@@ -1,0 +1,14 @@
+<section class="testimonials-section">
+  <div class="container">
+    <h2 class="testimonials-title">Lo que dicen nuestros viajeros</h2>
+    <div class="testimonials-grid">
+      <app-help-card
+        *ngFor="let testimonial of testimonials; trackBy: trackByTestimonial"
+        [quote]="testimonial.quote"
+        [name]="testimonial.name"
+        [location]="testimonial.location"
+        [avatarUrl]="testimonial.avatarUrl">
+      </app-help-card>
+    </div>
+  </div>
+</section>

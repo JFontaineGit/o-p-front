@@ -1,0 +1,17 @@
+<div class="testimonial-card">
+  <div class="testimonial-content">
+    <p class="testimonial-quote">{{ quote }}</p>
+  </div>
+  
+  <div class="testimonial-author">
+    <img 
+      [src]="avatarUrl" 
+      [alt]="name"
+      class="author-avatar"
+      loading="lazy">
+    <div class="author-info">
+      <h4 class="author-name">{{ name }}</h4>
+      <span class="author-location">{{ location }}</span>
+    </div>
+  </div>
+</div>

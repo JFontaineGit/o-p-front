@@ -1,0 +1,58 @@
+@use '../../_variables.scss' as v;
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-xs;
+}
+
+.filter-label {
+  font-family: v.$font-family-base;
+  font-weight: v.$font-weight-medium;
+  font-size: v.$font-size-sm;
+  color: v.$color-text-dark;
+  margin: 0;
+  transition: color v.$transition;
+}
+
+.filter-select {
+  padding: v.$spacing-sm v.$spacing-md;
+  border: 1px solid v.$color-border;
+  border-radius: v.$border-radius;
+  background: white;
+  color: v.$color-text-dark;
+  font-family: v.$font-family-base;
+  font-size: v.$font-size-sm;
+  cursor: pointer;
+  transition: v.$transition;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right v.$spacing-sm center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  padding-right: v.$spacing-xl;
+
+  &:hover {
+    border-color: color-mix(in srgb, v.$color-text-light 100%, transparent);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: v.$color-primary;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  &:disabled {
+    background-color: #f3f4f6;
+    color: v.$color-text-light;
+    cursor: not-allowed;
+  }
+}
+
+// Responsive
+@media (max-width: 480px) {
+  .filter-select {
+    padding: v.$spacing-xs v.$spacing-sm;
+    font-size: v.$font-size-xs;
+  }
+}

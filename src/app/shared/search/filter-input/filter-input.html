@@ -1,0 +1,13 @@
+<div class="filter-group">
+  <label [for]="filterId" class="filter-label">{{ label }}</label>
+  <select
+    [id]="filterId"
+    [disabled]="disabled"
+    (change)="onValueChange($event)"
+    class="filter-select">
+    <option value="">{{ placeholder }}</option>
+    <option *ngFor="let option of options" [value]="option.value">
+      {{ option.label }}
+    </option>
+  </select>
+</div>

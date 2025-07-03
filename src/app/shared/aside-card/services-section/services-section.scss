@@ -1,0 +1,91 @@
+@use '../../_variables.scss' as v;
+@use '../../../styles/_mixins.scss' as m;
+
+:host {
+  --bg-light: v.$color-background;
+  --text-dark: v.$color-text-dark;
+  --spacing-3xl: v.$spacing-3xl;
+  --spacing-2xl: v.$spacing-2xl;
+  --spacing-xl: v.$spacing-xl;
+  --spacing-lg: v.$spacing-lg;
+}
+
+.services-section {
+  background: var(--bg-light);
+  padding: 80px 0;
+  margin-top: 60px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.services-title {
+  text-align: center;
+  font-family: v.$font-family-base;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 700;
+  margin-bottom: 60px;
+  color: var(--text-dark);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  align-items: stretch;
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .services-section {
+    padding: 60px 0;
+    margin-top: 40px;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  .services-title {
+    margin-bottom: 40px;
+  }
+
+  .services-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .services-section {
+    padding: 48px 0;
+    margin-top: 32px;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
+
+  .services-title {
+    margin-bottom: 32px;
+  }
+}

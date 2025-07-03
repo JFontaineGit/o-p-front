@@ -1,0 +1,36 @@
+<article class="product-card" [attr.data-id]="id">
+  <div class="product-card__image">
+    <img 
+      [src]="imageUrl" 
+      [alt]="title"
+      class="product-image"
+      loading="lazy">
+    
+    <button 
+      type="button"
+      class="favorite-btn"
+      [class.active]="isFavorite"
+      (click)="onToggleFavorite()"
+      [attr.aria-label]="isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'">
+      <i [class]="isFavorite ? 'fas fa-heart' : 'far fa-heart'"></i>
+    </button>
+  </div>
+
+  <div class="product-card__content">
+    <h4 class="product-title">{{ title }}</h4>
+    <p class="product-description">{{ description }}</p>
+    
+    <div class="product-footer">
+      <div class="product-price">{{ formattedPrice }}</div>
+      
+      <button 
+        type="button"
+        class="add-to-cart-btn"
+        (click)="onAddToCart()"
+        [attr.aria-label]="'Agregar ' + title + ' al carrito'">
+        <i class="fas fa-cart-plus"></i>
+        <span>Agregar al Carrito</span>
+      </button>
+    </div>
+  </div>
+</article>
