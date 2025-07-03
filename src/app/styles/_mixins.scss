@@ -1,3 +1,5 @@
+@use "../shared/_variables.scss" as *;
+
 @mixin flex-center {
   display: flex;
   align-items: center;
@@ -19,9 +21,21 @@
   font: inherit;
 }
 
-@mixin focus-ring {
+@mixin focus-ring-nav {
   &:focus-visible {
     outline: 2px solid currentColor; 
     outline-offset: 2px;
   }
+}
+
+@mixin focus-ring($color: $color-primary, $offset: 2px) {
+  &:focus {
+    outline: 2px solid $color;
+    outline-offset: $offset;
+    border-radius: $border-radius-small;
+  }
+}
+
+@mixin animation-fade-in-up($duration: 0.6s, $easing: cubic-bezier(0.4, 0, 0.2, 1)) {
+  animation: fadeInUp $duration $easing both;
 }

@@ -7,22 +7,31 @@
   flex-direction: column;
   min-height: 100dvh;
   color: v.$layout-text;
+  width: 100%;
 }
 
 .main-content {
   flex: 1 0 auto;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
+  margin: 0;
+  padding: 0; /* Elimina todo el padding */
   overflow: visible;
 
+  /* Ajusta el primer hijo después del router-outlet (como home) */
   router-outlet + * {
     display: block;
-    transition: v.$layout-transition;
+    margin-top: 0; /* Elimina cualquier margen superior */
+    padding-top: 0; /* Elimina padding superior */
+    width: 100vw; /* Asegura que ocupe el ancho completo */
+    position: relative; /* Asegura un contexto de posicionamiento */
+    top: 0; /* Elimina cualquier desplazamiento superior */
   }
 
+  /* Compensar la altura de la navbar sticky */
+  margin-top: 4rem; /* Igual a la altura de la navbar (4rem) */
+
   @media (max-width: 768px) {
-    padding: 0.5rem;
+    padding: 0; /* Mantén padding en 0 para móviles */
+    margin-top: 4rem; /* Mantiene el ajuste para móviles */
   }
 }

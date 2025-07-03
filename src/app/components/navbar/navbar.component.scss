@@ -112,7 +112,7 @@
     border-radius: v.$navbar-radius;
     font-weight: v.$font-weight-regular;
     transition: v.$navbar-transition;
-    @include m.focus-ring;
+    @include m.focus-ring-nav;
     position: relative;
 
     &:hover {
@@ -180,7 +180,7 @@
     border-radius: v.$navbar-radius;
     font-weight: v.$font-weight-regular;
     transition: v.$navbar-transition;
-    @include m.focus-ring;
+    @include m.focus-ring-nav;
     position: relative;
 
     &:hover {
