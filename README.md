@@ -19,7 +19,7 @@ Front-End moderno y responsivo desarrollado con Angular, diseñado para integrar
 - **Angular**: Framework web estructurado basado en componentes.  
 - **SASS**: Preprocesador CSS para estilos avanzados y organizados.  
 - **TypeScript**: Superset de JavaScript para tipado estático.   
-- **HTML5 y CSS3/SASS**: Maquetación responsiva y estilos personalizados.  
+- **HTML5 y Bootstrap**: Maquetación responsiva y estilos genéricos.  
 ## 🚀 Características principales
 
 - Catálogo de paquetes de turismo y productos con navegación fluida y filtros visuales  
