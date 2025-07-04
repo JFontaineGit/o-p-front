@@ -1,5 +1,6 @@
-<app-hero></app-hero>
+<app-hero [heroData]="heroDataHome"></app-hero>
 <app-search></app-search>
-<app-product-list></app-product-list>
-<app-services-section></app-services-section>
+<app-product-list mode="products"></app-product-list>
+<h2 class="services-title">¿Por qué elegir nuestros paquetes turísticos?</h2>
+<app-services-section [services]="homeServices"></app-services-section>
 <app-testimonials-section></app-testimonials-section>

@@ -1,4 +1,25 @@
-<article class="product-card" [attr.data-id]="id">
+<article class="product-card" [attr.data-id]="id" [attr.data-mode]="mode">
+  
+  <!-- Header con badge y rating (solo package) -->
+  <div class="product-card__header" *ngIf="mode === 'package' && (badge || showRating)">
+    <span class="product-badge" *ngIf="badge">{{ badge }}</span>
+    
+    <div class="product-rating" *ngIf="showRating">
+      <div class="rating-stars">
+        <span 
+          class="material-icons star" 
+          *ngFor="let star of ratingStars"
+          [class.filled]="star === 1">
+          {{ star === 1 ? 'star' : 'star_border' }}
+        </span>
+      </div>
+      <span class="rating-text" *ngIf="reviewsCount">
+        ({{ reviewsCount }})
+      </span>
+    </div>
+  </div>
+
+  <!-- Imagen -->
   <div class="product-card__image">
     <img 
       [src]="imageUrl" 
@@ -12,24 +33,56 @@
       [class.active]="isFavorite"
       (click)="onToggleFavorite()"
       [attr.aria-label]="isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'">
-      <i [class]="isFavorite ? 'fas fa-heart' : 'far fa-heart'"></i>
+      <span class="material-icons">
+        {{ isFavorite ? 'favorite' : 'favorite_border' }}
+      </span>
     </button>
+
+    <!-- Badge sobre imagen (solo product) -->
+    <div class="image-badge" *ngIf="mode === 'product' && badge">
+      {{ badge }}
+    </div>
   </div>
 
+  <!-- Contenido -->
   <div class="product-card__content">
     <h4 class="product-title">{{ title }}</h4>
-    <p class="product-description">{{ description }}</p>
     
+    <p class="product-description" *ngIf="description">{{ description }}</p>
+    
+    <!-- Info del paquete -->
+    <div class="package-info" *ngIf="mode === 'package' && packageInfo.length > 0">
+      <div class="package-info__item" *ngFor="let info of packageInfo">
+        <span class="material-icons">{{ info.icon }}</span>
+        <span>{{ info.text }}</span>
+      </div>
+    </div>
+    
+    <!-- Features (solo package) -->
+    <div class="product-features" *ngIf="mode === 'package' && hasFeatures">
+      <div class="feature-item" *ngFor="let feature of displayFeatures">
+        <span class="material-icons">{{ getFeatureIcon(feature) }}</span>
+        <span>{{ feature }}</span>
+      </div>
+    </div>
+    
+    <!-- Footer con precios y botón -->
     <div class="product-footer">
-      <div class="product-price">{{ formattedPrice }}</div>
+      <div class="product-pricing">
+        <div class="price-container">
+          <span class="product-price">{{ formattedPrice }}</span>
+          <span class="original-price" *ngIf="hasDiscount">{{ formattedOriginalPrice }}</span>
+        </div>
+        <span class="discount-badge" *ngIf="hasDiscount">{{ discountPercentage }}</span>
+      </div>
       
       <button 
         type="button"
         class="add-to-cart-btn"
         (click)="onAddToCart()"
         [attr.aria-label]="'Agregar ' + title + ' al carrito'">
-        <i class="fas fa-cart-plus"></i>
-        <span>Agregar al Carrito</span>
+        <span class="material-icons">add_shopping_cart</span>
+        <span class="btn-text">Agregar al Carrito</span>
       </button>
     </div>
   </div>

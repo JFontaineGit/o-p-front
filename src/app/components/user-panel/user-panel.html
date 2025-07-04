@@ -1,0 +1,144 @@
+<section class="user-dashboard" role="main" aria-label="Panel de usuario">
+  <div class="user-dashboard__container">
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+        <span>Cargando...</span>
+      </div>
+    </div>
+    
+    <div class="user-dashboard__layout">
+      
+      <!-- =============================================================================
+           SIDEBAR - Navegación y perfil
+           ============================================================================= -->
+      <app-sidebar
+        class="user-dashboard__sidebar"
+        [user]="user"
+        [tabs]="tabs"
+        [activeTab]="activeTab"
+        [showStats]="config.showStats"
+        [allowAvatarEdit]="config.allowAvatarEdit"
+        (tabChange)="onTabChange($event)"
+        (avatarChange)="onAvatarChange($event)">
+      </app-sidebar>
+      
+      <!-- =============================================================================
+           MAIN CONTENT - Contenido de los tabs
+           ============================================================================= -->
+      <main class="user-dashboard__content" [attr.aria-label]="getActiveTabTitle()">
+        
+        <!-- =============================================================================
+             TAB: INFORMACIÓN PERSONAL
+             ============================================================================= -->
+        <div 
+          class="tab-content"
+          [class.tab-content--active]="isTabActive('personal')"
+          *ngIf="isTabActive('personal')"
+          role="tabpanel"
+          aria-labelledby="personal-tab">
+          
+          <app-profile-form
+            [user]="user"
+            [isLoading]="isLoading"
+            (save)="onUserUpdate($event)"
+            (cancel)="onTabChange('personal')">
+          </app-profile-form>
+        </div>
+        
+        <!-- =============================================================================
+             TAB: MIS RESERVAS
+             ============================================================================= -->
+        <div 
+          class="tab-content"
+          [class.tab-content--active]="isTabActive('bookings')"
+          *ngIf="isTabActive('bookings')"
+          role="tabpanel"
+          aria-labelledby="bookings-tab">
+          
+          <app-bookings
+            [bookings]="bookings"
+            [isLoading]="isLoading"
+            (bookingAction)="onBookingAction($event)">
+          </app-bookings>
+        </div>
+        
+        <!-- =============================================================================
+             TAB: FAVORITOS
+             ============================================================================= -->
+        <div 
+          class="tab-content"
+          [class.tab-content--active]="isTabActive('favorites')"
+          *ngIf="isTabActive('favorites')"
+          role="tabpanel"
+          aria-labelledby="favorites-tab">
+          
+          <app-favorites
+            [favorites]="favorites"
+            [isLoading]="isLoading"
+            [showRemoveButton]="true"
+            (remove)="onFavoriteRemove($event)"
+            (click)="onFavoriteClick($event)">
+          </app-favorites>
+        </div>
+        
+        <!-- =============================================================================
+             OTROS TABS (Placeholder)
+             ============================================================================= -->
+        <div 
+          class="tab-content"
+          [class.tab-content--active]="isTabActive('payments')"
+          *ngIf="isTabActive('payments')"
+          role="tabpanel"
+          aria-labelledby="payments-tab">
+          
+          <div class="content-placeholder">
+            <div class="placeholder-icon">
+              <i class="fas fa-credit-card" aria-hidden="true"></i>
+            </div>
+            <h2>Métodos de Pago</h2>
+            <p>Gestiona tus tarjetas y métodos de pago preferidos.</p>
+            <p class="placeholder-status">Sección en desarrollo...</p>
+          </div>
+        </div>
+        
+        <div 
+          class="tab-content"
+          [class.tab-content--active]="isTabActive('security')"
+          *ngIf="isTabActive('security')"
+          role="tabpanel"
+          aria-labelledby="security-tab">
+          
+          <div class="content-placeholder">
+            <div class="placeholder-icon">
+              <i class="fas fa-shield-alt" aria-hidden="true"></i>
+            </div>
+            <h2>Seguridad</h2>
+            <p>Configura la seguridad de tu cuenta y privacidad.</p>
+            <p class="placeholder-status">Sección en desarrollo...</p>
+          </div>
+        </div>
+        
+        <div 
+          class="tab-content"
+          [class.tab-content--active]="isTabActive('notifications')"
+          *ngIf="isTabActive('notifications') && config.enableNotifications"
+          role="tabpanel"
+          aria loci="notifications-tab">
+          
+          <div class="content-placeholder">
+            <div class="placeholder-icon">
+              <i class="fas fa-bell" aria-hidden="true"></i>
+            </div>
+            <h2>Notificaciones</h2>
+            <p>Personaliza cómo y cuándo recibir notificaciones.</p>
+            <p class="placeholder-status">Sección en desarrollo...</p>
+          </div>
+        </div>
+        
+      </main>
+    </div>
+  </div>
+</section>

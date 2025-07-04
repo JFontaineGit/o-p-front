@@ -1,0 +1,291 @@
+@use './styles/_variables.scss' as *;
+@use './styles/_mixins.scss' as *;
+@use './styles/_media-queries.scss' as *;
+@use 'sass:color';
+
+// =============================================================================
+// USER DASHBOARD COMPONENT
+// =============================================================================
+
+.user-dashboard {
+  min-height: 100vh;
+  background-color: $bg-secondary;
+  font-family: $font-family-primary;
+  position: relative;
+
+  &__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: $spacing-lg;
+    position: relative;
+  }
+
+  &__layout {
+    display: flex;
+    gap: $spacing-2xl;
+    align-items: flex-start;
+  }
+
+  &__sidebar {
+    width: 350px;
+    flex-shrink: 0;
+    position: sticky;
+    top: $spacing-lg;
+    z-index: 10;
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+  }
+}
+
+// =============================================================================
+// TAB CONTENT
+// =============================================================================
+
+.tab-content {
+  display: none;
+  @include fade-in;
+
+  &--active {
+    display: block;
+  }
+}
+
+// =============================================================================
+// LOADING OVERLAY
+// =============================================================================
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: color.adjust($bg-primary, $alpha: -0.1);
+  @include flex-center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.loading-spinner {
+  @include flex-center(column);
+  gap: $spacing-md;
+  padding: $spacing-xl;
+  background-color: $bg-primary;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  color: $text-secondary;
+
+  i {
+    font-size: $font-size-2xl;
+    color: $primary-color;
+  }
+
+  span {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+  }
+}
+
+// =============================================================================
+// CONTENT PLACEHOLDER
+// =============================================================================
+
+.content-placeholder {
+  @include card-base;
+  padding: $spacing-3xl;
+  text-align: center;
+  color: $text-muted;
+
+  .placeholder-icon {
+    margin-bottom: $spacing-lg;
+
+    i {
+      font-size: 4rem;
+      color: $text-muted;
+      opacity: 0.5;
+    }
+  }
+
+  h2 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-semibold;
+    color: $text-secondary;
+    margin: 0 0 $spacing-md 0;
+  }
+
+  p {
+    font-size: $font-size-base;
+    margin: 0 0 $spacing-sm 0;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  .placeholder-status {
+    font-size: $font-size-sm;
+    color: $warning-color;
+    font-weight: $font-weight-medium;
+    margin-top: $spacing-lg;
+  }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+@include mobile-only {
+  .user-dashboard {
+    &__container {
+      padding: $spacing-md;
+    }
+
+    &__layout {
+      flex-direction: column;
+      gap: $spacing-lg;
+    }
+
+    &__sidebar {
+      width: 100%;
+      position: static;
+      order: 2;
+    }
+
+    &__content {
+      order: 1;
+      width: 100%;
+    }
+  }
+
+  .content-placeholder {
+    padding: $spacing-xl;
+
+    .placeholder-icon i {
+      font-size: 3rem;
+    }
+
+    h2 {
+      font-size: $font-size-xl;
+    }
+  }
+}
+
+@include tablet-only {
+  .user-dashboard {
+    &__layout {
+      gap: $spacing-xl;
+    }
+
+    &__sidebar {
+      width: 280px;
+    }
+  }
+}
+
+@include desktop-up {
+  .user-dashboard {
+    &__container {
+      padding: $spacing-2xl;
+    }
+
+    &__layout {
+      gap: $spacing-3xl;
+    }
+
+    &__sidebar {
+      width: 380px;
+    }
+  }
+}
+
+// =============================================================================
+// ANIMACIONES Y TRANSICIONES
+// =============================================================================
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.user-dashboard__sidebar {
+  animation: slideInFromLeft 0.3s ease-out;
+}
+
+.user-dashboard__content {
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+// =============================================================================
+// ACCESIBILIDAD
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .user-dashboard__sidebar,
+  .user-dashboard__content,
+  .tab-content {
+    animation: none !important;
+  }
+
+  .loading-spinner i {
+    animation: none !important;
+  }
+}
+
+// Focus visible para navegación por teclado
+.user-dashboard {
+  &:focus-within {
+    .user-dashboard__sidebar {
+      outline: 2px solid $primary-color;
+      outline-offset: 4px;
+      border-radius: $border-radius-lg;
+    }
+  }
+}
+
+// =============================================================================
+// PRINT STYLES
+// =============================================================================
+
+@media print {
+  .user-dashboard {
+    background-color: white;
+    
+    &__sidebar {
+      display: none;
+    }
+    
+    &__layout {
+      flex-direction: column;
+    }
+    
+    &__content {
+      width: 100%;
+    }
+  }
+  
+  .loading-overlay,
+  .content-placeholder {
+    display: none;
+  }
+}

@@ -1,0 +1,385 @@
+@use '../styles/_variables.scss' as *;
+@use '../styles/_mixins.scss' as *;
+@use 'sass:color';
+
+.favorite-card {
+  @include card-base;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all $transition-normal;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-xl;
+  }
+
+  &:focus-within {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+
+  // =============================================================================
+  // IMAGE SECTION
+  // =============================================================================
+
+  &__image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform $transition-slow;
+    }
+
+    // Overlay gradient for better text readability
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 60%,
+        rgba(0, 0, 0, 0.1) 100%
+      );
+      pointer-events: none;
+    }
+  }
+
+  &:hover &__image img {
+    transform: scale(1.05);
+  }
+
+  // =============================================================================
+  // REMOVE BUTTON
+  // =============================================================================
+
+  &__remove {
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+    width: 40px;
+    height: 40px;
+    background-color: color.adjust($bg-primary, $alpha: -0.1);
+    color: $error-color;
+    border: none;
+    border-radius: $border-radius-full;
+    cursor: pointer;
+    transition: all $transition-fast;
+    @include flex-center;
+    backdrop-filter: blur(10px);
+    z-index: 2;
+    opacity: 0;
+    transform: scale(0.8);
+
+    &:hover {
+      background-color: $error-color;
+      color: $text-white;
+      transform: scale(1.1);
+    }
+
+    &:focus {
+      outline: 2px solid $error-color;
+      outline-offset: 2px;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    i {
+      font-size: $font-size-base;
+      transition: transform $transition-fast;
+    }
+
+    &:hover i {
+      transform: scale(1.1);
+    }
+  }
+
+  &:hover &__remove {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  // =============================================================================
+  // CONTENT SECTION
+  // =============================================================================
+
+  &__content {
+    padding: $spacing-lg;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    margin: 0;
+    line-height: 1.3;
+    @include text-truncate-lines(2);
+    min-height: calc(#{$font-size-lg} * 1.3 * 2);
+  }
+
+  &__description {
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    margin: 0;
+    line-height: 1.5;
+    @include text-truncate-lines(3);
+    flex: 1;
+  }
+
+  &__price {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $primary-color;
+    margin-top: auto;
+    padding-top: $spacing-sm;
+    border-top: 1px solid $border-light;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background-color: $primary-color;
+      border-radius: $border-radius-full;
+      margin-right: $spacing-xs;
+      vertical-align: middle;
+    }
+  }
+
+  // =============================================================================
+  // STATES & VARIANTS
+  // =============================================================================
+
+  // Loading state
+  &--loading {
+    pointer-events: none;
+    
+    .favorite-card__image {
+      @include loading-skeleton;
+    }
+
+    .favorite-card__title,
+    .favorite-card__description,
+    .favorite-card__price {
+      @include loading-skeleton;
+      border-radius: $border-radius-sm;
+    }
+
+    .favorite-card__title {
+      height: 24px;
+      width: 80%;
+    }
+
+    .favorite-card__description {
+      height: 60px;
+      width: 100%;
+    }
+
+    .favorite-card__price {
+      height: 20px;
+      width: 60%;
+    }
+  }
+
+  // Compact variant
+  &--compact {
+    .favorite-card__image {
+      height: 150px;
+    }
+
+    .favorite-card__content {
+      padding: $spacing-md;
+    }
+
+    .favorite-card__title {
+      font-size: $font-size-base;
+      @include text-truncate;
+      min-height: auto;
+    }
+
+    .favorite-card__description {
+      @include text-truncate-lines(2);
+    }
+  }
+
+  // Featured variant
+  &--featured {
+    border: 2px solid $primary-color;
+    
+    &::before {
+      content: 'Destacado';
+      position: absolute;
+      top: $spacing-md;
+      left: $spacing-md;
+      background-color: $primary-color;
+      color: $text-white;
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-sm;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      z-index: 2;
+    }
+  }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+@include mobile-only {
+  .favorite-card {
+    &__image {
+      height: 180px;
+    }
+
+    &__content {
+      padding: $spacing-md;
+    }
+
+    &__remove {
+      width: 36px;
+      height: 36px;
+      top: $spacing-sm;
+      right: $spacing-sm;
+      opacity: 1;
+      transform: scale(1);
+      background-color: color.adjust($bg-primary, $alpha: -0.05);
+    }
+
+    &__title {
+      font-size: $font-size-base;
+    }
+
+    &__description {
+      font-size: $font-size-xs;
+    }
+
+    &__price {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+@include tablet-only {
+  .favorite-card {
+    &__image {
+      height: 160px;
+    }
+
+    &__title {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY ENHANCEMENTS
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .favorite-card {
+    &:hover {
+      transform: none;
+    }
+
+    &__image img {
+      transition: none;
+    }
+
+    &__remove {
+      transition: none;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .favorite-card {
+    border: 2px solid $text-primary;
+
+    &__remove {
+      background-color: $bg-primary;
+      border: 2px solid $error-color;
+    }
+
+    &__price {
+      border-top: 2px solid $border-dark;
+    }
+  }
+}
+
+// Focus visible for keyboard navigation
+.favorite-card {
+  &:focus-visible {
+    outline: 3px solid $primary-color;
+    outline-offset: 2px;
+  }
+
+  &__remove:focus-visible {
+    outline: 2px solid $error-color;
+    outline-offset: 2px;
+  }
+}
+
+// =============================================================================
+// PRINT STYLES
+// =============================================================================
+
+@media print {
+  .favorite-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid $border-medium;
+
+    &__remove {
+      display: none;
+    }
+
+    &__image {
+      height: 120px;
+    }
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// =============================================================================
+// DARK MODE SUPPORT (if needed)
+// =============================================================================
+
+@media (prefers-color-scheme: dark) {
+  .favorite-card {
+    &__remove {
+      background-color: color.adjust($bg-dark, $alpha: -0.1);
+    }
+
+    &__image::after {
+      background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 60%,
+        rgba(255, 255, 255, 0.05) 100%
+      );
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<section class="contact-methods" role="region" aria-labelledby="contact-methods-title">
+  <div class="container">
+    <h3 id="contact-methods-title" class="section-title">
+      ¿Cómo prefieres contactarnos?
+    </h3>
+    
+    <div class="methods-grid" role="list">
+      <app-contact-card
+        *ngFor="let method of contactMethods; trackBy: trackByMethod"
+        role="listitem"
+        [icon]="method.icon"
+        [title]="method.title"
+        [description]="method.description"
+        [infoItems]="method.infoItems"
+        [buttonLabel]="method.buttonLabel"
+        [methodType]="method.methodType"
+        [variant]="method.variant"
+        (action)="onContactAction($event)">
+      </app-contact-card>
+    </div>
+  </div>
+</section>

@@ -11,7 +11,6 @@
 
 .header {
   background: nav.$navbar-background;
-  border-bottom: 1px solid nav.$navbar-border;
   box-shadow: nav.$navbar-shadow;
   font-family: nav.$font-family-base;
   @include mq.nav-height-desktop;

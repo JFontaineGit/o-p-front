@@ -1,0 +1,53 @@
+<section class="favorites-section">
+  <header class="content-header">
+    <h2 class="content-header__title">Mis Favoritos</h2>
+    <p class="content-header__description">
+      Destinos y paquetes que has guardado
+    </p>
+    <button 
+      *ngIf="favorites.length > 6"
+      type="button" 
+      class="btn btn--outline btn--small content-header__action"
+      (click)="onViewAll()">
+      Ver todos ({{ favorites.length }})
+    </button>
+  </header>
+  
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="loading-skeleton" *ngFor="let item of [1,2,3,4,5,6]">
+      <div class="skeleton skeleton--image"></div>
+      <div class="skeleton skeleton--content">
+        <div class="skeleton skeleton--title"></div>
+        <div class="skeleton skeleton--text"></div>
+        <div class="skeleton skeleton--price"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Grid de Favoritos -->
+  <div class="favorites-grid" *ngIf="!isLoading && favorites.length > 0">
+    <app-user-favorite-card
+      *ngFor="let favorite of favorites; trackBy: trackByFavoriteId"
+      [favorite]="favorite"
+      [showRemoveButton]="showRemoveButton"
+      (remove)="onRemoveFavorite($event)"
+      (click)="onFavoriteClick($event)">
+    </app-user-favorite-card>
+  </div>
+  
+  <!-- Estado vacío -->
+  <div class="empty-state" *ngIf="!isLoading && favorites.length === 0">
+    <i class="fas fa-heart empty-state__icon" aria-hidden="true"></i>
+    <h3 class="empty-state__title">No tienes favoritos</h3>
+    <p class="empty-state__description">
+      {{ getEmptyStateMessage() }}
+    </p>
+    <button 
+      type="button" 
+      class="btn btn--primary"
+      (click)="onViewAll()">
+      Explorar destinos
+    </button>
+  </div>
+</section>

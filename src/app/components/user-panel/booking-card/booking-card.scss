@@ -1,0 +1,154 @@
+@use '../styles/_variables.scss' as *;
+@use '../styles/_mixins.scss' as *;
+@use 'sass:color';
+
+.booking-card {
+  @include card-base;
+  display: flex;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+
+  &__image {
+    width: 120px;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__details {
+    flex: 1;
+    padding: $spacing-lg;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &__status {
+    display: inline-block;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: fit-content;
+
+    &--confirmed {
+      background-color: color.adjust($success-color, $alpha: -0.9);
+      color: $success-color;
+    }
+
+    &--completed {
+      background-color: color.adjust($info-color, $alpha: -0.9);
+      color: $info-color;
+    }
+
+    &--cancelled {
+      background-color: color.adjust($error-color, $alpha: -0.9);
+      color: $error-color;
+    }
+
+    &--pending {
+      background-color: color.adjust($warning-color, $alpha: -0.9);
+      color: $warning-color;
+    }
+  }
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    margin: 0;
+    @include text-truncate;
+  }
+
+  &__dates,
+  &__guests {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    margin: 0;
+
+    i {
+      color: $text-muted;
+      width: 1rem;
+    }
+  }
+
+  &__price {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $primary-color;
+    margin: 0;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    padding: $spacing-lg;
+    border-left: 1px solid $border-light;
+    min-width: 120px;
+  }
+}
+
+// Botones específicos para acciones
+.btn {
+  @include button-base;
+
+  &--primary {
+    @include button-variant($primary-color, $text-white);
+  }
+
+  &--secondary {
+    @include button-variant($secondary-color, $text-white);
+  }
+
+  &--outline {
+    @include button-variant(transparent, $text-primary, $border-medium);
+  }
+
+  &--success {
+    @include button-variant($success-color, $text-white);
+  }
+
+  &--error {
+    @include button-variant($error-color, $text-white);
+  }
+
+  &--small {
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-xs;
+  }
+}
+
+// Responsive
+@include mobile-only {
+  .booking-card {
+    flex-direction: column;
+
+    &__image {
+      width: 100%;
+      height: 150px;
+    }
+
+    &__actions {
+      flex-direction: row;
+      border-left: none;
+      border-top: 1px solid $border-light;
+      min-width: auto;
+    }
+  }
+}

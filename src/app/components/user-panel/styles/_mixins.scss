@@ -1,0 +1,186 @@
+@use './_variables.scss' as *;
+@use 'sass:color';
+
+// Mixin para centrar elementos
+@mixin flex-center($direction: row) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: $direction;
+}
+
+@mixin mobile-only {
+  @media (max-width: #{$breakpoint-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media (min-width: $breakpoint-md) and (max-width: #{$breakpoint-lg - 1px}) {
+    @content;
+  }
+}
+
+
+// Mixin para truncar texto
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Mixin para texto multilínea truncado
+@mixin text-truncate-lines($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Mixin para botones base
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid transparent;
+  border-radius: $border-radius-md;
+  font-family: $font-family-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all $transition-fast;
+  user-select: none;
+
+  &:focus {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Mixin para variantes de botones
+@mixin button-variant($bg, $color, $border: $bg) {
+  background-color: $bg;
+  color: $color;
+  border-color: $border;
+
+  &:hover:not(:disabled) {
+    background-color: color.adjust($bg, $lightness: -10%);
+    border-color: color.adjust($border, $lightness: -10%);
+  }
+
+  &:active:not(:disabled) {
+    background-color: color.adjust($bg, $lightness: -15%);
+    border-color: color.adjust($border, $lightness: -15%);
+  }
+}
+
+// Mixin para cards
+@mixin card-base {
+  background-color: $bg-primary;
+  border: 1px solid $border-light;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-sm;
+  transition: box-shadow $transition-normal;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+// Mixin para inputs
+@mixin input-base {
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $border-medium;
+  border-radius: $border-radius-md;
+  font-family: $font-family-primary;
+  font-size: $font-size-sm;
+  line-height: 1.5;
+  color: $text-primary;
+  background-color: $bg-primary;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px color.adjust($primary-color, $alpha: -0.9);
+  }
+
+  &:disabled {
+    background-color: $bg-tertiary;
+    color: $text-muted;
+    cursor: not-allowed;
+  }
+}
+
+// Mixin para estados de loading
+@mixin loading-skeleton {
+  background: linear-gradient(90deg, $bg-tertiary 25%, $bg-secondary 50%, $bg-tertiary 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Mixin para animaciones de entrada
+@mixin fade-in($duration: $transition-normal) {
+  animation: fadeIn $duration ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Mixin para scroll personalizado
+@mixin custom-scrollbar($width: 6px, $track-color: $bg-tertiary, $thumb-color: $border-dark) {
+  &::-webkit-scrollbar {
+    width: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+    border-radius: $border-radius-full;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $border-radius-full;
+
+    &:hover {
+      background: color.adjust($thumb-color, $lightness: -10%);
+    }
+  }
+}

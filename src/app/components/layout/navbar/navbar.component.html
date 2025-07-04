@@ -35,7 +35,7 @@
       <!-- Navigation - Center -->
       <div class="header__center" [class.header__center--hidden]="isMobile">
         <nav class="main-nav">
-          <a routerLink="/paquetes" 
+          <a routerLink="/packets" 
              class="nav-link" 
              routerLinkActive="nav-link--active">
             Paquetes
@@ -45,7 +45,7 @@
              routerLinkActive="nav-link--active">
             Vuelos
           </a>
-          <a routerLink="/contacto" 
+          <a routerLink="/contact" 
              class="nav-link" 
              routerLinkActive="nav-link--active">
             Contacto
@@ -131,7 +131,7 @@
               <div class="empty-cart" *ngIf="cartItemCount === 0">
                 <mat-icon>shopping_cart</mat-icon>
                 <p>Tu carrito está vacío</p>
-                <a routerLink="/paquetes" mat-button color="primary" class="btn-small">
+                <a routerLink="/packets" mat-button color="primary" class="btn-small">
                   Explorar Paquetes
                 </a>
               </div>
@@ -217,7 +217,7 @@
 
       <!-- Navigation Links -->
       <div class="mobile-section">
-        <a routerLink="/paquetes" mat-button class="mobile-link" (click)="closeMobileMenu()">
+        <a routerLink="/packets" mat-button class="mobile-link" (click)="closeMobileMenu()">
           <mat-icon>card_travel</mat-icon>
           <span>Paquetes</span>
         </a>
@@ -225,7 +225,7 @@
           <mat-icon>flight</mat-icon>
           <span>Vuelos</span>
         </a>
-        <a routerLink="/contacto" mat-button class="mobile-link" (click)="closeMobileMenu()">
+        <a routerLink="/contact" mat-button class="mobile-link" (click)="closeMobileMenu()">
           <mat-icon>contact_mail</mat-icon>
           <span>Contacto</span>
         </a>

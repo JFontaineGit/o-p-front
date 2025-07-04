@@ -1,0 +1,350 @@
+@use '../styles/_variables.scss' as *;
+@use '../styles/_mixins.scss' as *;
+@use 'sass:color';
+
+.profile-card {
+  @include card-base;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  // Subtle background pattern
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(135deg, $primary-color 0%, color.adjust($primary-color, $lightness: 15%) 100%);
+    opacity: 0.05;
+    z-index: 0;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    padding: $spacing-xl;
+  }
+
+  // =============================================================================
+  // AVATAR SECTION
+  // =============================================================================
+
+  &__avatar {
+    position: relative;
+    display: inline-block;
+    margin-bottom: $spacing-lg;
+
+    &-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto;
+    }
+
+    &-image {
+      width: 120px;
+      height: 120px;
+      border-radius: $border-radius-full;
+      object-fit: cover;
+      border: 4px solid $bg-primary;
+      box-shadow: $shadow-lg;
+      transition: all $transition-normal;
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: $shadow-xl;
+      }
+    }
+
+    &-edit {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 36px;
+      height: 36px;
+      background: $primary-color;
+      border: 3px solid $bg-primary;
+      border-radius: $border-radius-full;
+      color: $text-white;
+      cursor: pointer;
+      @include flex-center;
+      transition: all $transition-fast;
+      box-shadow: $shadow-md;
+
+      &:hover {
+        background: color.adjust($primary-color, $lightness: 10%);
+        transform: scale(1.1);
+        box-shadow: $shadow-lg;
+      }
+
+      &:focus {
+        outline: 2px solid $primary-color;
+        outline-offset: 2px;
+      }
+
+      i {
+        font-size: $font-size-sm;
+      }
+    }
+
+    // Status indicator
+    &-status {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 16px;
+      height: 16px;
+      background: $success-color;
+      border: 3px solid $bg-primary;
+      border-radius: $border-radius-full;
+      box-shadow: $shadow-sm;
+
+      &--offline {
+        background: $text-muted;
+      }
+
+      &--away {
+        background: $warning-color;
+      }
+    }
+  }
+
+  // =============================================================================
+  // USER INFO SECTION
+  // =============================================================================
+
+  &__info {
+    margin-bottom: $spacing-lg;
+
+    h3 {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $text-primary;
+      margin-bottom: $spacing-xs;
+      line-height: 1.2;
+    }
+
+    &-email {
+      color: $text-secondary;
+      font-size: $font-size-sm;
+      margin-bottom: $spacing-sm;
+      word-break: break-word;
+    }
+
+    &-role {
+      display: inline-block;
+      background: linear-gradient(135deg, $primary-color 0%, color.adjust($primary-color, $lightness: 10%) 100%);
+      color: $text-white;
+      padding: $spacing-xs $spacing-md;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: $spacing-md;
+    }
+  }
+
+  // =============================================================================
+  // STATS SECTION
+  // =============================================================================
+
+  &__stats {
+    display: flex;
+    justify-content: space-around;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $border-light;
+    gap: $spacing-md;
+  }
+
+  &__stat {
+    text-align: center;
+    flex: 1;
+    padding: $spacing-sm;
+    border-radius: $border-radius-md;
+    transition: all $transition-fast;
+
+    &:hover {
+      background: color.adjust($primary-color, $alpha: -0.97);
+      transform: translateY(-2px);
+    }
+
+    &-number {
+      display: block;
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $primary-color;
+      line-height: 1.2;
+      margin-bottom: $spacing-xs;
+    }
+
+    &-label {
+      font-size: $font-size-xs;
+      color: $text-secondary;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  // =============================================================================
+  // ACTIONS SECTION
+  // =============================================================================
+
+  &__actions {
+    margin-top: $spacing-lg;
+    display: flex;
+    gap: $spacing-sm;
+    justify-content: center;
+
+    .btn {
+      flex: 1;
+      max-width: 120px;
+    }
+  }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+@include mobile-only {
+  .profile-card {
+    &__content {
+      padding: $spacing-lg;
+    }
+
+    &__avatar {
+      &-container {
+        width: 100px;
+        height: 100px;
+      }
+
+      &-image {
+        width: 100px;
+        height: 100px;
+      }
+
+      &-edit {
+        width: 32px;
+        height: 32px;
+        bottom: 4px;
+        right: 4px;
+
+        i {
+          font-size: $font-size-xs;
+        }
+      }
+    }
+
+    &__info {
+      h3 {
+        font-size: $font-size-lg;
+      }
+    }
+
+    &__stats {
+      flex-direction: column;
+      gap: $spacing-sm;
+
+      &:hover {
+        transform: none;
+      }
+    }
+
+    &__stat {
+      padding: $spacing-xs;
+
+      &:hover {
+        transform: none;
+      }
+    }
+
+    &__actions {
+      flex-direction: column;
+
+      .btn {
+        max-width: none;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// LOADING STATE
+// =============================================================================
+
+.profile-card--loading {
+  .profile-card__avatar-image {
+    @include loading-skeleton;
+    border-radius: $border-radius-full;
+  }
+
+  .profile-card__info h3,
+  .profile-card__info-email,
+  .profile-card__stat-number,
+  .profile-card__stat-label {
+    @include loading-skeleton;
+    border-radius: $border-radius-sm;
+  }
+
+  .profile-card__info h3 {
+    height: 24px;
+    width: 60%;
+    margin: 0 auto $spacing-xs;
+  }
+
+  .profile-card__info-email {
+    height: 16px;
+    width: 80%;
+    margin: 0 auto $spacing-sm;
+  }
+
+  .profile-card__stat-number {
+    height: 20px;
+    width: 40px;
+    margin: 0 auto $spacing-xs;
+  }
+
+  .profile-card__stat-label {
+    height: 12px;
+    width: 60px;
+    margin: 0 auto;
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY ENHANCEMENTS
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-card {
+    &__avatar-image:hover {
+      transform: none;
+    }
+
+    &__avatar-edit:hover {
+      transform: none;
+    }
+
+    &__stat:hover {
+      transform: none;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .profile-card {
+    border: 2px solid $text-primary;
+
+    &__avatar-image {
+      border-color: $text-primary;
+    }
+
+    &__stats {
+      border-top-color: $text-primary;
+    }
+  }
+}

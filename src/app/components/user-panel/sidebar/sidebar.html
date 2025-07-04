@@ -1,0 +1,25 @@
+<aside class="user-sidebar" role="complementary">
+  <!-- Profile Card -->
+  <app-profile
+    [user]="user"
+    [showStats]="showStats"
+    [allowAvatarEdit]="allowAvatarEdit"
+    (avatarChange)="onAvatarChange($event)">
+  </app-profile>
+  
+  <!-- Navigation -->
+  <nav class="sidebar-nav" role="navigation" aria-label="Navegación del panel">
+    <button
+      *ngFor="let tab of tabs; trackBy: trackByTabId"
+      type="button"
+      class="sidebar-nav__item"
+      [ngClass]="getNavItemClasses(tab.id)"
+      [attr.aria-current]="tab.active ? 'page' : null"
+      [attr.aria-selected]="isTabActive(tab.id)"
+      role="tab"
+      (click)="onTabChange(tab.id)">
+      <i [class]="tab.icon" aria-hidden="true"></i>
+      <span>{{ tab.label }}</span>
+    </button>
+  </nav>
+</aside>

@@ -1,0 +1,25 @@
+<article class="favorite-card" (click)="onClick()">
+  <div class="favorite-card__image">
+    <img 
+      [src]="favorite.imageUrl" 
+      [alt]="favorite.title"
+      loading="lazy">
+    
+    <button 
+      *ngIf="showRemoveButton"
+      type="button"
+      class="favorite-card__remove"
+      [attr.aria-label]="'Eliminar ' + favorite.title + ' de favoritos'"
+      (click)="onRemove($event)">
+      <i class="fas fa-heart" aria-hidden="true"></i>
+    </button>
+  </div>
+  
+  <div class="favorite-card__content">
+    <h3 class="favorite-card__title">{{ favorite.title }}</h3>
+    <p class="favorite-card__description">{{ favorite.description }}</p>
+    <div class="favorite-card__price">
+      Desde {{ formatPrice(favorite.price) }}
+    </div>
+  </div>
+</article>

@@ -1,23 +1,43 @@
-// Colores
 $color-text-dark: #1f2937;
 $color-text-light: #6b7280;
 $color-primary: #3b82f6;
 $color-border: #d1d5db;
 $color-background: #f9fafb;
-$color-price: #1e40af;       
-$color-favorite: #e91e63;     
-$color-bg-white: #ffffff;     
-$color-shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); 
-$color-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+$color-price: #1e40af;
+$color-favorite: #e91e63;
+$color-bg-white: #ffffff;
+$color-shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+$color-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Colores específicos para variantes de contacto
+$whatsapp-color: #25d366;
+$whatsapp-hover: #128c7e;
+$orange-color: #ff9800;
+$orange-hover: #e68900;
+$purple-color: #9c27b0;
+$purple-hover: #7b1fa2;
+$green-color: #4caf50;
+$green-hover: #388e3c;
+
+// Colores de estado
+$status-online-color: #34a853;
+$status-offline-color: #ea4335;
+$status-busy-color: #fbbc04;
+
+// Colores modo oscuro
+$bg-white-dark: #1f1f1f;
+$text-dark-dark: #e8eaed;
+$text-light-dark: #9aa0a6;
+$border-color-dark: #3c4043;
 
 // Tipografía
 $font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-$font-size-xs: 0.75rem;  // 12px
+$font-size-xs: 0.75rem; // 12px
 $font-size-sm: 0.875rem; // 14px
-$font-size-base: 1rem;   // 16px
+$font-size-base: 1rem; // 16px
 $font-size-md: 1.125rem; // 18px
-$font-size-lg: 1.25rem;  // 20px
-$font-size-xl: 1.5rem;   // 24px
+$font-size-lg: 1.25rem; // 20px
+$font-size-xl: 1.5rem; // 24px
 $font-weight-regular: 400;
 $font-weight-medium: 500;
 $font-weight-bold: 600;
@@ -30,9 +50,25 @@ $spacing-sm: 0.75rem;
 $spacing-md: 1rem;
 $spacing-lg: 1.5rem;
 $spacing-xl: 2rem;
-$spacing-2xl: 3rem;       
-$spacing-3xl: 3.75rem;   
-$border-radius: 12px;    
-$border-radius-small: 4px; 
+$spacing-2xl: 3rem;
+$spacing-3xl: 3.75rem;
+$border-radius: 12px;
+$border-radius-small: 4px;
+
 // Transiciones
-$transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+$transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Tamaños específicos del componente contact-card
+$card-padding: $spacing-2xl $spacing-xl;
+$card-padding-tablet: $spacing-xl $spacing-lg;
+$card-padding-mobile: $spacing-lg $spacing-md;
+$icon-size: 80px;
+$icon-size-mobile: 64px;
+$icon-font-size: 32px;
+$icon-font-size-mobile: 24px;
+$button-min-height: 48px;
+$button-padding: $spacing-sm $spacing-lg;
+$button-padding-mobile: $spacing-xs $spacing-md;
+$hover-lift: -8px;
+$button-hover-lift: -2px;
+$status-icon-size: 8px;

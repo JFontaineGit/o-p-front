@@ -1,0 +1,39 @@
+<article class="booking-card" [class]="'booking-card--' + booking.status" (click)="onClick()">
+  <div class="booking-card__image">
+    <img 
+      [src]="booking.imageUrl" 
+      [alt]="booking.destination"
+      loading="lazy">
+  </div>
+  
+  <div class="booking-card__details">
+    <div [ngClass]="getStatusClasses()">
+      {{ getStatusText() }}
+    </div>
+    
+    <h3 class="booking-card__title">{{ booking.title }}</h3>
+    
+    <p class="booking-card__dates">
+      <i class="fas fa-calendar" aria-hidden="true"></i>
+      {{ formatDates() }}
+    </p>
+    
+    <p class="booking-card__guests">
+      <i class="fas fa-users" aria-hidden="true"></i>
+      {{ booking.guests }} {{ booking.guests === 1 ? 'adulto' : 'adultos' }}
+    </p>
+    
+    <p class="booking-card__price">{{ formatPrice() }}</p>
+  </div>
+  
+  <div class="booking-card__actions" *ngIf="showActions">
+    <button 
+      *ngFor="let actionItem of getAvailableActions()"
+      type="button"
+      class="btn btn--small"
+      [class]="'btn--' + actionItem.variant"
+      (click)="onAction(actionItem.action, $event)">
+      {{ actionItem.label }}
+    </button>
+  </div>
+</article>

@@ -1,0 +1,324 @@
+@use 'sass:color';
+@use '../_variables.scss' as vars;
+@use '../../styles/_mixins.scss' as mixins;
+@use '../_mixins.scss' as localMixins;
+
+:host {
+  display: block;
+  height: 100%;
+  --font-size-xs: #{vars.$font-size-xs};
+  --text-dark: #{vars.$color-text-dark};
+  --text-light: #{vars.$color-text-light};
+  --bg-white: #{vars.$color-bg-white};
+  --border-color: #{vars.$color-border};
+  --shadow-light: #{vars.$color-shadow-light};
+  --shadow-hover: #{vars.$color-shadow-hover};
+  --transition: #{vars.$transition};
+  --border-radius: #{vars.$border-radius};
+  --spacing-xs: #{vars.$spacing-xs};
+  --spacing-sm: #{vars.$spacing-sm};
+  --spacing-md: #{vars.$spacing-md};
+  --spacing-lg: #{vars.$spacing-lg};
+  --spacing-xl: #{vars.$spacing-xl};
+  --spacing-2xl: #{vars.$spacing-2xl};
+  --font-size-sm: #{vars.$font-size-sm};
+  --font-size-base: #{vars.$font-size-base};
+  --font-size-md: #{vars.$font-size-md};
+  --font-size-lg: #{vars.$font-size-lg};
+  --font-size-xl: #{vars.$font-size-xl};
+}
+
+.contact-card-host {
+  &--default {
+    --card-primary: #{vars.$color-primary};
+    --card-primary-hover: #{color.adjust(vars.$color-primary, $lightness: -10%)};
+    --icon-gradient: linear-gradient(135deg, #{vars.$color-primary}, #{color.adjust(vars.$color-primary, $lightness: -15%)});
+    --icon-color: #{vars.$color-primary};
+  }
+
+  &--whatsapp {
+    --card-primary: #{vars.$whatsapp-color};
+    --card-primary-hover: #{vars.$whatsapp-hover};
+    --icon-gradient: linear-gradient(135deg, #{vars.$whatsapp-color}, #{vars.$whatsapp-hover});
+    --icon-color: #{vars.$whatsapp-color};
+  }
+
+  &--email {
+    --card-primary: #{vars.$orange-color};
+    --card-primary-hover: #{vars.$orange-hover};
+    --icon-gradient: linear-gradient(135deg, #{vars.$orange-color}, #{vars.$orange-hover});
+    --icon-color: #{vars.$orange-color};
+  }
+
+  &--chat {
+    --card-primary: #{vars.$purple-color};
+    --card-primary-hover: #{vars.$purple-hover};
+    --icon-gradient: linear-gradient(135deg, #{vars.$purple-color}, #{vars.$purple-hover});
+    --icon-color: #{vars.$purple-color};
+  }
+
+  &--phone {
+    --card-primary: #{vars.$green-color};
+    --card-primary-hover: #{vars.$green-hover};
+    --icon-gradient: linear-gradient(135deg, #{vars.$green-color}, #{vars.$green-hover});
+    --icon-color: #{vars.$green-color};
+  }
+}
+
+.contact-card {
+  @include localMixins.card-base;
+  padding: vars.$card-padding;
+  text-align: center;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  @include localMixins.hover-lift;
+
+  &:focus-within {
+    @include mixins.focus-ring(var(--card-primary));
+  }
+
+  &:hover {
+    transform: translateY(vars.$hover-lift);
+    box-shadow: vars.$color-shadow-hover;
+  }
+
+  &[aria-disabled="true"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.contact-card__icon {
+  width: vars.$icon-size;
+  height: vars.$icon-size;
+  background: var(--icon-gradient);
+  border-radius: 50%;
+  @include mixins.flex-center;
+  margin: 0 auto vars.$spacing-lg;
+  transition: vars.$transition;
+
+  .material-icons {
+    font-size: vars.$icon-font-size;
+    color: inherit;
+  }
+
+  .contact-card:hover & {
+    transform: scale(1.05);
+  }
+}
+
+.contact-card__content {
+  flex-grow: 1;
+  margin-bottom: vars.$spacing-lg;
+}
+
+.contact-card__title {
+  font-size: var(--font-size-xl);
+  font-weight: vars.$font-weight-bold;
+  margin-bottom: vars.$spacing-sm;
+  color: var(--text-dark);
+  line-height: 1.3;
+}
+
+.contact-card__description {
+  color: var(--text-light);
+  margin-bottom: vars.$spacing-lg;
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+}
+
+.contact-card__info {
+  margin-bottom: vars.$spacing-lg;
+}
+
+.info-item {
+  margin-bottom: vars.$spacing-sm;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &__label {
+    display: block;
+    font-size: var(--font-size-md);
+    color: var(--text-dark);
+    margin-bottom: vars.$spacing-xs;
+    font-weight: vars.$font-weight-bold;
+  }
+
+  &__value {
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: vars.$spacing-xs;
+
+    .status-icon {
+      font-size: 12px;
+      margin-right: vars.$spacing-xs;
+    }
+
+    &.status-online {
+      color: vars.$status-online-color;
+    }
+
+    &.status-offline {
+      color: vars.$status-offline-color;
+    }
+
+    &.status-busy {
+      color: vars.$status-busy-color;
+    }
+  }
+
+  &--status {
+    .info-item__value {
+      font-weight: vars.$font-weight-medium;
+    }
+  }
+}
+
+.contact-card__button {
+  background: var(--card-primary);
+  color: white;
+  border: none;
+  padding: vars.$button-padding;
+  border-radius: vars.$border-radius-small;
+  font-weight: vars.$font-weight-bold;
+  cursor: pointer;
+  transition: vars.$transition;
+  @include mixins.flex-center;
+  gap: vars.$spacing-sm;
+  width: 100%;
+  font-size: var(--font-size-base);
+  min-height: vars.$button-min-height;
+
+  .material-icons {
+    font-size: 20px;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--card-primary-hover);
+    transform: translateY(vars.$button-hover-lift);
+  }
+
+  &:focus {
+    @include mixins.focus-ring(white);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .button-text {
+    font-weight: inherit;
+  }
+}
+
+// Media queries consolidados usando tus mixins existentes
+@include localMixins.tablet-only {
+  .contact-card {
+    padding: vars.$card-padding-tablet;
+  }
+
+  .contact-card__icon {
+    width: vars.$icon-size-mobile;
+    height: vars.$icon-size-mobile;
+    
+    .material-icons {
+      font-size: vars.$icon-font-size-mobile;
+    }
+  }
+
+  .contact-card__title {
+    font-size: var(--font-size-lg);
+  }
+
+  .contact-card__description {
+    font-size: var(--font-size-sm);
+  }
+
+  .contact-card__button {
+    padding: vars.$button-padding-mobile;
+    font-size: var(--font-size-sm);
+    
+    .material-icons {
+      font-size: 16px;
+    }
+  }
+}
+
+@include localMixins.mobile-only {
+  .contact-card {
+    padding: vars.$card-padding-mobile;
+  }
+
+  .contact-card__title {
+    font-size: var(--font-size-md);
+  }
+
+  .contact-card__button {
+    padding: vars.$spacing-sm;
+    
+    .button-text {
+      display: none;
+    }
+
+    &::after {
+      content: "Contactar";
+      margin-left: vars.$spacing-xs;
+    }
+
+    .material-icons {
+      font-size: 16px;
+    }
+  }
+
+  .info-item__value {
+    font-size: var(--font-size-xs);
+    
+    .status-icon {
+      font-size: 10px;
+    }
+  }
+}
+
+// Animaciones y accesibilidad
+@media (prefers-reduced-motion: no-preference) {
+  .contact-card {
+    @include mixins.animation-fade-in-up;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-card,
+  .contact-card__icon,
+  .contact-card__button {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .contact-card:hover {
+    transform: none;
+  }
+
+  .contact-card:hover .contact-card__icon {
+    transform: none;
+  }
+}
+
+@media (hover: none) {
+  .contact-card:hover {
+    transform: none;
+    box-shadow: vars.$color-shadow-light;
+  }
+}

@@ -1,0 +1,53 @@
+@use './_variables.scss' as vars;
+
+@mixin hover-lift($distance: vars.$hover-lift) {
+  transition: vars.$transition;
+  
+  &:hover {
+    transform: translateY(#{$distance});
+  }
+}
+
+// Media queries usando los breakpoints del sistema
+@mixin mobile-only {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media (min-width: 481px) and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: 769px) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: 1025px) {
+    @content;
+  }
+}
+
+// Usar la animación existente del sistema
+@mixin card-animation {
+  @include animation-fade-in-up();
+}
+
+// Gradient background
+@mixin gradient-bg($color1, $color2, $direction: 135deg) {
+  background: linear-gradient(#{$direction}, #{$color1}, #{$color2});
+}
+
+// Card base usando variables del sistema
+@mixin card-base {
+  background: vars.$color-bg-white;
+  border-radius: vars.$border-radius;
+  box-shadow: vars.$color-shadow-light;
+  transition: vars.$transition;
+  border: 1px solid vars.$color-border;
+}

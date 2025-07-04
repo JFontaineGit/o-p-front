@@ -1,0 +1,169 @@
+@use '../styles/_variables.scss' as *;
+@use '../styles/_mixins.scss' as *;
+@use 'sass:color';
+
+.favorites-section {
+  width: 100%;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-2xl;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+
+  &__title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin: 0;
+  }
+
+  &__description {
+    color: $text-secondary;
+    font-size: $font-size-base;
+    margin: 0;
+    flex: 1;
+  }
+
+  &__action {
+    flex-shrink: 0;
+  }
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-xl;
+}
+
+// Loading State
+.loading-state {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-xl;
+}
+
+.loading-skeleton {
+  @include card-base;
+  overflow: hidden;
+  padding: 0;
+}
+
+.skeleton {
+  @include loading-skeleton;
+
+  &--image {
+    height: 200px;
+    width: 100%;
+  }
+
+  &--content {
+    padding: $spacing-lg;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &--title {
+    height: 20px;
+    width: 80%;
+    border-radius: $border-radius-sm;
+  }
+
+  &--text {
+    height: 16px;
+    width: 100%;
+    border-radius: $border-radius-sm;
+
+    &:last-of-type {
+      width: 60%;
+    }
+  }
+
+  &--price {
+    height: 18px;
+    width: 40%;
+    border-radius: $border-radius-sm;
+    margin-top: $spacing-sm;
+  }
+}
+
+// Empty State
+.empty-state {
+  @include card-base;
+  padding: $spacing-3xl;
+  text-align: center;
+  color: $text-muted;
+
+  &__icon {
+    font-size: 4rem;
+    margin-bottom: $spacing-lg;
+    opacity: 0.5;
+    color: $error-color;
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $text-secondary;
+    margin: 0 0 $spacing-md 0;
+  }
+
+  &__description {
+    font-size: $font-size-base;
+    margin: 0 0 $spacing-lg 0;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+}
+
+// Botones
+.btn {
+  @include button-base;
+
+  &--primary {
+    @include button-variant($primary-color, $text-white);
+  }
+
+  &--outline {
+    @include button-variant(transparent, $text-primary, $border-medium);
+
+    &:hover:not(:disabled) {
+      background-color: $bg-tertiary;
+    }
+  }
+
+  &--small {
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-xs;
+  }
+}
+
+// Responsive
+@include mobile-only {
+  .favorites-grid,
+  .loading-state {
+    grid-template-columns: 1fr;
+  }
+
+  .content-header {
+    flex-direction: column;
+    align-items: stretch;
+
+    &__action {
+      align-self: flex-start;
+    }
+  }
+}
+
+@include tablet-only {
+  .favorites-grid,
+  .loading-state {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

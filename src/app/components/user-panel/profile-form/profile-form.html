@@ -1,0 +1,191 @@
+<form 
+  class="profile-form" 
+  [formGroup]="profileForm" 
+  (ngSubmit)="onSave()"
+  novalidate>
+  
+  <!-- Datos Básicos -->
+  <fieldset class="form-section">
+    <legend class="form-section__title">Datos Básicos</legend>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="firstName" class="form-label">Nombre *</label>
+        <input 
+          id="firstName"
+          type="text" 
+          class="form-input"
+          [class.form-input--error]="hasFieldError('firstName')"
+          formControlName="firstName"
+          required>
+        <div class="form-error" *ngIf="getFieldError('firstName')">
+          {{ getFieldError('firstName') }}
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="lastName" class="form-label">Apellido *</label>
+        <input 
+          id="lastName"
+          type="text" 
+          class="form-input"
+          [class.form-input--error]="hasFieldError('lastName')"
+          formControlName="lastName"
+          required>
+        <div class="form-error" *ngIf="getFieldError('lastName')">
+          {{ getFieldError('lastName') }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="email" class="form-label">Email *</label>
+        <input 
+          id="email"
+          type="email" 
+          class="form-input"
+          [class.form-input--error]="hasFieldError('email')"
+          formControlName="email"
+          required>
+        <div class="form-error" *ngIf="getFieldError('email')">
+          {{ getFieldError('email') }}
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="phone" class="form-label">Teléfono *</label>
+        <input 
+          id="phone"
+          type="tel" 
+          class="form-input"
+          [class.form-input--error]="hasFieldError('phone')"
+          formControlName="phone"
+          required>
+        <div class="form-error" *ngIf="getFieldError('phone')">
+          {{ getFieldError('phone') }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="birthDate" class="form-label">Fecha de Nacimiento</label>
+        <input 
+          id="birthDate"
+          type="date" 
+          class="form-input"
+          formControlName="birthDate">
+      </div>
+      
+      <div class="form-group">
+        <label for="nationality" class="form-label">Nacionalidad</label>
+        <select 
+          id="nationality" 
+          class="form-select"
+          formControlName="nationality">
+          <option value="ES">España</option>
+          <option value="FR">Francia</option>
+          <option value="IT">Italia</option>
+          <option value="DE">Alemania</option>
+          <option value="PT">Portugal</option>
+          <option value="UK">Reino Unido</option>
+        </select>
+      </div>
+    </div>
+  </fieldset>
+  
+  <!-- Dirección -->
+  <fieldset class="form-section">
+    <legend class="form-section__title">Dirección</legend>
+    
+    <div class="form-group">
+      <label for="address" class="form-label">Dirección</label>
+      <input 
+        id="address"
+        type="text" 
+        class="form-input"
+        formControlName="address">
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="city" class="form-label">Ciudad</label>
+        <input 
+          id="city"
+          type="text" 
+          class="form-input"
+          formControlName="city">
+      </div>
+      
+      <div class="form-group">
+        <label for="postalCode" class="form-label">Código Postal</label>
+        <input 
+          id="postalCode"
+          type="text" 
+          class="form-input"
+          [class.form-input--error]="hasFieldError('postalCode')"
+          formControlName="postalCode"
+          placeholder="12345">
+        <div class="form-error" *ngIf="getFieldError('postalCode')">
+          {{ getFieldError('postalCode') }}
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  
+  <!-- Preferencias -->
+  <fieldset class="form-section" formGroupName="preferences">
+    <legend class="form-section__title">Preferencias de Viaje</legend>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="travelStyle" class="form-label">Estilo de Viaje</label>
+        <select 
+          id="travelStyle" 
+          class="form-select"
+          formControlName="travelStyle">
+          <option value="luxury">Lujo</option>
+          <option value="comfort">Confort</option>
+          <option value="budget">Económico</option>
+          <option value="adventure">Aventura</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="accommodation" class="form-label">Tipo de Alojamiento Preferido</label>
+        <select 
+          id="accommodation" 
+          class="form-select"
+          formControlName="accommodation">
+          <option value="hotel">Hotel</option>
+          <option value="apartment">Apartamento</option>
+          <option value="hostel">Hostel</option>
+          <option value="resort">Resort</option>
+          <option value="villa">Villa</option>
+        </select>
+      </div>
+    </div>
+  </fieldset>
+  
+  <!-- Form Actions -->
+  <div class="form-actions">
+    <button 
+      type="button" 
+      class="btn btn--outline"
+      [disabled]="!isFormDirty || isLoading"
+      (click)="onCancel()">
+      Cancelar
+    </button>
+    <button 
+      type="submit" 
+      class="btn btn--primary"
+      [disabled]="profileForm.invalid || !isFormDirty || isLoading">
+      <span *ngIf="isLoading">
+        <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+        Guardando...
+      </span>
+      <span *ngIf="!isLoading">Guardar Cambios</span>
+    </button>
+  </div>
+</form>

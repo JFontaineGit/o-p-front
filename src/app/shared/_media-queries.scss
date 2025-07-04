@@ -52,18 +52,15 @@
   .product-card__content {
     padding: var(--spacing-sm);
   }
-
   .product-footer {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-xs);
   }
-
   .add-to-cart-btn {
     justify-content: center;
     width: 100%;
   }
-
   .product-price {
     text-align: center;
     font-size: var(--font-size-md);
@@ -77,7 +74,6 @@
     top: var(--spacing-xs);
     right: var(--spacing-xs);
   }
-
   .add-to-cart-btn {
     span {
       display: none;
@@ -92,7 +88,37 @@
   }
 }
 
-// Animaciones y accesibilidad
+// NUEVAS media queries para contact-card 
+@media (max-width: 768px) {
+  .contact-card__content {
+    padding: var(--spacing-sm);
+  }
+  .contact-card__button {
+    justify-content: center;
+    width: 100%;
+  }
+  .info-item__label {
+    text-align: center;
+    font-size: var(--font-size-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-card__button {
+    padding: var(--spacing-sm);
+
+    .button-text {
+      display: none;
+    }
+    
+    &::after {
+      content: "Contactar";
+      margin-left: var(--spacing-xs);
+    }
+  }
+}
+
+// Animaciones y accesibilidad 
 @media (prefers-reduced-motion: no-preference) {
   .products-grid > :nth-child(1) { animation-delay: 0.1s; }
   .products-grid > :nth-child(2) { animation-delay: 0.2s; }
@@ -102,8 +128,17 @@
   .products-grid > :nth-child(6) { animation-delay: 0.6s; }
   .products-grid > :nth-child(7) { animation-delay: 0.7s; }
   .products-grid > :nth-child(8) { animation-delay: 0.8s; }
-
   .product-card {
+    @include animation-fade-in-up();
+  }
+
+  .methods-grid > :nth-child(1) { animation-delay: 0.1s; }
+  .methods-grid > :nth-child(2) { animation-delay: 0.2s; }
+  .methods-grid > :nth-child(3) { animation-delay: 0.3s; }
+  .methods-grid > :nth-child(4) { animation-delay: 0.4s; }
+  .methods-grid > :nth-child(5) { animation-delay: 0.5s; }
+  .methods-grid > :nth-child(6) { animation-delay: 0.6s; }
+  .contact-card {
     @include animation-fade-in-up();
   }
 }
@@ -112,7 +147,6 @@
   .products-grid > * {
     animation-delay: 0s !important;
   }
-
   * {
     animation: none !important;
     transition: none !important;
@@ -125,15 +159,33 @@
   .product-card:hover .product-image {
     transform: none;
   }
+
+  // NUEVAS reglas para contact-card (agregando a tu archivo)
+  .methods-grid > * {
+    animation-delay: 0s !important;
+  }
+  
+  .contact-card:hover {
+    transform: none;
+  }
+  
+  .contact-card:hover .contact-card__icon {
+    transform: none;
+  }
 }
 
 @media (hover: none) {
   .products-grid:hover > :not(:hover) {
     opacity: 1;
   }
+
+  // NUEVA regla para contact-card (agregando a tu archivo)
+  .methods-grid:hover > :not(:hover) {
+    opacity: 1;
+  }
 }
 
-// Animación de carga
+// Animación de carga (mantengo exactamente como las tienes)
 @keyframes fadeInUp {
   from {
     opacity: 0;

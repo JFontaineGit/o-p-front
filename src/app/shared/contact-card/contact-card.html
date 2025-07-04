@@ -1,0 +1,70 @@
+<article 
+  class="contact-card"
+  [attr.aria-label]="cardAriaLabel"
+  role="article">
+  
+  <!-- Icon -->
+  <div class="contact-card__icon" [attr.aria-hidden]="true">
+    <i class="material-icons" [ngSwitch]="icon">
+      <ng-container *ngSwitchCase="'phone'">phone</ng-container>
+      <ng-container *ngSwitchCase="'whatsapp'">chat</ng-container>
+      <ng-container *ngSwitchCase="'email'">email</ng-container>
+      <ng-container *ngSwitchCase="'chat'">message</ng-container>
+      <ng-container *ngSwitchDefault>contact_support</ng-container>
+    </i>
+  </div>
+
+  <!-- Content -->
+  <div class="contact-card__content">
+    <h4 class="contact-card__title">{{ title }}</h4>
+    
+    <p class="contact-card__description" *ngIf="description">
+      {{ description }}
+    </p>
+
+    <!-- Info Items -->
+    <div class="contact-card__info" *ngIf="hasInfoItems">
+      <div 
+        class="info-item"
+        *ngFor="let item of infoItems; trackBy: trackByLabel"
+        [class.info-item--status]="item.isStatus">
+        
+        <strong class="info-item__label">{{ item.value }}</strong>
+        
+        <span 
+          class="info-item__value"
+          [class]="item.isStatus ? getStatusClass(item.statusType) : ''">
+          
+          <ng-container *ngIf="item.isStatus">
+            <i class="material-icons status-icon" [ngSwitch]="item.statusType">
+              <ng-container *ngSwitchCase="'online'">circle</ng-container>
+              <ng-container *ngSwitchCase="'offline'">radio_button_unchecked</ng-container>
+              <ng-container *ngSwitchCase="'busy'">remove</ng-container>
+            </i>
+          </ng-container>
+          
+          {{ item.label }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Button -->
+  <button 
+    type="button"
+    class="contact-card__button"
+    [disabled]="disabled"
+    [attr.aria-label]="buttonAriaLabel"
+    (click)="onButtonClick()">
+    
+    <i class="material-icons" [ngSwitch]="icon">
+      <ng-container *ngSwitchCase="'phone'">phone</ng-container>
+      <ng-container *ngSwitchCase="'whatsapp'">chat</ng-container>
+      <ng-container *ngSwitchCase="'email'">email</ng-container>
+      <ng-container *ngSwitchCase="'chat'">message</ng-container>
+      <ng-container *ngSwitchDefault>contact_support</ng-container>
+    </i>
+    
+    <span class="button-text">{{ buttonLabel }}</span>
+  </button>
+</article>

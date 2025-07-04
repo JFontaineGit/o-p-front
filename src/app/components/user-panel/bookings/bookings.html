@@ -1,0 +1,65 @@
+<section class="bookings-section">
+  <header class="content-header">
+    <h2 class="content-header__title">Mis Reservas</h2>
+    <p class="content-header__description">
+      Gestiona todas tus reservas de viajes
+    </p>
+  </header>
+  
+  <!-- Filtros -->
+  <div class="bookings__filters" role="tablist" aria-label="Filtros de reservas">
+    <button
+      *ngFor="let filter of bookingFilters; trackBy: trackByFilterId"
+      type="button"
+      class="bookings__filter-btn"
+      [ngClass]="getFilterClasses(filter.value)"
+      role="tab"
+      [attr.aria-selected]="filter.active"
+      (click)="filterBookings(filter.value)">
+      {{ filter.label }}
+      <span class="bookings__filter-count" *ngIf="getFilterCount(filter.value) > 0">
+        {{ getFilterCount(filter.value) }}
+      </span>
+    </button>
+  </div>
+  
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="loading-skeleton" *ngFor="let item of [1,2,3]">
+      <div class="skeleton skeleton--image"></div>
+      <div class="skeleton skeleton--content">
+        <div class="skeleton skeleton--title"></div>
+        <div class="skeleton skeleton--text"></div>
+        <div class="skeleton skeleton--text"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Lista de Reservas -->
+  <div class="bookings-list" *ngIf="!isLoading && filteredBookings.length > 0">
+    <app-booking-card
+      *ngFor="let booking of filteredBookings; trackBy: trackByBookingId"
+      [booking]="booking"
+      [showActions]="true"
+      (action)="onBookingAction($event)">
+    </app-booking-card>
+  </div>
+  
+  <!-- Estado vacío -->
+  <div class="empty-state" *ngIf="!isLoading && filteredBookings.length === 0">
+    <i class="fas fa-suitcase empty-state__icon" aria-hidden="true"></i>
+    <h3 class="empty-state__title">
+      {{ activeFilter === 'all' ? 'No tienes reservas' : 'No hay reservas ' + getFilterLabel() }}
+    </h3>
+    <p class="empty-state__description">
+      {{ getEmptyStateMessage() }}
+    </p>
+    <button 
+      *ngIf="activeFilter !== 'all'"
+      type="button" 
+      class="btn btn--outline"
+      (click)="filterBookings('all')">
+      Ver todas las reservas
+    </button>
+  </div>
+</section>

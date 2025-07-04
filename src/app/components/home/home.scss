@@ -1,0 +1,12 @@
+@use '../../shared/_variables.scss' as v;
+
+.services-title {
+  text-align: center;
+  font-family: v.$font-family-base;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 700;
+  margin-bottom: 60px;
+  color: var(--text-dark);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
