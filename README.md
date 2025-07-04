@@ -60,8 +60,6 @@ ng build
 │   └── 📂 styles/             # Estilos globales en SASS (mixins, variables)
 │       └── 🎨 styles.scss
 │
-│
-│
 ├── 🚀 index.html              # Doc. HTML principal de la app donde Angular monta la aplicación
 ├── 👤 main.ts                 # Entrada principal del cliente
 ├── 👤 main.server.ts          # Entrada principal para SSR
