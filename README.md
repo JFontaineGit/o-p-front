@@ -1,59 +1,74 @@
-# OlimpiadasProgramacion
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.6.
+# 🎨 Olimpiadas de Programación - Frontend 
 
-## Development server
 
-To start a local development server, run:
 
-```bash
+
+
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white) 
+![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+	![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+
+
+## ⚡ Acerca del proyecto
+Front-End moderno y responsivo desarrollado con Angular, diseñado para integrarse fluidamente con el bloque backend de la aplicación propuesta mediante una API REST eficiente.
+## 🛠️ Tecnologías
+
+- **Angular**: Framework web estructurado basado en componentes.  
+- **SASS**: Preprocesador CSS para estilos avanzados y organizados.  
+- **TypeScript**: Superset de JavaScript para tipado estático.   
+- **HTML5 y Bootstrap**: Maquetación responsiva y estilos genéricos.  
+## 🚀 Características principales
+
+- Catálogo de paquetes de turismo y productos con navegación fluida y filtros visuales  
+- Carrito de compras persistente y dinámico
+- Armado personalizado de paquete
+- Formularios de login y registro con autenticación mediante JWT  
+- Visualización de pedidos e historial de pedidos
+- Página de contacto moderna y amigable 
+- Interfaz adaptativa para escritorio y móviles  
+- Panel operativo para agente de ventas y navegación protegida por roles
+- Integración con backend mediante servicios y observables
+## 📋 Requisitos
+```
+# Instalar dependencias
+bun install
+
+# Servir aplicación en desarrollo
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
+# Compilar para producción
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 📁 Estructura
+**La aplicación está organizada bajo la carpeta src/app, siguiendo buenas prácticas de modularización, reutilización y separación de responsabilidades.**
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+📂 src/
+├── 📂 app/
+│   ├── 📂 components/         # Componentes visuales reutilizables
+    ├── 📂 environments/       # Configuraciones de entorno para desarrollo.
+        └── 📄 environment.ts  
+│   ├── 📂 guards/             # Guardas de rutas (autenticación, roles)
+│   ├── 📂 interceptors/       # Interceptores HTTP (ej. tokens, errores)
+│   ├── 📂 interfaces/         # Interfaces TypeScript para tipado de datos
+│   ├── 📂 services/           # Servicios para lógica de negocio y HTTP
+│   ├── 📂 shared/             # Pipes, directivas y módulos compartidos
+│   └── 📂 styles/             # Estilos globales en SASS (mixins, variables)
+│       └── 🎨 styles.scss
+│
+├── 🚀 index.html              # Doc. HTML principal de la app donde Angular monta la aplicación
+├── 👤 main.ts                 # Entrada principal del cliente
+├── 👤 main.server.ts          # Entrada principal para SSR
+├── 📄 app.component.ts        # Componente raíz
+├── 📄 app.component.html      # Componente raíz (estructura base del DOM)
+├── 📄 app.component.scss      # Componente raíz (estilos principales)
+├── 🔧 app.component.spec.ts   # Pruebas unitarias del componente raíz
+├── ⚙️ app.config.ts           # Configuración general de la app
+├── ⚙️ app.config.server.ts    # Configuración para servidor (SSR)
+├── 🌐 app.routes.ts           # Definición de rutas cliente
+└── 🌐 app.routes.server.ts    # Definición de rutas en SSR
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
