@@ -3,42 +3,47 @@
 @use 'sass:color';
 
 .profile-form {
-  padding: $spacing-2xl;
+  padding: $spacing-xl;
   background: $bg-primary;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-sm;
+  @include fade-in;
 
-  &__header {
-    margin-bottom: $spacing-2xl;
-    text-align: center;
+  // Loading overlay
+  &__loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: color.adjust($bg-primary, $alpha: -0.1);
+    z-index: $z-modal;
+    @include flex-center;
 
-    h2 {
-      font-size: $font-size-2xl;
-      font-weight: $font-weight-bold;
-      color: $text-primary;
-      margin-bottom: $spacing-sm;
-    }
+    &__loading-spinner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: $spacing-sm;
+      color: $text-muted;
+      font-size: $font-size-sm;
 
-    p {
-      color: $text-secondary;
-      font-size: $font-size-base;
-      max-width: 500px;
-      margin: 0 auto;
-      line-height: 1.6;
+      i {
+        font-size: $font-size-xl;
+        color: $primary-color;
+      }
     }
   }
 
-  // =============================================================================
-  // FORM SECTIONS
-  // =============================================================================
-
+  // Form sections
   &__section {
-    margin-bottom: $spacing-2xl;
-    padding-bottom: $spacing-xl;
+    margin-bottom: $spacing-xl;
+    padding-bottom: $spacing-lg;
     border-bottom: 1px solid $border-light;
 
     &:last-child {
       border-bottom: none;
-      padding-bottom: 0;
-      margin-bottom: 0;
+      margin-bottom: $spacing-md;
     }
 
     &-title {
@@ -46,8 +51,7 @@
       font-weight: $font-weight-semibold;
       color: $text-primary;
       margin-bottom: $spacing-lg;
-      display: flex;
-      align-items: center;
+      @include flex-center;
       gap: $spacing-sm;
 
       i {
@@ -55,138 +59,72 @@
         font-size: $font-size-base;
       }
     }
-
-    &-description {
-      color: $text-secondary;
-      font-size: $font-size-sm;
-      margin-bottom: $spacing-lg;
-      line-height: 1.5;
-    }
   }
 
-  // =============================================================================
-  // FORM ROWS & GROUPS
-  // =============================================================================
-
+  // Form rows
   &__row {
     display: flex;
-    gap: $spacing-lg;
-    margin-bottom: $spacing-lg;
-
-    &--single {
-      flex-direction: column;
-    }
+    gap: $spacing-md;
+    margin-bottom: $spacing-md;
 
     &--two-cols {
-      .form-group {
-        flex: 1;
-      }
-    }
+      flex-wrap: wrap;
 
-    &--three-cols {
       .form-group {
         flex: 1;
+        min-width: 200px;
       }
     }
   }
 
+  // Form group
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: $spacing-sm;
+    gap: $spacing-xs;
 
     &--full-width {
       width: 100%;
     }
 
-    label {
+    .form-label {
       font-size: $font-size-sm;
       font-weight: $font-weight-medium;
       color: $text-primary;
-      display: flex;
-      align-items: center;
+      @include flex-center;
       gap: $spacing-xs;
 
       .required {
         color: $error-color;
         font-size: $font-size-xs;
       }
-
-      .tooltip {
-        color: $text-muted;
-        cursor: help;
-        
-        &:hover {
-          color: $primary-color;
-        }
-      }
     }
 
-    // Input styles
-    input,
-    select,
-    textarea {
-      padding: $spacing-md;
-      border: 2px solid $border-light;
-      border-radius: $border-radius-md;
-      font-size: $font-size-sm;
-      color: $text-primary;
-      background: $bg-primary;
-      transition: all $transition-fast;
-      font-family: inherit;
+    .form-input,
+    .form-select {
+      @include input-base;
 
-      &:focus {
-        outline: none;
+      &:hover:not(:focus):not(.form-input--error) {
         border-color: $primary-color;
-        box-shadow: 0 0 0 3px color.adjust($primary-color, $alpha: -0.9);
       }
 
-      &:hover:not(:focus) {
-        border-color: color.adjust($border-light, $lightness: -10%);
-      }
-
-      &::placeholder {
-        color: $text-muted;
-        font-size: $font-size-sm;
-      }
-
-      &:disabled {
-        background: $bg-light;
-        color: $text-muted;
-        cursor: not-allowed;
-        border-color: $border-light;
-      }
-
-      &.error {
+      &.form-input--error {
         border-color: $error-color;
         box-shadow: 0 0 0 3px color.adjust($error-color, $alpha: -0.9);
       }
-
-      &.success {
-        border-color: $success-color;
-        box-shadow: 0 0 0 3px color.adjust($success-color, $alpha: -0.9);
-      }
     }
 
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-      font-family: inherit;
-      line-height: 1.5;
-    }
-
-    select {
-      cursor: pointer;
+    .form-select {
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
       background-position: right $spacing-sm center;
       background-repeat: no-repeat;
       background-size: 16px;
       padding-right: $spacing-xl;
       appearance: none;
+      cursor: pointer;
     }
 
-    // Error message
-    .error-message {
+    .form-error {
       color: $error-color;
       font-size: $font-size-xs;
       margin-top: $spacing-xs;
@@ -198,175 +136,64 @@
         font-size: $font-size-xs;
       }
     }
-
-    // Success message
-    .success-message {
-      color: $success-color;
-      font-size: $font-size-xs;
-      margin-top: $spacing-xs;
-      display: flex;
-      align-items: center;
-      gap: $spacing-xs;
-
-      i {
-        font-size: $font-size-xs;
-      }
-    }
-
-    // Help text
-    .help-text {
-      color: $text-muted;
-      font-size: $font-size-xs;
-      margin-top: $spacing-xs;
-      line-height: 1.4;
-    }
   }
 
-  // =============================================================================
-  // SPECIAL INPUT TYPES
-  // =============================================================================
-
-  // File upload
-  .file-upload {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    width: 100%;
-
-    input[type="file"] {
-      position: absolute;
-      opacity: 0;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-    }
-
-    &__area {
-      border: 2px dashed $border-medium;
-      border-radius: $border-radius-md;
-      padding: $spacing-xl;
-      text-align: center;
-      transition: all $transition-fast;
-      background: $bg-light;
-
-      &:hover {
-        border-color: $primary-color;
-        background: color.adjust($primary-color, $alpha: -0.98);
-      }
-
-      &.dragover {
-        border-color: $primary-color;
-        background: color.adjust($primary-color, $alpha: -0.95);
-        transform: scale(1.02);
-      }
-
-      i {
-        font-size: $font-size-2xl;
-        color: $primary-color;
-        margin-bottom: $spacing-sm;
-      }
-
-      .upload-text {
-        color: $text-primary;
-        font-weight: $font-weight-medium;
-        margin-bottom: $spacing-xs;
-      }
-
-      .upload-hint {
-        color: $text-muted;
-        font-size: $font-size-xs;
-      }
-    }
-  }
-
-  // Checkbox and radio groups
-  .checkbox-group,
-  .radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-sm;
-
-    &--inline {
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: $spacing-lg;
-    }
-
-    .checkbox-item,
-    .radio-item {
-      display: flex;
-      align-items: center;
-      gap: $spacing-sm;
-      cursor: pointer;
-      padding: $spacing-sm;
-      border-radius: $border-radius-sm;
-      transition: background-color $transition-fast;
-
-      &:hover {
-        background: $bg-light;
-      }
-
-      input {
-        margin: 0;
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
-      }
-
-      label {
-        cursor: pointer;
-        margin: 0;
-        font-size: $font-size-sm;
-        line-height: 1.4;
-      }
-    }
-  }
-
-  // =============================================================================
-  // FORM ACTIONS
-  // =============================================================================
-
+  // Form actions
   &__actions {
     display: flex;
     gap: $spacing-md;
     justify-content: flex-end;
-    padding-top: $spacing-xl;
-    border-top: 1px solid $border-light;
-    margin-top: $spacing-xl;
+    padding-top: $spacing-lg;
+    margin-top: $spacing-lg;
 
     .btn {
-      min-width: 120px;
-      
+      @include button-base;
+      min-width: 140px;
+      padding: $spacing-sm $spacing-lg;
+
       &--primary {
-        order: 2;
+        @include button-variant($primary-color, $text-white);
       }
 
-      &--secondary {
-        order: 1;
+      &--outline {
+        @include button-variant($bg-primary, $text-primary, $border-medium);
+
+        &:hover:not(:disabled) {
+          background: $bg-light;
+        }
       }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // Estado de carga
+  &--loading {
+    position: relative;
+    pointer-events: none;
+
+    .form-input,
+    .form-select {
+      @include loading-skeleton;
+    }
+
+    .btn {
+      @include loading-skeleton;
     }
   }
 }
 
-// =============================================================================
-// RESPONSIVE DESIGN
-// =============================================================================
-
+// Responsive design
 @include mobile-only {
   .profile-form {
-    padding: $spacing-lg;
-
-    &__header {
-      margin-bottom: $spacing-xl;
-
-      h2 {
-        font-size: $font-size-xl;
-      }
-    }
+    padding: $spacing-md;
 
     &__section {
-      margin-bottom: $spacing-xl;
-      padding-bottom: $spacing-lg;
+      margin-bottom: $spacing-lg;
+      padding-bottom: $spacing-md;
 
       &-title {
         font-size: $font-size-base;
@@ -375,7 +202,13 @@
 
     &__row {
       flex-direction: column;
-      gap: $spacing-md;
+      gap: $spacing-sm;
+
+      &--two-cols {
+        .form-group {
+          min-width: 100%;
+        }
+      }
     }
 
     &__actions {
@@ -384,64 +217,28 @@
 
       .btn {
         width: 100%;
-        order: unset;
       }
     }
-
-    .checkbox-group--inline,
-    .radio-group--inline {
-      flex-direction: column;
-      gap: $spacing-sm;
-    }
   }
 }
 
-// =============================================================================
-// LOADING STATE
-// =============================================================================
-
-.profile-form--loading {
-  pointer-events: none;
-
-  input,
-  select,
-  textarea {
-    @include loading-skeleton;
-  }
-
-  .btn {
-    @include loading-skeleton;
-  }
-}
-
-// =============================================================================
-// ACCESSIBILITY ENHANCEMENTS
-// =============================================================================
-
+// Accessibility enhancements
 @media (prefers-reduced-motion: reduce) {
   .profile-form {
-    input,
-    select,
-    textarea {
-      transition: none;
-    }
+    @include fade-in(0s);
 
-    .file-upload__area {
+    .form-input,
+    .form-select,
+    .btn {
       transition: none;
-
-      &.dragover {
-        transform: none;
-      }
     }
   }
 }
 
-// High contrast mode
 @media (prefers-contrast: high) {
   .profile-form {
-    input,
-    select,
-    textarea {
+    .form-input,
+    .form-select {
       border-width: 2px;
       border-color: $text-primary;
 
@@ -451,8 +248,8 @@
       }
     }
 
-    .file-upload__area {
-      border-width: 3px;
+    .form-error {
+      font-weight: $font-weight-bold;
     }
   }
 }

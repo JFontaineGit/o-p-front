@@ -1,5 +1,4 @@
 <aside class="user-sidebar" role="complementary">
-  <!-- Profile Card -->
   <app-profile
     [user]="user"
     [showStats]="showStats"
@@ -7,7 +6,6 @@
     (avatarChange)="onAvatarChange($event)">
   </app-profile>
   
-  <!-- Navigation -->
   <nav class="sidebar-nav" role="navigation" aria-label="Navegación del panel">
     <button
       *ngFor="let tab of tabs; trackBy: trackByTabId"

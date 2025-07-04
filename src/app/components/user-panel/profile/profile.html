@@ -1,22 +1,21 @@
 <article class="profile-card">
-  <div class="profile-card__info">
-    <h2 class="profile-card__name">{{ getFullName() }}</h2>
-    <p class="profile-card__email">{{ user.email }}</p>
-    
-    <!--
-    <div class="profile-card__stats" *ngIf="showStats && user.stats">
-      <div class="stat">
-        <span class="stat__number">{{ user.stats.trips }}</span>
-        <span class="stat__label">Viajes</span>
+  <div class="profile-card__content" *ngIf="user">
+    <!-- Avatar con iniciales -->
+    <div class="profile-card__avatar">
+      <div class="profile-card__avatar-initials">
+        {{ getInitials() }}
       </div>
-      <div class="stat">
-        <span class="stat__number">{{ user.stats.countries }}</span>
-        <span class="stat__label">Países</span>
-      </div>
-      <div class="stat">
-        <span class="stat__number">★ {{ user.stats.rating }}</span>
-        <span class="stat__label">Rating</span>
-      </div>
-    </div>-->
+    </div>
+
+    <!-- Información del usuario -->
+    <div class="profile-card__info">
+      <h3>{{ getFullName() }}</h3>
+      <p class="profile-card__email">{{ user.email }}</p>
+    </div>
+
+  <!-- Mensaje de carga si user no está definido -->
+  <div *ngIf="!user" class="loading">
+    <p>Cargando datos del usuario...</p>
+  </div>
   </div>
 </article>

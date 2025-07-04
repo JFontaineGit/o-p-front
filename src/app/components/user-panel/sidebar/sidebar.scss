@@ -7,12 +7,13 @@
   flex-direction: column;
   gap: $spacing-lg;
   width: 100%;
+  background-color: $bg-primary;
+  border-right: 1px solid $border-light;
+  padding: $spacing-md;
+  box-shadow: $shadow-md;
 }
 
-// =============================================================================
-// SIDEBAR NAVIGATION
-// =============================================================================
-
+// Navegación
 .sidebar-nav {
   background: $bg-primary;
   border-radius: $border-radius-lg;
@@ -20,55 +21,25 @@
   box-shadow: $shadow-md;
   border: 1px solid $border-light;
 
-  &__list {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-xs;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
   &__item {
-    border-radius: $border-radius-md;
-    overflow: hidden;
-    transition: all $transition-normal;
-
-    &:hover {
-      transform: translateX(4px);
-    }
-
-    &--active {
-      background: linear-gradient(135deg, $primary-color 0%, color.adjust($primary-color, $lightness: 10%) 100%);
-      box-shadow: $shadow-sm;
-
-      .sidebar-nav__link {
-        color: $text-white;
-        font-weight: $font-weight-semibold;
-
-        i {
-          color: $text-white;
-          transform: scale(1.1);
-        }
-      }
-    }
-  }
-
-  &__link {
     display: flex;
     align-items: center;
     gap: $spacing-md;
     padding: $spacing-md $spacing-lg;
-    text-decoration: none;
+    border-radius: $border-radius-md;
     color: $text-secondary;
     font-size: $font-size-sm;
     font-weight: $font-weight-medium;
+    cursor: pointer;
     transition: all $transition-fast;
-    position: relative;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
 
     &:hover {
+      background-color: color.adjust($primary-color, $alpha: -0.95);
       color: $primary-color;
-      background: color.adjust($primary-color, $alpha: -0.95);
 
       i {
         color: $primary-color;
@@ -76,20 +47,22 @@
       }
     }
 
-    &:focus-visible {
-      outline: 2px solid $primary-color;
-      outline-offset: -2px;
+    &[aria-current="page"] {
+      background: linear-gradient(135deg, $primary-color 0%, color.adjust($primary-color, $lightness: 10%) 100%);
+      color: $text-white;
+      font-weight: $font-weight-semibold;
+
+      i {
+        color: $text-white;
+        transform: scale(1.1);
+      }
     }
 
     i {
       width: 20px;
       height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       font-size: $font-size-base;
       transition: all $transition-fast;
-      flex-shrink: 0;
     }
 
     span {
@@ -98,167 +71,26 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
-    // Active indicator
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 3px;
-      height: 0;
-      background: $primary-color;
-      border-radius: 0 2px 2px 0;
-      transition: height $transition-normal;
-    }
-  }
-
-  &__item--active &__link::before {
-    height: 60%;
-  }
-
-  // Badge/Counter support
-  &__badge {
-    background: $error-color;
-    color: $text-white;
-    font-size: $font-size-xs;
-    font-weight: $font-weight-bold;
-    padding: 2px 6px;
-    border-radius: $border-radius-full;
-    min-width: 18px;
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: auto;
   }
 }
 
-// =============================================================================
-// RESPONSIVE DESIGN
-// =============================================================================
-
+// Responsive design
 @include mobile-only {
   .user-sidebar {
-    gap: $spacing-md;
+    padding: $spacing-sm;
   }
 
   .sidebar-nav {
-    &__list {
-      flex-direction: row;
-      overflow-x: auto;
-      gap: $spacing-sm;
-      padding: $spacing-sm;
-      @include custom-scrollbar(4px);
-    }
-
     &__item {
-      flex-shrink: 0;
-      min-width: auto;
-
-      &:hover {
-        transform: translateY(-2px);
-      }
-    }
-
-    &__link {
       padding: $spacing-sm $spacing-md;
       font-size: $font-size-xs;
-      flex-direction: column;
-      gap: $spacing-xs;
-      text-align: center;
-      min-width: 60px;
-
-      span {
-        display: none;
-      }
 
       i {
-        margin: 0;
         font-size: $font-size-lg;
       }
 
-      &::before {
+      span {
         display: none;
-      }
-    }
-
-    &__badge {
-      position: absolute;
-      top: -4px;
-      right: -4px;
-      font-size: 10px;
-      min-width: 16px;
-      height: 16px;
-    }
-  }
-}
-
-// =============================================================================
-// ACCESSIBILITY ENHANCEMENTS
-// =============================================================================
-
-@media (prefers-reduced-motion: reduce) {
-  .sidebar-nav {
-    &__item {
-      &:hover {
-        transform: none;
-      }
-    }
-
-    &__link {
-      transition: none;
-
-      i {
-        transition: none;
-      }
-    }
-  }
-}
-
-// High contrast mode
-@media (prefers-contrast: high) {
-  .sidebar-nav {
-    border: 2px solid $text-primary;
-
-    &__item--active {
-      background: $text-primary;
-
-      .sidebar-nav__link {
-        color: $bg-primary;
-      }
-    }
-
-    &__link {
-      border-bottom: 1px solid $border-medium;
-
-      &:hover {
-        background: $text-primary;
-        color: $bg-primary;
-      }
-    }
-  }
-}
-
-// =============================================================================
-// DARK MODE SUPPORT
-// =============================================================================
-
-@media (prefers-color-scheme: dark) {
-  .sidebar-nav {
-    background: $bg-dark;
-    border-color: $border-dark;
-
-    &__item--active {
-      background: linear-gradient(135deg, $primary-color 0%, color.adjust($primary-color, $lightness: -10%) 100%);
-    }
-
-    &__link {
-      color: $text-light;
-
-      &:hover {
-        background: color.adjust($primary-color, $alpha: -0.9);
       }
     }
   }

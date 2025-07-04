@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Sidebar } from './sidebar/sidebar';
 import { ProfileForm } from './profile-form/profile-form';
@@ -29,11 +29,8 @@ import {
 })
 export class UserPanel implements OnInit {
   
-  // =============================================================================
-  // INPUTS & OUTPUTS
-  // =============================================================================
-  
-  @Input({ required: true }) user!: User;
+  // Inputs & Outputs
+  @Input({ required: true }) user?: User; // Permitir undefined inicialmente
   @Input() bookings: Booking[] = [];
   @Input() favorites: Favorite[] = [];
   @Input() config: UserPanelConfig = {
@@ -50,10 +47,7 @@ export class UserPanel implements OnInit {
   @Output() favoriteRemoved = new EventEmitter<string>();
   @Output() favoriteClicked = new EventEmitter<Favorite>();
 
-  // =============================================================================
-  // PROPIEDADES PÚBLICAS
-  // =============================================================================
-  
+  // Propiedades públicas
   activeTab: UserPanelTab = 'personal';
   
   tabs: TabItem[] = [
@@ -65,92 +59,54 @@ export class UserPanel implements OnInit {
     { id: 'notifications' as UserPanelTab, label: 'Notificaciones', icon: 'fas fa-bell', active: false }
   ];
 
-  // =============================================================================
-  // LIFECYCLE
-  // =============================================================================
-  
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  // Lifecycle
   ngOnInit(): void {
     this.updateTabStates();
-    // Simula carga de datos
     this.loadInitialData();
   }
 
-  // =============================================================================
-  // MÉTODOS PÚBLICOS - NAVEGACIÓN
-  // =============================================================================
-
-  /**
-   * Cambia el tab activo
-   */
+  // Métodos públicos - Navegación
   onTabChange(tabId: UserPanelTab): void {
     if (this.activeTab !== tabId) {
       this.activeTab = tabId;
       this.updateTabStates();
       this.tabChanged.emit(tabId);
+      this.cdr.markForCheck(); // Forzar detección de cambios
     }
   }
 
-  /**
-   * Verifica si un tab está activo
-   */
   isTabActive(tabId: UserPanelTab): boolean {
     return this.activeTab === tabId;
   }
 
-  // =============================================================================
-  // MÉTODOS PÚBLICOS - EVENTOS DE USUARIO
-  // =============================================================================
-
-  /**
-   * Maneja la actualización del perfil de usuario
-   */
+  // Métodos públicos - Eventos de usuario
   onUserUpdate(updatedUser: User): void {
+    this.user = updatedUser; // Actualizar user localmente
     this.userUpdated.emit(updatedUser);
+    this.cdr.markForCheck(); // Forzar detección de cambios
   }
 
-  /**
-   * Maneja el cambio de avatar
-   */
   onAvatarChange(file: File): void {
     this.avatarChanged.emit(file);
   }
 
-  // =============================================================================
-  // MÉTODOS PÚBLICOS - EVENTOS DE RESERVAS
-  // =============================================================================
-
-  /**
-   * Maneja las acciones de reserva
-   */
+  // Métodos públicos - Eventos de reservas
   onBookingAction(event: {action: string, bookingId: string}): void {
     this.bookingAction.emit(event);
   }
 
-  // =============================================================================
-  // MÉTODOS PÚBLICOS - EVENTOS DE FAVORITOS
-  // =============================================================================
-
-  /**
-   * Maneja la eliminación de favoritos
-   */
+  // Métodos públicos - Eventos de favoritos
   onFavoriteRemove(favoriteId: string): void {
     this.favoriteRemoved.emit(favoriteId);
   }
 
-  /**
-   * Maneja el click en favoritos
-   */
   onFavoriteClick(favorite: Favorite): void {
     this.favoriteClicked.emit(favorite);
   }
 
-  // =============================================================================
-  // MÉTODOS PRIVADOS
-  // =============================================================================
-
-  /**
-   * Actualiza el estado activo de los tabs
-   */
+  // Métodos privados
   private updateTabStates(): void {
     this.tabs = this.tabs.map(tab => ({
       ...tab,
@@ -158,17 +114,11 @@ export class UserPanel implements OnInit {
     }));
   }
 
-  /**
-   * Obtiene el título del tab activo
-   */
   getActiveTabTitle(): string {
     const activeTabItem = this.tabs.find(tab => tab.id === this.activeTab);
     return activeTabItem?.label || 'Panel de Usuario';
   }
 
-  /**
-   * Obtiene estadísticas del dashboard
-   */
   getDashboardStats() {
     return {
       totalBookings: this.bookings.length,
@@ -178,9 +128,6 @@ export class UserPanel implements OnInit {
     };
   }
 
-  /**
-   * Simula carga de datos iniciales (reemplazar con servicio real)
-   */
   private loadInitialData(): void {
     this.isLoading = true;
     setTimeout(() => {
@@ -207,7 +154,7 @@ export class UserPanel implements OnInit {
           guests: 2,
           price: 1500,
           status: 'confirmed',
-          imageUrl: '/paris.jpg'
+          imageUrl: 'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'
         },
         {
           id: '2',
@@ -218,13 +165,14 @@ export class UserPanel implements OnInit {
           guests: 1,
           price: 2000,
           status: 'completed',
-          imageUrl: '/tokyo.jpg'
+          imageUrl: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'
         }
       ];
       this.favorites = [
-        { id: 'f1', title: 'Rome', description: 'City tour', price: 800, imageUrl: '/rome.jpg' }
+        { id: 'f1', title: 'Rome', description: 'City tour', price: 800, imageUrl: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80' }
       ];
       this.isLoading = false;
+      this.cdr.markForCheck(); // Forzar detección de cambios tras cargar datos
     }, 1000);
   }
 }

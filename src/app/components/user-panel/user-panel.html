@@ -9,11 +9,10 @@
       </div>
     </div>
     
-    <div class="user-dashboard__layout">
+    <!-- Mostrar contenido solo cuando user esté definido -->
+    <div class="user-dashboard__layout" *ngIf="user; else loadingTemplate">
       
-      <!-- =============================================================================
-           SIDEBAR - Navegación y perfil
-           ============================================================================= -->
+      <!-- SIDEBAR - Navegación y perfil -->
       <app-sidebar
         class="user-dashboard__sidebar"
         [user]="user"
@@ -25,14 +24,10 @@
         (avatarChange)="onAvatarChange($event)">
       </app-sidebar>
       
-      <!-- =============================================================================
-           MAIN CONTENT - Contenido de los tabs
-           ============================================================================= -->
+      <!-- MAIN CONTENT - Contenido de los tabs -->
       <main class="user-dashboard__content" [attr.aria-label]="getActiveTabTitle()">
         
-        <!-- =============================================================================
-             TAB: INFORMACIÓN PERSONAL
-             ============================================================================= -->
+        <!-- TAB: INFORMACIÓN PERSONAL -->
         <div 
           class="tab-content"
           [class.tab-content--active]="isTabActive('personal')"
@@ -48,9 +43,7 @@
           </app-profile-form>
         </div>
         
-        <!-- =============================================================================
-             TAB: MIS RESERVAS
-             ============================================================================= -->
+        <!-- TAB: MIS RESERVAS -->
         <div 
           class="tab-content"
           [class.tab-content--active]="isTabActive('bookings')"
@@ -65,9 +58,7 @@
           </app-bookings>
         </div>
         
-        <!-- =============================================================================
-             TAB: FAVORITOS
-             ============================================================================= -->
+        <!-- TAB: FAVORITOS -->
         <div 
           class="tab-content"
           [class.tab-content--active]="isTabActive('favorites')"
@@ -84,9 +75,7 @@
           </app-favorites>
         </div>
         
-        <!-- =============================================================================
-             OTROS TABS (Placeholder)
-             ============================================================================= -->
+        <!-- OTROS TABS (Placeholder) -->
         <div 
           class="tab-content"
           [class.tab-content--active]="isTabActive('payments')"
@@ -126,7 +115,7 @@
           [class.tab-content--active]="isTabActive('notifications')"
           *ngIf="isTabActive('notifications') && config.enableNotifications"
           role="tabpanel"
-          aria loci="notifications-tab">
+          aria-labelledby="notifications-tab">
           
           <div class="content-placeholder">
             <div class="placeholder-icon">
@@ -140,5 +129,15 @@
         
       </main>
     </div>
+    
+    <!-- Plantilla de carga cuando user no está definido -->
+    <ng-template #loadingTemplate>
+      <div class="loading-overlay">
+        <div class="loading-spinner">
+          <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+          <span>Cargando datos del usuario...</span>
+        </div>
+      </div>
+    </ng-template>
   </div>
 </section>

@@ -2,75 +2,100 @@
   class="profile-form" 
   [formGroup]="profileForm" 
   (ngSubmit)="onSave()"
-  novalidate>
+  novalidate
+  [class.profile-form--loading]="isLoading">
   
+  <!-- Mensaje de carga global -->
+  <div class="profile-form__loading-overlay" *ngIf="isLoading">
+    <div class="profile-form__loading-spinner">
+      <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+      <span>Cargando...</span>
+    </div>
+  </div>
+
   <!-- Datos Básicos -->
-  <fieldset class="form-section">
-    <legend class="form-section__title">Datos Básicos</legend>
+  <fieldset class="profile-form__section">
+    <legend class="profile-form__section-title">
+      <i class="fas fa-user" aria-hidden="true"></i> Datos Básicos
+    </legend>
     
-    <div class="form-row">
+    <div class="profile-form__row profile-form__row--two-cols">
       <div class="form-group">
-        <label for="firstName" class="form-label">Nombre *</label>
+        <label for="firstName" class="form-label">
+          <i class="fas fa-user-circle" aria-hidden="true"></i> Nombre <span class="required">*</span>
+        </label>
         <input 
           id="firstName"
           type="text" 
           class="form-input"
           [class.form-input--error]="hasFieldError('firstName')"
           formControlName="firstName"
+          placeholder="Ej: Juan"
           required>
         <div class="form-error" *ngIf="getFieldError('firstName')">
-          {{ getFieldError('firstName') }}
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('firstName') }}
         </div>
       </div>
       
       <div class="form-group">
-        <label for="lastName" class="form-label">Apellido *</label>
+        <label for="lastName" class="form-label">
+          <i class="fas fa-user-circle" aria-hidden="true"></i> Apellido <span class="required">*</span>
+        </label>
         <input 
           id="lastName"
           type="text" 
           class="form-input"
           [class.form-input--error]="hasFieldError('lastName')"
           formControlName="lastName"
+          placeholder="Ej: Pérez"
           required>
         <div class="form-error" *ngIf="getFieldError('lastName')">
-          {{ getFieldError('lastName') }}
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('lastName') }}
         </div>
       </div>
     </div>
     
-    <div class="form-row">
+    <div class="profile-form__row profile-form__row--two-cols">
       <div class="form-group">
-        <label for="email" class="form-label">Email *</label>
+        <label for="email" class="form-label">
+          <i class="fas fa-envelope" aria-hidden="true"></i> Email <span class="required">*</span>
+        </label>
         <input 
           id="email"
           type="email" 
           class="form-input"
           [class.form-input--error]="hasFieldError('email')"
           formControlName="email"
+          placeholder="Ej: juan.perez@example.com"
           required>
         <div class="form-error" *ngIf="getFieldError('email')">
-          {{ getFieldError('email') }}
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('email') }}
         </div>
       </div>
       
       <div class="form-group">
-        <label for="phone" class="form-label">Teléfono *</label>
+        <label for="phone" class="form-label">
+          <i class="fas fa-phone" aria-hidden="true"></i> Teléfono <span class="required">*</span>
+        </label>
         <input 
           id="phone"
           type="tel" 
           class="form-input"
           [class.form-input--error]="hasFieldError('phone')"
           formControlName="phone"
+          placeholder="Ej: +1234567890"
           required>
         <div class="form-error" *ngIf="getFieldError('phone')">
-          {{ getFieldError('phone') }}
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('phone') }}
         </div>
       </div>
     </div>
     
-    <div class="form-row">
+    <div class="profile-form__row profile-form__row--two-cols">
       <div class="form-group">
-        <label for="birthDate" class="form-label">Fecha de Nacimiento</label>
+        <label for="birthDate" class="form-label">
+          <i class="fas fa-calendar-alt" aria-hidden="true"></i> Fecha de Nacimiento
+        </label>
         <input 
           id="birthDate"
           type="date" 
@@ -79,11 +104,14 @@
       </div>
       
       <div class="form-group">
-        <label for="nationality" class="form-label">Nacionalidad</label>
+        <label for="nationality" class="form-label">
+          <i class="fas fa-globe" aria-hidden="true"></i> Nacionalidad
+        </label>
         <select 
           id="nationality" 
           class="form-select"
           formControlName="nationality">
+          <option value="">Selecciona una opción</option>
           <option value="ES">España</option>
           <option value="FR">Francia</option>
           <option value="IT">Italia</option>
@@ -96,55 +124,70 @@
   </fieldset>
   
   <!-- Dirección -->
-  <fieldset class="form-section">
-    <legend class="form-section__title">Dirección</legend>
+  <fieldset class="profile-form__section">
+    <legend class="profile-form__section-title">
+      <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Dirección
+    </legend>
     
-    <div class="form-group">
-      <label for="address" class="form-label">Dirección</label>
+    <div class="form-group form-group--full-width">
+      <label for="address" class="form-label">
+        <i class="fas fa-home" aria-hidden="true"></i> Dirección
+      </label>
       <input 
         id="address"
         type="text" 
         class="form-input"
-        formControlName="address">
+        formControlName="address"
+        placeholder="Ej: Calle Principal 123">
     </div>
     
-    <div class="form-row">
+    <div class="profile-form__row profile-form__row--two-cols">
       <div class="form-group">
-        <label for="city" class="form-label">Ciudad</label>
+        <label for="city" class="form-label">
+          <i class="fas fa-city" aria-hidden="true"></i> Ciudad
+        </label>
         <input 
           id="city"
           type="text" 
           class="form-input"
-          formControlName="city">
+          formControlName="city"
+          placeholder="Ej: Madrid">
       </div>
       
       <div class="form-group">
-        <label for="postalCode" class="form-label">Código Postal</label>
+        <label for="postalCode" class="form-label">
+          <i class="fas fa-mail-bulk" aria-hidden="true"></i> Código Postal
+        </label>
         <input 
           id="postalCode"
           type="text" 
           class="form-input"
           [class.form-input--error]="hasFieldError('postalCode')"
           formControlName="postalCode"
-          placeholder="12345">
+          placeholder="Ej: 12345">
         <div class="form-error" *ngIf="getFieldError('postalCode')">
-          {{ getFieldError('postalCode') }}
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('postalCode') }}
         </div>
       </div>
     </div>
   </fieldset>
   
   <!-- Preferencias -->
-  <fieldset class="form-section" formGroupName="preferences">
-    <legend class="form-section__title">Preferencias de Viaje</legend>
+  <fieldset class="profile-form__section" formGroupName="preferences">
+    <legend class="profile-form__section-title">
+      <i class="fas fa-suitcase" aria-hidden="true"></i> Preferencias de Viaje
+    </legend>
     
-    <div class="form-row">
+    <div class="profile-form__row profile-form__row--two-cols">
       <div class="form-group">
-        <label for="travelStyle" class="form-label">Estilo de Viaje</label>
+        <label for="travelStyle" class="form-label">
+          <i class="fas fa-plane" aria-hidden="true"></i> Estilo de Viaje
+        </label>
         <select 
           id="travelStyle" 
           class="form-select"
           formControlName="travelStyle">
+          <option value="">Selecciona una opción</option>
           <option value="luxury">Lujo</option>
           <option value="comfort">Confort</option>
           <option value="budget">Económico</option>
@@ -153,11 +196,14 @@
       </div>
       
       <div class="form-group">
-        <label for="accommodation" class="form-label">Tipo de Alojamiento Preferido</label>
+        <label for="accommodation" class="form-label">
+          <i class="fas fa-hotel" aria-hidden="true"></i> Tipo de Alojamiento Preferido
+        </label>
         <select 
           id="accommodation" 
           class="form-select"
           formControlName="accommodation">
+          <option value="">Selecciona una opción</option>
           <option value="hotel">Hotel</option>
           <option value="apartment">Apartamento</option>
           <option value="hostel">Hostel</option>
@@ -169,7 +215,7 @@
   </fieldset>
   
   <!-- Form Actions -->
-  <div class="form-actions">
+  <div class="profile-form__actions">
     <button 
       type="button" 
       class="btn btn--outline"
@@ -182,8 +228,7 @@
       class="btn btn--primary"
       [disabled]="profileForm.invalid || !isFormDirty || isLoading">
       <span *ngIf="isLoading">
-        <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-        Guardando...
+        <i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Guardando...
       </span>
       <span *ngIf="!isLoading">Guardar Cambios</span>
     </button>
