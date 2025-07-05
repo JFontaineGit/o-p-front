@@ -5,13 +5,19 @@ import { ApiService } from '../core/api.service';
 import { LoggerService } from '../core/logger.service';
 import { StorageService } from '../core/storage.service';
 import { AUTH_ENDPOINTS } from './auth-endpoints';
-import { Auth, UserRegister, TokenUserResponse, RefreshTokenResponse, ErrorResponse } from '../interfaces/auth.interfaces';
+import {
+  Auth,
+  UserRegister,
+  TokenUserResponse,
+  RefreshTokenResponse,
+  ErrorResponse,
+} from '../interfaces/auth.interfaces';
 import { UserRead } from '../interfaces/user.interfaces';
 /**
  * Servicio para manejar operaciones relacionadas con autenticación.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private readonly TIMEOUT_MS = 10000;
@@ -41,7 +47,7 @@ export class AuthService {
       timeout(this.TIMEOUT_MS),
       retry(this.RETRY_COUNT),
       tap(() => this.logger.debug('Usuario registrado exitosamente')),
-      catchError(error => this.handleError('Registro de usuario', error))
+      catchError((error) => this.handleError('Registro de usuario', error))
     );
   }
 
@@ -51,20 +57,22 @@ export class AuthService {
    * @returns Observable con la respuesta de autenticación (tokens).
    */
   login(credentials: Auth): Observable<TokenUserResponse> {
-    return this.apiService.post<TokenUserResponse>(AUTH_ENDPOINTS.LOGIN, credentials).pipe(
-      timeout(this.TIMEOUT_MS),
-      retry(this.RETRY_COUNT),
-      tap(response => {
-        if (response.access_token) {
-          this.storage.setToken(response.access_token);
-          if (response.refresh_token) {
-            this.storage.setRefreshToken(response.refresh_token);
+    return this.apiService
+      .post<TokenUserResponse>(AUTH_ENDPOINTS.LOGIN, credentials)
+      .pipe(
+        timeout(this.TIMEOUT_MS),
+        retry(this.RETRY_COUNT),
+        tap((response) => {
+          if (response.data?.access_token) {
+            this.storage.setToken(response.data.access_token);
+            if (response.data.refresh_token) {
+              this.storage.setRefreshToken(response.data.refresh_token);
+            }
+            this.logger.debug('Inicio de sesión exitoso');
           }
-          this.logger.debug('Inicio de sesión exitoso');
-        }
-      }),
-      catchError(error => this.handleError('Inicio de sesión', error))
-    );
+        }),
+        catchError((error) => this.handleError('Inicio de sesión', error))
+      );
   }
 
   /**
@@ -78,17 +86,21 @@ export class AuthService {
       this.logger.error('No hay refresh token disponible');
       return throwError(() => new Error('No hay refresh token disponible'));
     }
-    return this.apiService.post<RefreshTokenResponse>(AUTH_ENDPOINTS.REFRESH, { refresh_token: refreshToken }).pipe(
-      timeout(this.TIMEOUT_MS),
-      retry(this.RETRY_COUNT),
-      tap(response => {
-        if (response.access_token) {
-          this.storage.setToken(response.access_token);
-          this.logger.debug('Token refrescado exitosamente');
-        }
-      }),
-      catchError(error => this.handleError('Refrescar token', error))
-    );
+    return this.apiService
+      .post<RefreshTokenResponse>(AUTH_ENDPOINTS.REFRESH, {
+        refresh_token: refreshToken,
+      })
+      .pipe(
+        timeout(this.TIMEOUT_MS),
+        retry(this.RETRY_COUNT),
+        tap((response) => {
+          if (response.data?.access_token) {
+            this.storage.setToken(response.data?.access_token);
+            this.logger.debug('Token refrescado exitosamente');
+          }
+        }),
+        catchError((error) => this.handleError('Refrescar token', error))
+      );
   }
 
   /**
@@ -113,14 +125,23 @@ export class AuthService {
     let errorMessage = 'Ocurrió un error inesperado';
     if (error instanceof Error) {
       errorMessage = error.message;
-    } else if (typeof error === 'object' && error !== null && 'status' in error) {
+    } else if (
+      typeof error === 'object' &&
+      error !== null &&
+      'status' in error
+    ) {
       const httpError = error as { status: number; error?: ErrorResponse };
       switch (httpError.status) {
         case 400:
-          errorMessage = httpError.error?.message || httpError.error?.detail || 'Datos de solicitud inválidos';
+          errorMessage =
+            httpError.error?.message ||
+            httpError.error?.detail ||
+            'Datos de solicitud inválidos';
           break;
         case 401:
-          errorMessage = httpError.error?.message || 'Credenciales inválidas o token expirado';
+          errorMessage =
+            httpError.error?.message ||
+            'Credenciales inválidas o token expirado';
           this.storage.clearStorage();
           break;
         case 403:

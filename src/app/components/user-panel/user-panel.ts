@@ -4,14 +4,13 @@ import { Sidebar } from './sidebar/sidebar';
 import { ProfileForm } from './profile-form/profile-form';
 import { Bookings } from './bookings/bookings';
 import { Favorites } from './favorites/favorites';
-import { 
-  User, 
-  Booking, 
-  Favorite, 
-  TabItem, 
-  UserPanelTab, 
-  UserPanelConfig 
-} from './interfaces/user-panel.interfaces';
+import { Booking, Favorite, TabItem, UserPanelTab, UserPanelConfig } from './interfaces/user-panel.interfaces';
+import { UserMe } from '../../services/interfaces/user.interfaces';
+import { UserService } from '../../services/users/user.service' 
+import { AuthService } from '../../services/auth/auth.service'; 
+import { Observable, of, Subject } from 'rxjs';
+import { takeUntil, tap, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -28,9 +27,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPanel implements OnInit {
-  
   // Inputs & Outputs
-  @Input({ required: true }) user?: User; // Permitir undefined inicialmente
   @Input() bookings: Booking[] = [];
   @Input() favorites: Favorite[] = [];
   @Input() config: UserPanelConfig = {
@@ -39,8 +36,8 @@ export class UserPanel implements OnInit {
     enableNotifications: true
   };
   @Input() isLoading = false;
-  
-  @Output() userUpdated = new EventEmitter<User>();
+
+  @Output() userUpdated = new EventEmitter<UserMe>();
   @Output() tabChanged = new EventEmitter<UserPanelTab>();
   @Output() avatarChanged = new EventEmitter<File>();
   @Output() bookingAction = new EventEmitter<{action: string, bookingId: string}>();
@@ -48,8 +45,10 @@ export class UserPanel implements OnInit {
   @Output() favoriteClicked = new EventEmitter<Favorite>();
 
   // Propiedades públicas
+  user: UserMe | null = null;
   activeTab: UserPanelTab = 'personal';
-  
+  error: string | null = null;
+
   tabs: TabItem[] = [
     { id: 'personal' as UserPanelTab, label: 'Información Personal', icon: 'fas fa-user', active: true },
     { id: 'bookings' as UserPanelTab, label: 'Mis Reservas', icon: 'fas fa-suitcase', active: false },
@@ -59,12 +58,48 @@ export class UserPanel implements OnInit {
     { id: 'notifications' as UserPanelTab, label: 'Notificaciones', icon: 'fas fa-bell', active: false }
   ];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  private destroy$ = new Subject<void>();
 
-  // Lifecycle
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private userService: UserService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
   ngOnInit(): void {
-    this.updateTabStates();
-    this.loadInitialData();
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.userService.getMe().pipe(
+      takeUntil(this.destroy$),
+      tap(() => this.isLoading = true),
+      catchError(error => {
+        this.error = 'Error al cargar los datos del usuario';
+        this.isLoading = false;
+        this.cdr.markForCheck();
+        this.router.navigate(['/login']);
+        return of(null);
+      })
+    ).subscribe(user => {
+      this.isLoading = false;
+      this.user = user ? { ...user } : null;
+      if (!this.user) {
+        this.error = 'No se encontraron datos del usuario';
+        this.router.navigate(['/login']);
+      } else {
+        this.loadBookingsAndFavorites(this.user.id); 
+      }
+      this.updateTabStates();
+      this.cdr.markForCheck();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   // Métodos públicos - Navegación
@@ -73,7 +108,7 @@ export class UserPanel implements OnInit {
       this.activeTab = tabId;
       this.updateTabStates();
       this.tabChanged.emit(tabId);
-      this.cdr.markForCheck(); // Forzar detección de cambios
+      this.cdr.markForCheck();
     }
   }
 
@@ -82,10 +117,10 @@ export class UserPanel implements OnInit {
   }
 
   // Métodos públicos - Eventos de usuario
-  onUserUpdate(updatedUser: User): void {
-    this.user = updatedUser; // Actualizar user localmente
+  onUserUpdate(updatedUser: UserMe): void {
+    this.user = updatedUser;
     this.userUpdated.emit(updatedUser);
-    this.cdr.markForCheck(); // Forzar detección de cambios
+    this.cdr.markForCheck();
   }
 
   onAvatarChange(file: File): void {
@@ -128,51 +163,36 @@ export class UserPanel implements OnInit {
     };
   }
 
-  private loadInitialData(): void {
-    this.isLoading = true;
-    setTimeout(() => {
-      this.user = {
+  private loadBookingsAndFavorites(userId: number): void {
+    // Aquí implementarías la lógica para cargar reservas y favoritos
+    // Por ahora, mantenemos los datos mockeados como estaban, pero podrías reemplazarlos con un servicio real
+    this.bookings = [
+      {
         id: '1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com',
-        phone: '+1234567890',
-        nationality: 'US',
-        address: '123 Main St',
-        city: 'New York',
-        postalCode: '10001',
-        stats: { trips: 5, countries: 3, rating: 4.5 },
-        preferences: { travelStyle: 'comfort', accommodation: 'hotel' }
-      };
-      this.bookings = [
-        {
-          id: '1',
-          title: 'Viaje a Paris',
-          destination: 'Paris, France',
-          startDate: '2025-08-01',
-          endDate: '2025-08-07',
-          guests: 2,
-          price: 1500,
-          status: 'confirmed',
-          imageUrl: 'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'
-        },
-        {
-          id: '2',
-          title: 'Viaje a Tokyo',
-          destination: 'Tokyo, Japan',
-          startDate: '2025-06-01',
-          endDate: '2025-06-10',
-          guests: 1,
-          price: 2000,
-          status: 'completed',
-          imageUrl: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'
-        }
-      ];
-      this.favorites = [
-        { id: 'f1', title: 'Rome', description: 'City tour', price: 800, imageUrl: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80' }
-      ];
-      this.isLoading = false;
-      this.cdr.markForCheck(); // Forzar detección de cambios tras cargar datos
-    }, 1000);
+        title: 'Viaje a Paris',
+        destination: 'Paris, France',
+        startDate: '2025-08-01',
+        endDate: '2025-08-07',
+        guests: 2,
+        price: 1500,
+        status: 'confirmed',
+        imageUrl: 'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'
+      },
+      {
+        id: '2',
+        title: 'Viaje a Tokyo',
+        destination: 'Tokyo, Japan',
+        startDate: '2025-06-01',
+        endDate: '2025-06-10',
+        guests: 1,
+        price: 2000,
+        status: 'completed',
+        imageUrl: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'
+      }
+    ];
+    this.favorites = [
+      { id: 'f1', title: 'Rome', description: 'City tour', price: 800, imageUrl: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80' }
+    ];
+    this.cdr.markForCheck();
   }
 }

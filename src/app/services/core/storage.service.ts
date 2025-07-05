@@ -1,11 +1,7 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, TransferState, makeStateKey } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { LoggerService } from './logger.service';
 
-/**
- * Claves estándar para guardar cosas en el storage.
- * No inventen nombres raros por su cuenta, usen estos.
- */
 export enum StorageKeys {
   Token = 'access_token',
   RefreshToken = 'refresh_token',
@@ -13,83 +9,79 @@ export enum StorageKeys {
   Carrito = 'carrito',
   ViajeArmado = 'viajePersonalizado',
 }
-/**
- * Servicio para gestionar operaciones de almacenamiento local (localStorage o en memoria).
- * Compatible con SSR usando un fallback en memoria cuando localStorage no está disponible.
- */
+
+const TOKEN_STATE_KEY = makeStateKey<string>('access_token');
+
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
-  private memoryStorage: Map<string, string> = new Map(); // Fallback en memoria
+  private memoryStorage: Map<string, string> = new Map();
   private isBrowser: boolean;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: Object,
-    private readonly logger: LoggerService
+    private readonly logger: LoggerService,
+    private readonly transferState: TransferState
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
+    this.logger.debug(`StorageService inicializado, isBrowser=${this.isBrowser}`);
   }
 
-  /**
-   * Verifica si localStorage está disponible.
-   * @returns True si localStorage está definido y accesible.
-   */
+  public isRunningInBrowser(): boolean {
+    return this.isBrowser;
+  }
+
   private isLocalStorageAvailable(): boolean {
     if (!this.isBrowser) {
       this.logger.debug('localStorage no disponible: ejecutando en servidor');
       return false;
     }
     try {
-      const testKey = '__test__';
-      localStorage.setItem(testKey, testKey);
-      localStorage.removeItem(testKey);
-      return true;
+      if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+        const testKey = '__test__';
+        window.localStorage.setItem(testKey, testKey);
+        window.localStorage.removeItem(testKey);
+        this.logger.debug('localStorage disponible en el navegador');
+        return true;
+      }
+      this.logger.debug('localStorage no definido en el navegador');
+      return false;
     } catch (error: unknown) {
       this.logger.error('localStorage no accesible', error);
       return false;
     }
   }
 
-  /**
-   * Guarda un string con cualquier clave.
-   * Ej: this.setItem('miDato', 'valor')
-   * @param key - La clave del elemento.
-   * @param value - El valor a almacenar.
-   */
   setItem(key: string, value: string): void {
     try {
+      const trimmedValue = value.trim();
       if (this.isLocalStorageAvailable()) {
-        localStorage.setItem(key, value);
+        window.localStorage.setItem(key, trimmedValue);
+        this.logger.debug(`Item ${key} guardado en localStorage: ${trimmedValue.substring(0, 20)}...`);
       } else {
-        this.memoryStorage.set(key, value);
+        this.memoryStorage.set(key, trimmedValue);
+        this.logger.debug(`Item ${key} guardado en memoria: ${trimmedValue.substring(0, 20)}...`);
       }
-      this.logger.debug(`Item ${key} guardado correctamente`);
     } catch (error: unknown) {
       this.logger.error(`Error al guardar ${key} en almacenamiento`, error);
     }
   }
 
-  /**
-   * Recupera un string por su clave.
-   * Ej: this.getItem('miDato')
-   * @param key - La clave del elemento.
-   * @returns El valor del elemento o null si no existe.
-   */
   getItem(key: string): string | null {
     try {
       if (this.isLocalStorageAvailable()) {
-        const value = localStorage.getItem(key);
+        const value = window.localStorage.getItem(key);
         if (value) {
-          this.logger.debug(`Item ${key} recuperado correctamente`);
-        } else {
-          this.logger.debug(`No se encontró item para la clave ${key}`);
+          this.logger.debug(`Item ${key} recuperado de localStorage: ${value.substring(0, 20)}...`);
+          return value;
         }
-        return value;
+        this.logger.debug(`No se encontró item en localStorage para la clave ${key}`);
+        return null;
       }
       const value = this.memoryStorage.get(key) || null;
       if (value) {
-        this.logger.debug(`Item ${key} recuperado de memoria`);
+        this.logger.debug(`Item ${key} recuperado de memoria: ${value.substring(0, 20)}...`);
       } else {
         this.logger.debug(`No se encontró item en memoria para la clave ${key}`);
       }
@@ -100,62 +92,35 @@ export class StorageService {
     }
   }
 
-  /**
-   * Borra cualquier ítem por su clave.
-   * @param key - La clave del elemento a eliminar.
-   */
   removeItem(key: string): void {
     try {
       if (this.isLocalStorageAvailable()) {
-        localStorage.removeItem(key);
+        window.localStorage.removeItem(key);
+        this.logger.debug(`Item ${key} eliminado de localStorage`);
       } else {
         this.memoryStorage.delete(key);
+        this.logger.debug(`Item ${key} eliminado de memoria`);
       }
-      this.logger.debug(`Item ${key} eliminado correctamente`);
     } catch (error: unknown) {
       this.logger.error(`Error al eliminar ${key} del almacenamiento`, error);
     }
   }
 
-  /**
-   * Guarda un objeto (JSON) convertido a string.
-   * Ej: this.setObject('carrito', arrayDeProductos)
-   * @param key - La clave del elemento.
-   * @param value - El objeto a almacenar.
-   */
   setObject<T>(key: string, value: T): void {
     try {
       const serializedValue = JSON.stringify(value);
-      if (this.isLocalStorageAvailable()) {
-        localStorage.setItem(key, serializedValue);
-      } else {
-        this.memoryStorage.set(key, serializedValue);
-      }
-      this.logger.debug(`Objeto ${key} guardado correctamente`);
+      this.setItem(key, serializedValue);
     } catch (error: unknown) {
       this.logger.error(`Error al guardar objeto ${key} en almacenamiento`, error);
     }
   }
 
-  /**
-   * Recupera un objeto parseado desde JSON.
-   * Ej: const carrito = this.getObject<Carrito[]>('carrito')
-   * @param key - La clave del elemento.
-   * @returns El objeto parseado o null si no existe.
-   */
   getObject<T>(key: string): T | null {
     try {
-      let serializedValue: string | null = null;
-      if (this.isLocalStorageAvailable()) {
-        serializedValue = localStorage.getItem(key);
-      } else {
-        serializedValue = this.memoryStorage.get(key) || null;
-      }
+      const serializedValue = this.getItem(key);
       if (serializedValue) {
-        this.logger.debug(`Objeto ${key} recuperado correctamente`);
         return JSON.parse(serializedValue) as T;
       }
-      this.logger.debug(`No se encontró objeto para la clave ${key}`);
       return null;
     } catch (error: unknown) {
       this.logger.error(`Error al obtener objeto ${key} del almacenamiento`, error);
@@ -163,63 +128,73 @@ export class StorageService {
     }
   }
 
-  /**
-   * Guarda el token de acceso cuando el usuario hace login.
-   * @param token - El token de acceso.
-   */
   setToken(token: string): void {
-    this.setItem(StorageKeys.Token, token);
+    const trimmed = token.trim();
+    this.memoryStorage.set(StorageKeys.Token, trimmed);
+
+    if (this.isLocalStorageAvailable()) {
+      window.localStorage.setItem(StorageKeys.Token, trimmed);
+      this.logger.debug(`Token guardado en localStorage y memoria: ${trimmed.substring(0, 20)}...`);
+    } else {
+      this.logger.debug(`Token guardado en memoria: ${trimmed.substring(0, 20)}...`);
+    }
+
+    if (!this.isBrowser) {
+      this.transferState.set(TOKEN_STATE_KEY, trimmed);
+      this.logger.debug('Token guardado en TransferState para hidratar en navegador');
+    }
   }
 
-  /**
-   * Recupera el token de acceso guardado (si hay sesión).
-   * @returns El token de acceso o null si no existe.
-   */
   getToken(): string | null {
-    return this.getItem(StorageKeys.Token);
+    const cached = this.memoryStorage.get(StorageKeys.Token);
+    if (cached) {
+      this.logger.debug(`Token recuperado de memoria: ${cached.substring(0, 20)}...`);
+      return cached;
+    }
+
+    if (this.isBrowser && this.transferState.hasKey(TOKEN_STATE_KEY)) {
+      const transferred = this.transferState.get(TOKEN_STATE_KEY, null);
+      if (transferred) {
+        this.logger.debug(`Token recuperado de TransferState: ${transferred.substring(0, 20)}...`);
+        this.memoryStorage.set(StorageKeys.Token, transferred);
+        this.transferState.remove(TOKEN_STATE_KEY);
+        return transferred;
+      }
+    }
+
+    if (this.isLocalStorageAvailable()) {
+      const token = window.localStorage.getItem(StorageKeys.Token);
+      if (token) {
+        this.logger.debug(`Token recuperado de localStorage: ${token.substring(0, 20)}...`);
+        this.memoryStorage.set(StorageKeys.Token, token);
+        return token;
+      }
+    }
+
+    this.logger.debug(`No se encontró token en ningún medio`);
+    return null;
   }
 
-  /**
-   * Borra el token de acceso del almacenamiento.
-   */
   removeToken(): void {
     this.removeItem(StorageKeys.Token);
   }
 
-  /**
-   * Guarda el token de refresco cuando el usuario hace login.
-   * @param refreshToken - El token de refresco.
-   */
   setRefreshToken(refreshToken: string): void {
     this.setItem(StorageKeys.RefreshToken, refreshToken);
   }
 
-  /**
-   * Recupera el token de refresco guardado.
-   * @returns El token de refresco o null si no existe.
-   */
   getRefreshToken(): string | null {
     return this.getItem(StorageKeys.RefreshToken);
   }
 
-  /**
-   * Borra el token de refresco del almacenamiento.
-   */
   removeRefreshToken(): void {
     this.removeItem(StorageKeys.RefreshToken);
   }
 
-  /**
-   * Trae el email si el usuario marcó "recordarme".
-   * @returns El email almacenado o null si no existe.
-   */
   getRememberEmail(): string | null {
     return this.getItem(StorageKeys.RememberEmail);
   }
 
-  /**
-   * Borra todo lo importante. Para limpiar sesión rápido.
-   */
   clearStorage(): void {
     try {
       this.removeToken();

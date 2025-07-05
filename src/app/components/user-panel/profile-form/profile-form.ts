@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from '../interfaces/user-panel.interfaces';
+import { UserMe } from '../../../services/interfaces/user.interfaces';
 
 @Component({
   selector: 'app-profile-form',
@@ -12,11 +12,10 @@ import { User } from '../interfaces/user-panel.interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileForm implements OnInit, OnChanges {
-  
-  @Input({ required: true }) user!: User;
+  @Input({ required: true }) user!: UserMe | null;
   @Input() isLoading = false;
-  
-  @Output() save = new EventEmitter<User>();
+
+  @Output() save = new EventEmitter<UserMe>();
   @Output() cancel = new EventEmitter<void>();
   @Output() formChange = new EventEmitter<{valid: boolean, dirty: boolean}>();
 
@@ -30,32 +29,21 @@ export class ProfileForm implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['user'] && !changes['user'].firstChange) {
+    if (changes['user'] && !changes['user'].firstChange && this.user) {
       this.initializeForm();
     }
   }
 
-  /**
-   * Inicializa el formulario reactivo
-   */
   private initializeForm(): void {
     this.profileForm = this.fb.group({
-      firstName: [this.user?.firstName || '', [Validators.required, Validators.minLength(2)]],
-      lastName: [this.user?.lastName || '', [Validators.required, Validators.minLength(2)]],
+      first_name: [this.user?.first_name || '', [Validators.required, Validators.minLength(2)]],
+      last_name: [this.user?.last_name || '', [Validators.required, Validators.minLength(2)]],
       email: [this.user?.email || '', [Validators.required, Validators.email]],
-      phone: [this.user?.phone || '', [Validators.required]],
-      birthDate: [this.user?.birthDate || ''],
-      nationality: [this.user?.nationality || 'ES'],
-      address: [this.user?.address || ''],
-      city: [this.user?.city || ''],
-      postalCode: [this.user?.postalCode || '', [Validators.pattern(/^\d{5}$/)]],
-      preferences: this.fb.group({
-        travelStyle: [this.user?.preferences?.travelStyle || 'comfort'],
-        accommodation: [this.user?.preferences?.accommodation || 'hotel']
-      })
+      telephone: [this.user?.telephone || '', [Validators.required]],
+      born_date: [this.user?.born_date || ''],
+      state: [this.user?.state || '']
     });
 
-    // Detectar cambios en el formulario
     this.profileForm.valueChanges.subscribe(() => {
       this.isFormDirty = this.profileForm.dirty;
       this.formChange.emit({
@@ -65,31 +53,25 @@ export class ProfileForm implements OnInit, OnChanges {
     });
   }
 
-  /**
-   * Guarda los cambios del formulario
-   */
   onSave(): void {
     if (this.profileForm.valid) {
-      const updatedUser: User = {
+      const updatedUser: UserMe = {
         ...this.user,
-        ...this.profileForm.value
+        ...this.profileForm.value,
+        id: this.user?.id || 0,
+        created_at: this.user?.created_at || new Date().toISOString(),
+        is_staff: this.user?.is_staff || false
       };
       this.save.emit(updatedUser);
     }
   }
 
-  /**
-   * Cancela los cambios
-   */
   onCancel(): void {
     this.profileForm.reset();
     this.initializeForm();
     this.cancel.emit();
   }
 
-  /**
-   * Obtiene el mensaje de error para un campo
-   */
   getFieldError(fieldName: string): string | null {
     const field = this.profileForm.get(fieldName);
     if (field && field.invalid && field.touched) {
@@ -102,16 +84,10 @@ export class ProfileForm implements OnInit, OnChanges {
       if (field.errors?.['minlength']) {
         return `Mínimo ${field.errors['minlength'].requiredLength} caracteres`;
       }
-      if (field.errors?.['pattern']) {
-        return 'Formato inválido';
-      }
     }
     return null;
   }
 
-  /**
-   * Verifica si un campo tiene error
-   */
   hasFieldError(fieldName: string): boolean {
     const field = this.profileForm.get(fieldName);
     return !!(field && field.invalid && field.touched);

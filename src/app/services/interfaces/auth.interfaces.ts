@@ -24,11 +24,9 @@ export interface UserRegister {
  */
 export interface TokenUserResponse {
   message: string;
-  access_token: string;
-  refresh_token: string;
   data: {
-    id: number;
-    email: string;
+    access_token: string;
+    refresh_token: string;
   };
 }
 
@@ -37,7 +35,10 @@ export interface TokenUserResponse {
  */
 export interface RefreshTokenResponse {
   message: string;
-  access_token: string;
+  data: {
+    access_token: string;
+    refresh_token: string;
+  };
 }
 
 /**

@@ -3,17 +3,22 @@ import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Subject, takeUntil, catchError, of } from 'rxjs';
-import { StorageService, StorageKeys } from '../../../services/core/storage.service'; 
+import { tap } from 'rxjs/operators';
+import { StorageService, StorageKeys } from '../../../services/core/storage.service';
 import { CartService } from '../../../services/carts/cart.service';
-import type { Product } from '../../../interfaces/product.interface'; 
+import { AuthService } from '../../../services/auth/auth.service';
+import { UserService } from '../../../services/users/user.service';
+import type { Product } from '../../../interfaces/product.interface';
+import type { UserMe } from '../../../services/interfaces/user.interfaces';
 
 @Component({
   selector: 'app-navbar',
@@ -28,6 +33,7 @@ import type { Product } from '../../../interfaces/product.interface';
     MatSidenavModule,
     MatDividerModule,
     MatBadgeModule,
+    MatSnackBarModule,
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
@@ -36,15 +42,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
   isLoggedIn = false;
-  cartItemCount = 0; // Inicializamos en 0, se actualizará en ngOnInit
+  cartItemCount = 0;
   isMobile = false;
   isUserMenuOpen = false;
   isBrowser = false;
 
-  userData = {
-    name: 'Usuario',
+  userData: UserMe = {
+    id: 0,
+    first_name: 'Usuario',
+    last_name: '',
     email: 'usuario@email.com',
-    avatar: null as string | null,
+    telephone: '',
+    state: '',
+    created_at: '',
+    is_staff: false,
   };
 
   private destroy$ = new Subject<void>();
@@ -52,7 +63,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private storageService: StorageService,
-    private cartService: CartService
+    private cartService: CartService,
+    private authService: AuthService,
+    private userService: UserService,
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -85,8 +100,33 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private initializeAuthState() {
-    const token = this.storageService.getToken();
-    this.isLoggedIn = !!token; // true si hay token, false si no
+    this.isLoggedIn = this.authService.isLoggedIn();
+    if (this.isLoggedIn) {
+      this.loadUserData();
+    }
+  }
+
+  private loadUserData() {
+    this.userService.getMe().pipe(
+      tap((user: UserMe | null) => {
+        if (user) {
+          this.userData = user;
+        } else {
+          this.authService.logout().subscribe();
+          this.isLoggedIn = false;
+          this.router.navigate(['/login']);
+          this.snackBar.open('Sesión inválida, por favor inicia sesión nuevamente', 'Cerrar', { duration: 3000 });
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al cargar datos del usuario:', error);
+        this.authService.logout().subscribe();
+        this.isLoggedIn = false;
+        this.router.navigate(['/login']);
+        this.snackBar.open('Error al cargar datos del usuario', 'Cerrar', { duration: 3000 });
+        return of(null);
+      })
+    ).subscribe();
   }
 
   private initializeCart() {
@@ -164,21 +204,39 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.isLoggedIn = false;
-    this.storageService.clearStorage(); // Limpia el token y el carrito
-    this.cartItemCount = 0; // Resetea el contador del carrito
-    this.closeMobileMenu();
-    console.log('Usuario deslogueado');
+    this.authService.logout().pipe(
+      takeUntil(this.destroy$),
+      tap(() => {
+        this.isLoggedIn = false;
+        this.cartItemCount = 0;
+        this.closeMobileMenu();
+        this.router.navigate(['/home']);
+        this.snackBar.open('Sesión cerrada exitosamente', 'Cerrar', { duration: 3000 });
+      }),
+      catchError((error) => {
+        console.error('Error al cerrar sesión:', error);
+        this.snackBar.open('Error al cerrar sesión', 'Cerrar', { duration: 3000 });
+        return of(null);
+      })
+    ).subscribe();
   }
 
   toggleLogin() {
     if (this.isLoggedIn) {
       this.logout();
     } else {
-      // Simulamos un login (puedes integrar un servicio de autenticación real)
-      this.storageService.setToken('fake-token');
-      this.isLoggedIn = true;
-      console.log('Usuario logueado');
+      this.router.navigate(['/login']);
     }
+  }
+
+  getFullName(): string {
+    if (this.userData.first_name && this.userData.last_name) {
+      return `${this.userData.first_name} ${this.userData.last_name}`;
+    } else if (this.userData.first_name) {
+      return this.userData.first_name;
+    } else if (this.userData.email) {
+      return this.userData.email.split('@')[0];
+    }
+    return 'Usuario';
   }
 }
