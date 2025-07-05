@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Air ipet 57</title>
+
+    <link rel="stylesheet" href="css/perfil.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__left">
+                    <div class="logo">
+                        <div class="logo-container">
+                            <svg class="planet-logo" viewBox="0 0 100 100" width="40" height="40">
+                                <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+                                <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+                                <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+                                <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+                                <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+                                <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+                                <g transform="translate(70,30) rotate(45)">
+                                    <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                                    <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                                    <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+                                </g>
+                                <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+                            </svg>
+                        </div>
+                        <h1>Air ipet 57</h1>
+                    </div>
+                </div>
+                
+                <div class="header__center">
+                    <nav class="main-nav">
+                        <a href="index.html" class="nav-link">Inicio</a>
+                        <a href="paquetes.html" class="nav-link">Paquetes</a>
+                        <a href="contacto.html" class="nav-link">Contacto</a>
+                        <a href="experiencias.html" class="nav-link">Experiencias</a>
+                    </nav>
+                </div>
+                
+                <div class="header__right">
+                    <button class="user-btn active">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                    <button class="cart-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">2</span>
+                    </button>
+                    <button class="btn btn--secondary">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-container">
+                <div class="profile-sidebar">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <img src="/placeholder.svg?height=120&width=120" alt="Avatar del usuario">
+                            <button class="avatar-edit-btn">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <div class="profile-info">
+                            <h3>María González</h3>
+                            <p>maria.gonzalez@email.com</p>
+                            <div class="profile-stats">
+                                <div class="stat">
+                                    <span class="stat-number">12</span>
+                                    <span class="stat-label">Viajes</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-number">5</span>
+                                    <span class="stat-label">Países</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-number">★ 4.9</span>
+                                    <span class="stat-label">Rating</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <nav class="profile-nav">
+                        <a href="#" class="profile-nav-item active" data-tab="personal">
+                            <i class="fas fa-user"></i>
+                            <span>Información Personal</span>
+                        </a>
+                        <a href="#" class="profile-nav-item" data-tab="bookings">
+                            <i class="fas fa-suitcase"></i>
+                            <span>Mis Reservas</span>
+                        </a>
+                        <a href="#" class="profile-nav-item" data-tab="favorites">
+                            <i class="fas fa-heart"></i>
+                            <span>Favoritos</span>
+                        </a>
+                        <a href="#" class="profile-nav-item" data-tab="payments">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Métodos de Pago</span>
+                        </a>
+                        <a href="#" class="profile-nav-item" data-tab="security">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Seguridad</span>
+                        </a>
+                        <a href="#" class="profile-nav-item" data-tab="notifications">
+                            <i class="fas fa-bell"></i>
+                            <span>Notificaciones</span>
+                        </a>
+                    </nav>
+                </div>
+                
+                <div class="profile-content">
+                    <!-- Personal Information Tab -->
+                    <div class="tab-content active" id="personal">
+                        <div class="content-header">
+                            <h2>Información Personal</h2>
+                            <p>Actualiza tu información personal y preferencias de viaje</p>
+                        </div>
+                        
+                        <form class="profile-form">
+                            <div class="form-section">
+                                <h3>Datos Básicos</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="firstName">Nombre</label>
+                                        <input type="text" id="firstName" value="María" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName">Apellido</label>
+                                        <input type="text" id="lastName" value="González" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" id="email" value="maria.gonzalez@email.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Teléfono</label>
+                                        <input type="tel" id="phone" value="+34 600 123 456" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="birthDate">Fecha de Nacimiento</label>
+                                        <input type="date" id="birthDate" value="1990-05-15">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nationality">Nacionalidad</label>
+                                        <select id="nationality">
+                                            <option value="ES" selected>España</option>
+                                            <option value="FR">Francia</option>
+                                            <option value="IT">Italia</option>
+                                            <option value="DE">Alemania</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Dirección</h3>
+                                <div class="form-group">
+                                    <label for="address">Dirección</label>
+                                    <input type="text" id="address" value="Calle Mayor 123">
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="city">Ciudad</label>
+                                        <input type="text" id="city" value="Madrid">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="postalCode">Código Postal</label>
+                                        <input type="text" id="postalCode" value="28001">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Preferencias de Viaje</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="travelStyle">Estilo de Viaje</label>
+                                        <select id="travelStyle">
+                                            <option value="luxury">Lujo</option>
+                                            <option value="comfort" selected>Confort</option>
+                                            <option value="budget">Económico</option>
+                                            <option value="adventure">Aventura</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="accommodation">Tipo de Alojamiento Preferido</label>
+                                        <select id="accommodation">
+                                            <option value="hotel" selected>Hotel</option>
+                                            <option value="apartment">Apartamento</option>
+                                            <option value="hostel">Hostel</option>
+                                            <option value="resort">Resort</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn btn--outline">Cancelar</button>
+                                <button type="submit" class="btn btn--primary">Guardar Cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Bookings Tab -->
+                    <div class="tab-content" id="bookings">
+                        <div class="content-header">
+                            <h2>Mis Reservas</h2>
+                            <p>Gestiona todas tus reservas de viajes</p>
+                        </div>
+                        
+                        <div class="bookings-filter">
+                            <button class="filter-btn active" data-filter="all">Todas</button>
+                            <button class="filter-btn" data-filter="upcoming">Próximas</button>
+                            <button class="filter-btn" data-filter="completed">Completadas</button>
+                            <button class="filter-btn" data-filter="cancelled">Canceladas</button>
+                        </div>
+                        
+                        <div class="bookings-list">
+                            <div class="booking-card upcoming">
+                                <div class="booking-image">
+                                    <img src="https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="París">
+                                </div>
+                                <div class="booking-details">
+                                    <div class="booking-status status-confirmed">Confirmado</div>
+                                    <h3>Paquete Romántico París</h3>
+                                    <p class="booking-dates">
+                                        <i class="fas fa-calendar"></i>
+                                        15 - 20 Marzo 2024
+                                    </p>
+                                    <p class="booking-guests">
+                                        <i class="fas fa-users"></i>
+                                        2 adultos
+                                    </p>
+                                    <p class="booking-price">€1,299</p>
+                                </div>
+                                <div class="booking-actions">
+                                    <button class="btn btn--outline btn--small">Ver Detalles</button>
+                                    <button class="btn btn--primary btn--small">Modificar</button>
+                                </div>
+                            </div>
+                            
+                            <div class="booking-card completed">
+                                <div class="booking-image">
+                                    <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Londres">
+                                </div>
+                                <div class="booking-details">
+                                    <div class="booking-status status-completed">Completado</div>
+                                    <h3>Escapada a Londres</h3>
+                                    <p class="booking-dates">
+                                        <i class="fas fa-calendar"></i>
+                                        10 - 13 Febrero 2024
+                                    </p>
+                                    <p class="booking-guests">
+                                        <i class="fas fa-users"></i>
+                                        2 adultos
+                                    </p>
+                                    <p class="booking-price">€899</p>
+                                </div>
+                                <div class="booking-actions">
+                                    <button class="btn btn--outline btn--small">Ver Detalles</button>
+                                    <button class="btn btn--secondary btn--small">Valorar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Favorites Tab -->
+                    <div class="tab-content" id="favorites">
+                        <div class="content-header">
+                            <h2>Mis Favoritos</h2>
+                            <p>Destinos y paquetes que has guardado</p>
+                        </div>
+                        
+                        <div class="favorites-grid">
+                            <div class="favorite-item">
+                                <div class="favorite-image">
+                                    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Tokio">
+                                    <button class="remove-favorite">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div class="favorite-content">
+                                    <h3>Aventura en Tokio</h3>
+                                    <p>7 días explorando la cultura japonesa</p>
+                                    <div class="favorite-price">Desde €1,599</div>
+                                </div>
+                            </div>
+                            
+                            <div class="favorite-item">
+                                <div class="favorite-image">
+                                    <img src="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Roma">
+                                    <button class="remove-favorite">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div class="favorite-content">
+                                    <h3>Roma Histórica</h3>
+                                    <p>5 días descubriendo la ciudad eterna</p>
+                                    <div class="favorite-price">Desde €999</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Other tabs would go here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-container">
+                            <svg class="planet-logo" viewBox="0 0 100 100" width="60" height="60">
+                                <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+                                <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+                                <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+                                <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+                                <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+                                <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+                                <g transform="translate(70,30) rotate(45)">
+                                    <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                                    <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                                    <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+                                </g>
+                                <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Air ipet 57</h3>
+                            <p>Tu aventura comienza aquí</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">
+                        Descubre el mundo con nosotros. Ofrecemos los mejores paquetes turísticos y alojamientos únicos para hacer de tu viaje una experiencia inolvidable.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Destinos</h4>
+                    <ul>
+                        <li><a href="#">París</a></li>
+                        <li><a href="#">Londres</a></li>
+                        <li><a href="#">Tokio</a></li>
+                        <li><a href="#">Roma</a></li>
+                        <li><a href="#">Seattle</a></li>
+                        <li><a href="#">San Francisco</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="#">Alojamientos</a></li>
+                        <li><a href="#">Paquetes Turísticos</a></li>
+                        <li><a href="#">Experiencias</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li><a href="contacto.html">Contacto</a></li>
+                        <li><a href="terms.html">Términos y Condiciones</a></li>
+                        <li><a href="privacy.html">Privacidad</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Suscríbete para recibir ofertas exclusivas y consejos de viaje.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Tu email" required>
+                        <button type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +34 900 123 456</p>
+                        <p><i class="fas fa-envelope"></i> info@airipet57.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Air ipet 57. Todos los derechos reservados.</p>
+                    <div class="payment-methods">
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-paypal"></i>
+                        <i class="fab fa-cc-apple-pay"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.profile-nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all nav items and tab contents
+                document.querySelectorAll('.profile-nav-item').forEach(nav => nav.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                
+                // Add active class to clicked nav item
+                this.classList.add('active');
+                
+                // Show corresponding tab content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Booking filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                const bookings = document.querySelectorAll('.booking-card');
+                
+                bookings.forEach(booking => {
+                    if (filter === 'all' || booking.classList.contains(filter)) {
+                        booking.style.display = 'flex';
+                    } else {
+                        booking.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

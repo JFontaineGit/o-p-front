@@ -1,0 +1,592 @@
+// ========================================
+// MIXINS ESPECÍFICOS DEL CARRITO
+// ========================================
+
+@use './_variables.scss' as vars;
+@use './_cart-variables.scss' as cart;
+
+// ========================================
+// MIXINS DE LAYOUT
+// ========================================
+
+@mixin cart-container {
+  max-width: cart.$cart-container-max-width;
+  margin: 0 auto;
+  padding: vars.$global-padding;
+  
+  @media (max-width: cart.$cart-breakpoint-md) {
+    padding: vars.$global-padding-mobile;
+  }
+}
+
+@mixin cart-grid($columns: 1fr, $gap: cart.$cart-spacing-lg) {
+  display: grid;
+  grid-template-columns: $columns;
+  gap: $gap;
+}
+
+@mixin cart-flex($direction: row, $justify: flex-start, $align: stretch, $gap: cart.$cart-spacing-md) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin cart-flex-center {
+  @include cart-flex(row, center, center);
+}
+
+@mixin cart-flex-between {
+  @include cart-flex(row, space-between, center);
+}
+
+@mixin cart-flex-column {
+  @include cart-flex(column, flex-start, stretch);
+}
+
+// ========================================
+// MIXINS DE COMPONENTES
+// ========================================
+
+@mixin cart-card {
+  background: cart.$cart-surface;
+  border: cart.$cart-border-width-1 solid cart.$cart-border-light;
+  border-radius: cart.$cart-border-radius-lg;
+  box-shadow: cart.$cart-shadow-sm;
+  transition: cart.$cart-transition-normal;
+  
+  &:hover {
+    box-shadow: cart.$cart-shadow-md;
+    border-color: cart.$cart-border-medium;
+  }
+  
+  &:focus-within {
+    border-color: cart.$cart-border-focus;
+    box-shadow: cart.$cart-shadow-md, 0 0 0 cart.$cart-focus-ring-width rgba(cart.$cart-focus-ring-color, cart.$cart-focus-ring-opacity);
+  }
+}
+
+@mixin cart-card-elevated {
+  @include cart-card;
+  box-shadow: cart.$cart-shadow-md;
+  
+  &:hover {
+    box-shadow: cart.$cart-shadow-lg;
+  }
+}
+
+@mixin cart-card-interactive {
+  @include cart-card;
+  cursor: pointer;
+  
+  &:hover {
+    background: cart.$cart-surface-hover;
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    background: cart.$cart-surface-active;
+    transform: translateY(0);
+  }
+}
+
+// ========================================
+// MIXINS DE BOTONES
+// ========================================
+
+@mixin cart-button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: cart.$cart-spacing-xs;
+  padding: cart.$cart-spacing-sm cart.$cart-spacing-md;
+  border: cart.$cart-border-width-1 solid transparent;
+  border-radius: cart.$cart-border-radius-md;
+  font-family: cart.$cart-font-family;
+  font-size: cart.$cart-font-size-base;
+  font-weight: cart.$cart-font-weight-medium;
+  line-height: cart.$cart-line-height-normal;
+  text-decoration: none;
+  cursor: pointer;
+  transition: cart.$cart-transition-normal;
+  min-height: 40px;
+  white-space: nowrap;
+  
+  &:disabled {
+    opacity: cart.$cart-opacity-disabled;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 cart.$cart-focus-ring-width rgba(cart.$cart-focus-ring-color, cart.$cart-focus-ring-opacity);
+  }
+}
+
+@mixin cart-button-variant($background, $color, $border-color: transparent, $hover-background: null, $hover-color: null) {
+  background: $background;
+  color: $color;
+  border-color: $border-color;
+  
+  &:hover:not(:disabled) {
+    background: $hover-background or darken($background, 10%);
+    color: $hover-color or $color;
+  }
+  
+  &:active:not(:disabled) {
+    background: darken($background, 15%);
+  }
+}
+
+@mixin cart-button-primary {
+  @include cart-button-base;
+  @include cart-button-variant(
+    cart.$cart-primary,
+    cart.$cart-text-inverse,
+    transparent,
+    cart.$cart-primary-hover
+  );
+}
+
+@mixin cart-button-secondary {
+  @include cart-button-base;
+  @include cart-button-variant(
+    cart.$cart-secondary,
+    cart.$cart-text-inverse,
+    transparent,
+    cart.$cart-secondary-hover
+  );
+}
+
+@mixin cart-button-success {
+  @include cart-button-base;
+  @include cart-button-variant(
+    cart.$cart-success,
+    cart.$cart-text-inverse,
+    transparent,
+    cart.$cart-success-hover
+  );
+}
+
+@mixin cart-button-danger {
+  @include cart-button-base;
+  @include cart-button-variant(
+    cart.$cart-danger,
+    cart.$cart-text-inverse,
+    transparent,
+    cart.$cart-danger-hover
+  );
+}
+
+@mixin cart-button-warning {
+  @include cart-button-base;
+  @include cart-button-variant(
+    cart.$cart-warning,
+    cart.$cart-text-inverse,
+    transparent,
+    cart.$cart-warning-hover
+  );
+}
+
+@mixin cart-button-outline($color: cart.$cart-primary) {
+  @include cart-button-base;
+  @include cart-button-variant(
+    transparent,
+    $color,
+    $color,
+    $color,
+    cart.$cart-text-inverse
+  );
+}
+
+@mixin cart-button-ghost($color: cart.$cart-primary) {
+  @include cart-button-base;
+  @include cart-button-variant(
+    transparent,
+    $color,
+    transparent,
+    rgba($color, 0.1),
+    $color
+  );
+}
+
+@mixin cart-button-size($size: 'md') {
+  @if $size == 'sm' {
+    padding: cart.$cart-spacing-xs cart.$cart-spacing-sm;
+    font-size: cart.$cart-font-size-sm;
+    min-height: 32px;
+  } @else if $size == 'lg' {
+    padding: cart.$cart-spacing-md cart.$cart-spacing-lg;
+    font-size: cart.$cart-font-size-lg;
+    min-height: 48px;
+  } @else {
+    // md is default
+  }
+}
+
+// ========================================
+// MIXINS DE FORMULARIOS
+// ========================================
+
+@mixin cart-input-base {
+  width: 100%;
+  padding: cart.$cart-spacing-sm cart.$cart-spacing-md;
+  border: cart.$cart-border-width-1 solid cart.$cart-border-medium;
+  border-radius: cart.$cart-border-radius-md;
+  background: cart.$cart-surface;
+  color: cart.$cart-text-primary;
+  font-family: cart.$cart-font-family;
+  font-size: cart.$cart-font-size-base;
+  line-height: cart.$cart-line-height-normal;
+  transition: cart.$cart-transition-normal;
+  
+  &::placeholder {
+    color: cart.$cart-text-tertiary;
+  }
+  
+  &:hover {
+    border-color: cart.$cart-border-dark;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: cart.$cart-border-focus;
+    box-shadow: 0 0 0 cart.$cart-focus-ring-width rgba(cart.$cart-focus-ring-color, cart.$cart-focus-ring-opacity);
+  }
+  
+  &:disabled {
+    background: cart.$cart-background-dark;
+    color: cart.$cart-text-disabled;
+    cursor: not-allowed;
+  }
+  
+  &.error {
+    border-color: cart.$cart-danger;
+    
+    &:focus {
+      box-shadow: 0 0 0 cart.$cart-focus-ring-width rgba(cart.$cart-danger, cart.$cart-focus-ring-opacity);
+    }
+  }
+}
+
+@mixin cart-input-number {
+  @include cart-input-base;
+  text-align: center;
+  -moz-appearance: textfield;
+  
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@mixin cart-select {
+  @include cart-input-base;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right cart.$cart-spacing-sm center;
+  background-repeat: no-repeat;
+  background-size: 16px 12px;
+  padding-right: cart.$cart-spacing-xl;
+}
+
+// ========================================
+// MIXINS DE TIPOGRAFÍA
+// ========================================
+
+@mixin cart-text-style($size: 'base', $weight: 'normal', $color: 'primary') {
+  font-family: cart.$cart-font-family;
+  
+  @if $size == 'xs' { font-size: cart.$cart-font-size-xs; }
+  @else if $size == 'sm' { font-size: cart.$cart-font-size-sm; }
+  @else if $size == 'lg' { font-size: cart.$cart-font-size-lg; }
+  @else if $size == 'xl' { font-size: cart.$cart-font-size-xl; }
+  @else if $size == '2xl' { font-size: cart.$cart-font-size-2xl; }
+  @else if $size == '3xl' { font-size: cart.$cart-font-size-3xl; }
+  @else if $size == '4xl' { font-size: cart.$cart-font-size-4xl; }
+  @else { font-size: cart.$cart-font-size-base; }
+  
+  @if $weight == 'light' { font-weight: cart.$cart-font-weight-light; }
+  @else if $weight == 'medium' { font-weight: cart.$cart-font-weight-medium; }
+  @else if $weight == 'semibold' { font-weight: cart.$cart-font-weight-semibold; }
+  @else if $weight == 'bold' { font-weight: cart.$cart-font-weight-bold; }
+  @else if $weight == 'extrabold' { font-weight: cart.$cart-font-weight-extrabold; }
+  @else { font-weight: cart.$cart-font-weight-normal; }
+  
+  @if $color == 'secondary' { color: cart.$cart-text-secondary; }
+  @else if $color == 'tertiary' { color: cart.$cart-text-tertiary; }
+  @else if $color == 'disabled' { color: cart.$cart-text-disabled; }
+  @else if $color == 'inverse' { color: cart.$cart-text-inverse; }
+  @else { color: cart.$cart-text-primary; }
+  
+  line-height: cart.$cart-line-height-normal;
+}
+
+@mixin cart-heading($level: 1) {
+  @if $level == 1 {
+    @include cart-text-style('4xl', 'bold');
+  } @else if $level == 2 {
+    @include cart-text-style('3xl', 'bold');
+  } @else if $level == 3 {
+    @include cart-text-style('2xl', 'semibold');
+  } @else if $level == 4 {
+    @include cart-text-style('xl', 'semibold');
+  } @else if $level == 5 {
+    @include cart-text-style('lg', 'medium');
+  } @else if $level == 6 {
+    @include cart-text-style('base', 'medium');
+  }
+  
+  margin: 0;
+  letter-spacing: cart.$cart-letter-spacing-tight;
+}
+
+@mixin cart-body-text($size: 'base', $color: 'primary') {
+  @include cart-text-style($size, 'normal', $color);
+  line-height: cart.$cart-line-height-relaxed;
+}
+
+@mixin cart-caption($color: 'secondary') {
+  @include cart-text-style('sm', 'normal', $color);
+  line-height: cart.$cart-line-height-normal;
+}
+
+// ========================================
+// MIXINS DE ESTADOS
+// ========================================
+
+@mixin cart-loading {
+  opacity: cart.$cart-opacity-loading;
+  pointer-events: none;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: cart.$cart-loading-spinner-size;
+    height: cart.$cart-loading-spinner-size;
+    margin: calc(-#{cart.$cart-loading-spinner-size} / 2) 0 0 calc(-#{cart.$cart-loading-spinner-size} / 2);
+    border: 2px solid cart.$cart-border-light;
+    border-top-color: cart.$cart-primary;
+    border-radius: 50%;
+    animation: cart-spin 1s linear infinite;
+  }
+}
+
+@mixin cart-skeleton {
+  background: linear-gradient(
+    90deg,
+    cart.$cart-background-dark 25%,
+    cart.$cart-border-light 50%,
+    cart.$cart-background-dark 75%
+  );
+  background-size: 200% 100%;
+  animation: cart-skeleton-loading 1.5s infinite;
+  border-radius: cart.$cart-border-radius-sm;
+}
+
+@mixin cart-disabled {
+  opacity: cart.$cart-opacity-disabled;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+// ========================================
+// MIXINS DE ANIMACIONES
+// ========================================
+
+@mixin cart-fade-in($duration: cart.$cart-animation-duration-normal) {
+  animation: cart-fade-in $duration cart.$cart-animation-easing;
+}
+
+@mixin cart-slide-in-up($duration: cart.$cart-animation-duration-normal) {
+  animation: cart-slide-in-up $duration cart.$cart-animation-easing;
+}
+
+@mixin cart-scale-in($duration: cart.$cart-animation-duration-normal) {
+  animation: cart-scale-in $duration cart.$cart-animation-easing;
+}
+
+@mixin cart-bounce-in($duration: cart.$cart-animation-duration-slow) {
+  animation: cart-bounce-in $duration cart.$cart-animation-easing-bounce;
+}
+
+// ========================================
+// MIXINS DE RESPONSIVE
+// ========================================
+
+@mixin cart-mobile-only {
+  @media (max-width: 640px) {
+    @content;
+  }
+}
+
+@mixin cart-tablet-only {
+  @media (min-width: 641px) and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin cart-desktop-only {
+  @media (min-width: 769px) {
+    @content;
+  }
+}
+
+@mixin cart-tablet-up {
+  @media (min-width: 641px) {
+    @content;
+  }
+}
+
+@mixin cart-desktop-up {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
+// ========================================
+// MIXINS DE ACCESIBILIDAD
+// ========================================
+
+@mixin cart-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin cart-focus-visible {
+  &:focus-visible {
+    outline: cart.$cart-focus-ring-width solid cart.$cart-focus-ring-color;
+    outline-offset: cart.$cart-focus-ring-offset;
+  }
+}
+
+@mixin cart-reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+// ========================================
+// MIXINS DE UTILIDADES
+// ========================================
+
+@mixin cart-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin cart-truncate-multiline($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@mixin cart-scrollbar {
+  &::-webkit-scrollbar {
+    width: cart.$cart-scrollbar-width;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: cart.$cart-scrollbar-track-color;
+    border-radius: cart.$cart-scrollbar-radius;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: cart.$cart-scrollbar-thumb-color;
+    border-radius: cart.$cart-scrollbar-radius;
+    
+    &:hover {
+      background: cart.$cart-scrollbar-thumb-hover-color;
+    }
+  }
+}
+
+@mixin cart-print-hidden {
+  @media print {
+    display: none !important;
+  }
+}
+
+// ========================================
+// KEYFRAMES DE ANIMACIONES
+// ========================================
+
+@keyframes cart-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cart-skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes cart-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cart-slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cart-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cart-bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

@@ -1,0 +1,460 @@
+// ========================================
+// UTILIDADES ESPECÍFICAS DEL CARRITO
+// ========================================
+
+@use './_cart-variables.scss' as cart;
+@use './_cart-mixins.scss' as cart-mixins;
+
+// ========================================
+// UTILIDADES DE LAYOUT
+// ========================================
+
+.cart-container {
+  @include cart-mixins.cart-container;
+}
+
+.cart-grid {
+  @include cart-mixins.cart-grid;
+}
+
+.cart-flex {
+  @include cart-mixins.cart-flex;
+}
+
+.cart-flex-center {
+  @include cart-mixins.cart-flex-center;
+}
+
+.cart-flex-between {
+  @include cart-mixins.cart-flex-between;
+}
+
+.cart-flex-column {
+  @include cart-mixins.cart-flex-column;
+}
+
+// ========================================
+// UTILIDADES DE ESPACIADO
+// ========================================
+
+.cart-p-2xs { padding: cart.$cart-spacing-2xs; }
+.cart-p-xs { padding: cart.$cart-spacing-xs; }
+.cart-p-sm { padding: cart.$cart-spacing-sm; }
+.cart-p-md { padding: cart.$cart-spacing-md; }
+.cart-p-lg { padding: cart.$cart-spacing-lg; }
+.cart-p-xl { padding: cart.$cart-spacing-xl; }
+.cart-p-2xl { padding: cart.$cart-spacing-2xl; }
+.cart-p-3xl { padding: cart.$cart-spacing-3xl; }
+
+.cart-px-2xs { padding-left: cart.$cart-spacing-2xs; padding-right: cart.$cart-spacing-2xs; }
+.cart-px-xs { padding-left: cart.$cart-spacing-xs; padding-right: cart.$cart-spacing-xs; }
+.cart-px-sm { padding-left: cart.$cart-spacing-sm; padding-right: cart.$cart-spacing-sm; }
+.cart-px-md { padding-left: cart.$cart-spacing-md; padding-right: cart.$cart-spacing-md; }
+.cart-px-lg { padding-left: cart.$cart-spacing-lg; padding-right: cart.$cart-spacing-lg; }
+.cart-px-xl { padding-left: cart.$cart-spacing-xl; padding-right: cart.$cart-spacing-xl; }
+.cart-px-2xl { padding-left: cart.$cart-spacing-2xl; padding-right: cart.$cart-spacing-2xl; }
+.cart-px-3xl { padding-left: cart.$cart-spacing-3xl; padding-right: cart.$cart-spacing-3xl; }
+
+.cart-py-2xs { padding-top: cart.$cart-spacing-2xs; padding-bottom: cart.$cart-spacing-2xs; }
+.cart-py-xs { padding-top: cart.$cart-spacing-xs; padding-bottom: cart.$cart-spacing-xs; }
+.cart-py-sm { padding-top: cart.$cart-spacing-sm; padding-bottom: cart.$cart-spacing-sm; }
+.cart-py-md { padding-top: cart.$cart-spacing-md; padding-bottom: cart.$cart-spacing-md; }
+.cart-py-lg { padding-top: cart.$cart-spacing-lg; padding-bottom: cart.$cart-spacing-lg; }
+.cart-py-xl { padding-top: cart.$cart-spacing-xl; padding-bottom: cart.$cart-spacing-xl; }
+.cart-py-2xl { padding-top: cart.$cart-spacing-2xl; padding-bottom: cart.$cart-spacing-2xl; }
+.cart-py-3xl { padding-top: cart.$cart-spacing-3xl; padding-bottom: cart.$cart-spacing-3xl; }
+
+.cart-m-2xs { margin: cart.$cart-spacing-2xs; }
+.cart-m-xs { margin: cart.$cart-spacing-xs; }
+.cart-m-sm { margin: cart.$cart-spacing-sm; }
+.cart-m-md { margin: cart.$cart-spacing-md; }
+.cart-m-lg { margin: cart.$cart-spacing-lg; }
+.cart-m-xl { margin: cart.$cart-spacing-xl; }
+.cart-m-2xl { margin: cart.$cart-spacing-2xl; }
+.cart-m-3xl { margin: cart.$cart-spacing-3xl; }
+
+.cart-mx-2xs { margin-left: cart.$cart-spacing-2xs; margin-right: cart.$cart-spacing-2xs; }
+.cart-mx-xs { margin-left: cart.$cart-spacing-xs; margin-right: cart.$cart-spacing-xs; }
+.cart-mx-sm { margin-left: cart.$cart-spacing-sm; margin-right: cart.$cart-spacing-sm; }
+.cart-mx-md { margin-left: cart.$cart-spacing-md; margin-right: cart.$cart-spacing-md; }
+.cart-mx-lg { margin-left: cart.$cart-spacing-lg; margin-right: cart.$cart-spacing-lg; }
+.cart-mx-xl { margin-left: cart.$cart-spacing-xl; margin-right: cart.$cart-spacing-xl; }
+.cart-mx-2xl { margin-left: cart.$cart-spacing-2xl; margin-right: cart.$cart-spacing-2xl; }
+.cart-mx-3xl { margin-left: cart.$cart-spacing-3xl; margin-right: cart.$cart-spacing-3xl; }
+
+.cart-my-2xs { margin-top: cart.$cart-spacing-2xs; margin-bottom: cart.$cart-spacing-2xs; }
+.cart-my-xs { margin-top: cart.$cart-spacing-xs; margin-bottom: cart.$cart-spacing-xs; }
+.cart-my-sm { margin-top: cart.$cart-spacing-sm; margin-bottom: cart.$cart-spacing-sm; }
+.cart-my-md { margin-top: cart.$cart-spacing-md; margin-bottom: cart.$cart-spacing-md; }
+.cart-my-lg { margin-top: cart.$cart-spacing-lg; margin-bottom: cart.$cart-spacing-lg; }
+.cart-my-xl { margin-top: cart.$cart-spacing-xl; margin-bottom: cart.$cart-spacing-xl; }
+.cart-my-2xl { margin-top: cart.$cart-spacing-2xl; margin-bottom: cart.$cart-spacing-2xl; }
+.cart-my-3xl { margin-top: cart.$cart-spacing-3xl; margin-bottom: cart.$cart-spacing-3xl; }
+
+.cart-gap-2xs { gap: cart.$cart-spacing-2xs; }
+.cart-gap-xs { gap: cart.$cart-spacing-xs; }
+.cart-gap-sm { gap: cart.$cart-spacing-sm; }
+.cart-gap-md { gap: cart.$cart-spacing-md; }
+.cart-gap-lg { gap: cart.$cart-spacing-lg; }
+.cart-gap-xl { gap: cart.$cart-spacing-xl; }
+.cart-gap-2xl { gap: cart.$cart-spacing-2xl; }
+.cart-gap-3xl { gap: cart.$cart-spacing-3xl; }
+
+// ========================================
+// UTILIDADES DE TIPOGRAFÍA
+// ========================================
+
+.cart-text-xs { @include cart-mixins.cart-text-style('xs'); }
+.cart-text-sm { @include cart-mixins.cart-text-style('sm'); }
+.cart-text-base { @include cart-mixins.cart-text-style('base'); }
+.cart-text-lg { @include cart-mixins.cart-text-style('lg'); }
+.cart-text-xl { @include cart-mixins.cart-text-style('xl'); }
+.cart-text-2xl { @include cart-mixins.cart-text-style('2xl'); }
+.cart-text-3xl { @include cart-mixins.cart-text-style('3xl'); }
+.cart-text-4xl { @include cart-mixins.cart-text-style('4xl'); }
+
+.cart-font-light { font-weight: cart.$cart-font-weight-light; }
+.cart-font-normal { font-weight: cart.$cart-font-weight-normal; }
+.cart-font-medium { font-weight: cart.$cart-font-weight-medium; }
+.cart-font-semibold { font-weight: cart.$cart-font-weight-semibold; }
+.cart-font-bold { font-weight: cart.$cart-font-weight-bold; }
+.cart-font-extrabold { font-weight: cart.$cart-font-weight-extrabold; }
+
+.cart-text-primary { color: cart.$cart-text-primary; }
+.cart-text-secondary { color: cart.$cart-text-secondary; }
+.cart-text-tertiary { color: cart.$cart-text-tertiary; }
+.cart-text-disabled { color: cart.$cart-text-disabled; }
+.cart-text-inverse { color: cart.$cart-text-inverse; }
+
+.cart-heading-1 { @include cart-mixins.cart-heading(1); }
+.cart-heading-2 { @include cart-mixins.cart-heading(2); }
+.cart-heading-3 { @include cart-mixins.cart-heading(3); }
+.cart-heading-4 { @include cart-mixins.cart-heading(4); }
+.cart-heading-5 { @include cart-mixins.cart-heading(5); }
+.cart-heading-6 { @include cart-mixins.cart-heading(6); }
+
+.cart-body-text { @include cart-mixins.cart-body-text; }
+.cart-caption { @include cart-mixins.cart-caption; }
+
+.cart-truncate { @include cart-mixins.cart-truncate; }
+.cart-truncate-2 { @include cart-mixins.cart-truncate-multiline(2); }
+.cart-truncate-3 { @include cart-mixins.cart-truncate-multiline(3); }
+
+// ========================================
+// UTILIDADES DE COLORES
+// ========================================
+
+.cart-bg-primary { background-color: cart.$cart-primary; }
+.cart-bg-secondary { background-color: cart.$cart-secondary; }
+.cart-bg-success { background-color: cart.$cart-success; }
+.cart-bg-danger { background-color: cart.$cart-danger; }
+.cart-bg-warning { background-color: cart.$cart-warning; }
+.cart-bg-surface { background-color: cart.$cart-surface; }
+.cart-bg-background { background-color: cart.$cart-background; }
+
+.cart-border-primary { border-color: cart.$cart-primary; }
+.cart-border-secondary { border-color: cart.$cart-secondary; }
+.cart-border-light { border-color: cart.$cart-border-light; }
+.cart-border-medium { border-color: cart.$cart-border-medium; }
+.cart-border-dark { border-color: cart.$cart-border-dark; }
+
+// ========================================
+// UTILIDADES DE BORDES
+// ========================================
+
+.cart-border { border: cart.$cart-border-width-1 solid cart.$cart-border-light; }
+.cart-border-0 { border: cart.$cart-border-width-0; }
+.cart-border-2 { border: cart.$cart-border-width-2 solid cart.$cart-border-light; }
+.cart-border-4 { border: cart.$cart-border-width-4 solid cart.$cart-border-light; }
+
+.cart-rounded-none { border-radius: cart.$cart-border-radius-none; }
+.cart-rounded-xs { border-radius: cart.$cart-border-radius-xs; }
+.cart-rounded-sm { border-radius: cart.$cart-border-radius-sm; }
+.cart-rounded-md { border-radius: cart.$cart-border-radius-md; }
+.cart-rounded-lg { border-radius: cart.$cart-border-radius-lg; }
+.cart-rounded-xl { border-radius: cart.$cart-border-radius-xl; }
+.cart-rounded-2xl { border-radius: cart.$cart-border-radius-2xl; }
+.cart-rounded-full { border-radius: cart.$cart-border-radius-full; }
+
+// ========================================
+// UTILIDADES DE SOMBRAS
+// ========================================
+
+.cart-shadow-none { box-shadow: none; }
+.cart-shadow-xs { box-shadow: cart.$cart-shadow-xs; }
+.cart-shadow-sm { box-shadow: cart.$cart-shadow-sm; }
+.cart-shadow-md { box-shadow: cart.$cart-shadow-md; }
+.cart-shadow-lg { box-shadow: cart.$cart-shadow-lg; }
+.cart-shadow-xl { box-shadow: cart.$cart-shadow-xl; }
+
+// ========================================
+// UTILIDADES DE BOTONES
+// ========================================
+
+.cart-btn {
+  @include cart-mixins.cart-button-base;
+}
+
+.cart-btn-primary {
+  @include cart-mixins.cart-button-primary;
+}
+
+.cart-btn-secondary {
+  @include cart-mixins.cart-button-secondary;
+}
+
+.cart-btn-success {
+  @include cart-mixins.cart-button-success;
+}
+
+.cart-btn-danger {
+  @include cart-mixins.cart-button-danger;
+}
+
+.cart-btn-warning {
+  @include cart-mixins.cart-button-warning;
+}
+
+.cart-btn-outline {
+  @include cart-mixins.cart-button-outline;
+}
+
+.cart-btn-ghost {
+  @include cart-mixins.cart-button-ghost;
+}
+
+.cart-btn-sm {
+  @include cart-mixins.cart-button-size('sm');
+}
+
+.cart-btn-lg {
+  @include cart-mixins.cart-button-size('lg');
+}
+
+// ========================================
+// UTILIDADES DE FORMULARIOS
+// ========================================
+
+.cart-input {
+  @include cart-mixins.cart-input-base;
+}
+
+.cart-input-number {
+  @include cart-mixins.cart-input-number;
+}
+
+.cart-select {
+  @include cart-mixins.cart-select;
+}
+
+// ========================================
+// UTILIDADES DE COMPONENTES
+// ========================================
+
+.cart-card {
+  @include cart-mixins.cart-card;
+}
+
+.cart-card-elevated {
+  @include cart-mixins.cart-card-elevated;
+}
+
+.cart-card-interactive {
+  @include cart-mixins.cart-card-interactive;
+}
+
+// ========================================
+// UTILIDADES DE ESTADOS
+// ========================================
+
+.cart-loading {
+  @include cart-mixins.cart-loading;
+}
+
+.cart-skeleton {
+  @include cart-mixins.cart-skeleton;
+}
+
+.cart-disabled {
+  @include cart-mixins.cart-disabled;
+}
+
+// ========================================
+// UTILIDADES DE ANIMACIONES
+// ========================================
+
+.cart-fade-in {
+  @include cart-mixins.cart-fade-in;
+}
+
+.cart-slide-in-up {
+  @include cart-mixins.cart-slide-in-up;
+}
+
+.cart-scale-in {
+  @include cart-mixins.cart-scale-in;
+}
+
+.cart-bounce-in {
+  @include cart-mixins.cart-bounce-in;
+}
+
+// ========================================
+// UTILIDADES DE ACCESIBILIDAD
+// ========================================
+
+.cart-sr-only {
+  @include cart-mixins.cart-sr-only;
+}
+
+.cart-focus-visible {
+  @include cart-mixins.cart-focus-visible;
+}
+
+// ========================================
+// UTILIDADES DE RESPONSIVE
+// ========================================
+
+@include cart-mixins.cart-mobile-only {
+  .cart-mobile-hidden {
+    display: none !important;
+  }
+}
+
+@include cart-mixins.cart-tablet-up {
+  .cart-mobile-only {
+    display: none !important;
+  }
+}
+
+@include cart-mixins.cart-desktop-up {
+  .cart-tablet-only {
+    display: none !important;
+  }
+}
+
+// ========================================
+// UTILIDADES DE POSICIONAMIENTO
+// ========================================
+
+.cart-relative { position: relative; }
+.cart-absolute { position: absolute; }
+.cart-fixed { position: fixed; }
+.cart-sticky { position: sticky; }
+
+.cart-top-0 { top: 0; }
+.cart-right-0 { right: 0; }
+.cart-bottom-0 { bottom: 0; }
+.cart-left-0 { left: 0; }
+
+.cart-inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+
+// ========================================
+// UTILIDADES DE DISPLAY
+// ========================================
+
+.cart-block { display: block; }
+.cart-inline-block { display: inline-block; }
+.cart-inline { display: inline; }
+.cart-flex { display: flex; }
+.cart-inline-flex { display: inline-flex; }
+.cart-grid { display: grid; }
+.cart-inline-grid { display: inline-grid; }
+.cart-hidden { display: none; }
+
+// ========================================
+// UTILIDADES DE ALINEACIÓN
+// ========================================
+
+.cart-items-start { align-items: flex-start; }
+.cart-items-center { align-items: center; }
+.cart-items-end { align-items: flex-end; }
+.cart-items-stretch { align-items: stretch; }
+
+.cart-justify-start { justify-content: flex-start; }
+.cart-justify-center { justify-content: center; }
+.cart-justify-end { justify-content: flex-end; }
+.cart-justify-between { justify-content: space-between; }
+.cart-justify-around { justify-content: space-around; }
+.cart-justify-evenly { justify-content: space-evenly; }
+
+// ========================================
+// UTILIDADES DE ANCHO Y ALTO
+// ========================================
+
+.cart-w-full { width: 100%; }
+.cart-w-auto { width: auto; }
+.cart-w-fit { width: fit-content; }
+.cart-w-max { width: max-content; }
+
+.cart-h-full { height: 100%; }
+.cart-h-auto { height: auto; }
+.cart-h-fit { height: fit-content; }
+.cart-h-max { height: max-content; }
+
+.cart-min-w-0 { min-width: 0; }
+.cart-min-h-0 { min-height: 0; }
+
+// ========================================
+// UTILIDADES DE OVERFLOW
+// ========================================
+
+.cart-overflow-auto { overflow: auto; }
+.cart-overflow-hidden { overflow: hidden; }
+.cart-overflow-visible { overflow: visible; }
+.cart-overflow-scroll { overflow: scroll; }
+
+.cart-overflow-x-auto { overflow-x: auto; }
+.cart-overflow-y-auto { overflow-y: auto; }
+
+// ========================================
+// UTILIDADES DE CURSOR
+// ========================================
+
+.cart-cursor-pointer { cursor: pointer; }
+.cart-cursor-default { cursor: default; }
+.cart-cursor-not-allowed { cursor: not-allowed; }
+.cart-cursor-wait { cursor: wait; }
+
+// ========================================
+// UTILIDADES DE TRANSFORMACIÓN
+// ========================================
+
+.cart-transform-none { transform: none; }
+.cart-transform-gpu { transform: translateZ(0); }
+
+.cart-translate-x-0 { transform: translateX(0); }
+.cart-translate-y-0 { transform: translateY(0); }
+.cart-translate-x-full { transform: translateX(100%); }
+.cart-translate-y-full { transform: translateY(100%); }
+
+.cart-scale-0 { transform: scale(0); }
+.cart-scale-50 { transform: scale(0.5); }
+.cart-scale-75 { transform: scale(0.75); }
+.cart-scale-90 { transform: scale(0.9); }
+.cart-scale-95 { transform: scale(0.95); }
+.cart-scale-100 { transform: scale(1); }
+.cart-scale-105 { transform: scale(1.05); }
+.cart-scale-110 { transform: scale(1.1); }
+.cart-scale-125 { transform: scale(1.25); }
+.cart-scale-150 { transform: scale(1.5); }
+
+// ========================================
+// UTILIDADES DE Z-INDEX
+// ========================================
+
+.cart-z-0 { z-index: 0; }
+.cart-z-10 { z-index: 10; }
+.cart-z-20 { z-index: 20; }
+.cart-z-30 { z-index: 30; }
+.cart-z-40 { z-index: 40; }
+.cart-z-50 { z-index: 50; }
+.cart-z-auto { z-index: auto; }
+
+.cart-z-dropdown { z-index: cart.$cart-z-dropdown; }
+.cart-z-sticky { z-index: cart.$cart-z-sticky; }
+.cart-z-fixed { z-index: cart.$cart-z-fixed; }
+.cart-z-modal-backdrop { z-index: cart.$cart-z-modal-backdrop; }
+.cart-z-modal { z-index: cart.$cart-z-modal; }
+.cart-z-popover { z-index: cart.$cart-z-popover; }
+.cart-z-tooltip { z-index: cart.$cart-z-tooltip; } 

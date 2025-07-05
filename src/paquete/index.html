@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paquetes Turísticos - Vive la experiencia | Air ipet 57</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/autenticacion.css">
+    <link rel="stylesheet" href="css/perfil.css">
+    <link rel="stylesheet" href="css/adicional.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__left">
+                    <div class="logo">
+                        <div class="logo-container">
+                            <svg class="planet-logo" viewBox="0 0 100 100" width="40" height="40">
+                                <!-- Planeta -->
+                                <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+                                <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+                                <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+                                <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+                                <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+                                <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+                                
+                                <!-- Avión -->
+                                <g transform="translate(70,30) rotate(45)">
+                                    <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                                    <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                                    <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+                                </g>
+                                
+                                <!-- Estela del avión -->
+                                <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+                            </svg>
+                        </div>
+                        <h1><a href="index.html" style="text-decoration: none; color: inherit;">Air ipet 57</a></h1>
+                    </div>
+                </div>
+                
+                <div class="header__center">
+                    <nav class="main-nav">
+                        <a href="paquetes.html" class="nav-link">Paquetes</a>
+                        <a href="vuelos.html" class="nav-link">Vuelos</a>
+                        <a href="contacto.html" class="nav-link">Contacto</a>
+                        <a href="experiencias.html" class="nav-link">Experiencias</a>
+                    </nav>
+                </div>
+                
+                <div class="header__right">
+                    <div class="user-menu">
+                        <button class="user-btn" id="userMenuBtn">
+                            <i class="fas fa-user-circle"></i>
+                        </button>
+                        <div class="user-dropdown" id="userDropdown">
+                            <a href="perfil.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                Mi Perfil
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="inicio-sesion.html" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Cerrar Sesión
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-menu">
+                        <button class="cart-btn" id="cartBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </button>
+                        <div class="cart-dropdown" id="cartDropdown">
+                            <div class="cart-dropdown-header">
+                                <h4>Carrito de Compras</h4>
+                            </div>
+                            <div class="cart-dropdown-content" id="cartDropdownContent">
+                                <div class="empty-cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <p>Tu carrito está vacío</p>
+                                    <a href="paquetes.html" class="btn btn--primary btn--small">Explorar Paquetes</a>
+                                </div>
+                            </div>
+                            <div class="cart-dropdown-footer">
+                                <a href="carrito.html" class="btn btn--primary btn--full">Ver Carrito Completo</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="inicio-sesion.html" class="btn btn--primary">Iniciar sesión</a>
+                    <a href="registrarse.html" class="btn btn--secondary">Registrarse</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero__background">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Playa tropical" class="hero__image">
+        </div>
+        <div class="hero__content">
+            <div class="container">
+                <h2 class="hero__title">
+                    Vivi la experiencia de<br>
+                    tu vida con <span class="highlight">nuestros<br>
+                    paquetes turísticos.</span>
+                </h2>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Accommodation Filters Section -->
+    <section class="accommodation-filters-section">
+        <div class="container">
+            <div class="filters-header">
+                <h3>Filtrar alojamientos</h3>
+                <button class="clear-accommodation-filters" id="clearAccommodationFilters">Limpiar filtros</button>
+            </div>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label>Tipo de alojamiento</label>
+                    <select id="accommodationTypeFilter">
+                        <option value="">Todos</option>
+                        <option value="hotel">Hotel</option>
+                        <option value="apartamento">Hostel</option>
+                        <option value="habitacion">Habitación</option>
+                        <option value="suite">Cabaña</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Precio máximo por noche</label>
+                    <select id="accommodationPriceFilter">
+                        <option value="">Sin límite</option>
+                        <option value="800">Hasta €800</option>
+                        <option value="1000">Hasta €1,000</option>
+                        <option value="1200">Hasta €1,200</option>
+                        <option value="1500">Hasta €1,500</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Huéspedes</label>
+                    <select id="accommodationGuestsFilter">
+                        <option value="">Cualquiera</option>
+                        <option value="1">1 huésped</option>
+                        <option value="2">2 huéspedes</option>
+                        <option value="3">3 huéspedes</option>
+                        <option value="4">4+ huéspedes</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Ordenar por</label>
+                    <select id="accommodationSortFilter">
+                        <option value="relevance">Relevancia</option>
+                        <option value="price-low">Precio: menor a mayor</option>
+                        <option value="price-high">Precio: mayor a menor</option>
+                        <option value="guests">Capacidad</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Properties Sections -->
+    <main class="main">
+        <div class="container">
+            <!-- París Section -->
+            <section class="properties-section">
+                <h3 class="section-title">
+                    <a href="paquetes.html?destino=paris" style="text-decoration: none; color: inherit;">
+                        Disponibles en París el mes que viene <i class="fas fa-chevron-right"></i>
+                    </a>
+                </h3>
+                <div class="properties-grid" id="parisGrid">
+                    <div class="property-card" data-city="paris" data-price="1299" data-id="1">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Habitación en Paris">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 1)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Habitación completa en París</h4>
+                            <p class="property-details">2-4 huéspedes • 1 dormitorio • 1 cama</p>
+                            <div class="property-price">€1,299</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(1, 'Habitación completa en París', 1299, 'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="property-card" data-city="paris" data-price="899" data-id="2">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1586611292717-f828b167408c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Departamento en París">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 2)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Departamento en París</h4>
+                            <p class="property-details">1-2 huéspedes • Estudio • 1 cama</p>
+                            <div class="property-price">€899</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(2, 'Departamento en París', 899, 'https://images.unsplash.com/photo-1586611292717-f828b167408c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="property-card" data-city="paris" data-price="1099" data-id="3">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Apartamento en París">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 3)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Apartamento en París</h4>
+                            <p class="property-details">2-3 huéspedes • 1 dormitorio • 1 cama</p>
+                            <div class="property-price">€1,099</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(3, 'Apartamento en París', 1099, 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="property-card" data-city="paris" data-price="799" data-id="4">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Habitación en París">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 4)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Habitación en Calais</h4>
+                            <p class="property-details">1-2 huéspedes • 1 dormitorio • 1 cama</p>
+                            <div class="property-price">€799</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(4, 'Habitación en Calais', 799, 'https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="property-card" data-city="paris" data-price="1199" data-id="5">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Habitación en Boulogne">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 5)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Habitación en Boulogne</h4>
+                            <p class="property-details">2-4 huéspedes • 2 dormitorios • 2 camas</p>
+                            <div class="property-price">€1,199</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(5, 'Habitación en Boulogne', 1199, 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="property-card" data-city="paris" data-price="999" data-id="6">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Habitación en Montreuil">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 6)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Habitación en Montreuil</h4>
+                            <p class="property-details">1-3 huéspedes • 1 dormitorio • 1 cama</p>
+                            <div class="property-price">€999</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(6, 'Habitación en Montreuil', 999, 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seattle Section -->
+            <section class="properties-section">
+                <h3 class="section-title">
+                    <a href="paquetes.html?destino=seattle" style="text-decoration: none; color: inherit;">
+                        Alojamientos en Seattle <i class="fas fa-chevron-right"></i>
+                    </a>
+                </h3>
+                <div class="properties-grid" id="seattleGrid">
+                    <div class="property-card" data-city="seattle" data-price="1199" data-id="7">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1560448075-bb485b067938?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Alojamiento en Beacon Hill">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 7)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Alojamiento en Beacon Hill</h4>
+                            <p class="property-details">2-4 huéspedes • 2 dormitorios • 2 camas</p>
+                            <div class="property-price">€1,199</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(7, 'Alojamiento en Beacon Hill', 1199, 'https://images.unsplash.com/photo-1560448075-bb485b067938?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="property-card" data-city="seattle" data-price="899" data-id="8">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Habitación en Greenwood">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 8)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Habitación en Greenwood</h4>
+                            <p class="property-details">1-2 huéspedes • 1 dormitorio • 1 cama</p>
+                            <div class="property-price">€899</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(8, 'Habitación en Greenwood', 899, 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="property-card" data-city="seattle" data-price="1099" data-id="9">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Habitación en Beacon Hill">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 9)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Habitación en Beacon Hill</h4>
+                            <p class="property-details">2-3 huéspedes • 1 dormitorio • 1 cama</p>
+                            <div class="property-price">€1,099</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(9, 'Habitación en Beacon Hill', 1099, 'https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="property-card" data-city="seattle" data-price="799" data-id="10">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Habitación en Fremont">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 10)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Habitación en Fremont</h4>
+                            <p class="property-details">1-2 huéspedes • 1 dormitorio • 1 cama</p>
+                            <div class="property-price">€799</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(10, 'Habitación en Fremont', 799, 'https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="property-card" data-city="seattle" data-price="1299" data-id="11">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Habitación en Ravenna">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 11)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Habitación en Ravenna</h4>
+                            <p class="property-details">2-4 huéspedes • 2 dormitorios • 2 camas</p>
+                            <div class="property-price">€1,299</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(11, 'Habitación en Ravenna', 1299, 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="property-card" data-city="seattle" data-price="999" data-id="12">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Suite de huéspedes">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 12)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Suite de huéspedes con entrada independiente en Capitol Hill</h4>
+                            <p class="property-details">1-2 huéspedes • 1 dormitorio • 1 cama</p>
+                            <div class="property-price">€999</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(12, 'Suite de huéspedes Capitol Hill', 999, 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- San Francisco Section -->
+            <section class="properties-section">
+                <h3 class="section-title">
+                    <a href="paquetes.html?destino=san-francisco" style="text-decoration: none; color: inherit;">
+                        Disponibles en San Francisco este fin de semana <i class="fas fa-chevron-right"></i>
+                    </a>
+                </h3>
+                <div class="properties-grid" id="sanFranciscoGrid">
+                    <!-- Similar structure for San Francisco properties -->
+                    <div class="property-card" data-city="san-francisco" data-price="1399" data-id="13">
+                        <div class="property-card__image">
+                            <img src="https://images.unsplash.com/photo-1555636222-cae831e670b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Apartamento en San Francisco">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 13)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card__content">
+                            <h4>Apartamento completo</h4>
+                            <p class="property-details">2-4 huéspedes • 2 dormitorios • 2 camas</p>
+                            <div class="property-price">€1,399</div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart(13, 'Apartamento completo San Francisco', 1399, 'https://images.unsplash.com/photo-1555636222-cae831e670b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Add more San Francisco properties here -->
+                </div>
+            </section>
+
+            <!-- Londres Section -->
+            <section class="properties-section">
+                <h3 class="section-title">
+                    <a href="paquetes.html?destino=londres" style="text-decoration: none; color: inherit;">
+                        Lugares para quedarse en Londres <i class="fas fa-chevron-right"></i>
+                    </a>
+                </h3>
+                <div class="properties-grid" id="londresGrid">
+                    <!-- Londres properties -->
+                </div>
+            </section>
+
+            <!-- Tokio Section -->
+            <section class="properties-section">
+                <h3 class="section-title">
+                    <a href="paquetes.html?destino=tokio" style="text-decoration: none; color: inherit;">
+                        Descubrí alojamientos en Tokio <i class="fas fa-chevron-right"></i>
+                    </a>
+                </h3>
+                <div class="properties-grid" id="tokioGrid">
+                    <!-- Tokio properties -->
+                </div>
+            </section>
+
+            <!-- South Lake Tahoe Section -->
+            <section class="properties-section">
+                <h3 class="section-title">
+                    <a href="paquetes.html?destino=tahoe" style="text-decoration: none; color: inherit;">
+                        Alojamientos populares en South Lake Tahoe <i class="fas fa-chevron-right"></i>
+                    </a>
+                </h3>
+                <div class="properties-grid" id="tahoeGrid">
+                    <!-- Tahoe properties -->
+                </div>
+            </section>
+
+            <!-- Roma Section -->
+            <section class="properties-section">
+                <h3 class="section-title">
+                    <a href="paquetes.html?destino=roma" style="text-decoration: none; color: inherit;">
+                        Alójate en Roma <i class="fas fa-chevron-right"></i>
+                    </a>
+                </h3>
+                <div class="properties-grid" id="romaGrid">
+                    <!-- Roma properties -->
+                </div>
+            </section>
+
+            <!-- Sección de Servicios Adicionales -->
+            <section class="services-section">
+                <div class="container">
+                    <h2 class="services-title">¿Por qué elegir nuestros paquetes turísticos?</h2>
+                    <div class="services-grid">
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Reserva Segura</h3>
+                            <p>Todas nuestras reservas están protegidas con garantía de reembolso completo.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <h3>Soporte 24/7</h3>
+                            <p>Nuestro equipo está disponible las 24 horas para ayudarte en tu viaje.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </div>
+                            <h3>Guías Locales</h3>
+                            <p>Conectamos con guías locales expertos para experiencias auténticas.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h3>Calidad Garantizada</h3>
+                            <p>Todos nuestros alojamientos son verificados y cumplen altos estándares.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección de Testimonios -->
+            <section class="testimonials-section">
+                <div class="container">
+                    <h2 class="testimonials-title">Lo que dicen nuestros viajeros</h2>
+                    <div class="testimonials-grid">
+                        <div class="testimonial-card">
+                            <div class="testimonial-content">
+                                <p>"Una experiencia increíble. El alojamiento superó todas mis expectativas y el servicio fue excepcional."</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <img src="/placeholder.svg?height=50&width=50" alt="María González">
+                                <div>
+                                    <h4>María González</h4>
+                                    <span>Madrid, España</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="testimonial-content">
+                                <p>"Perfecto para familias. Los niños se divirtieron mucho y nosotros pudimos relajarnos completamente."</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <img src="/placeholder.svg?height=50&width=50" alt="Carlos Ruiz">
+                                <div>
+                                    <h4>Carlos Ruiz</h4>
+                                    <span>Barcelona, España</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="testimonial-content">
+                                <p>"La mejor plataforma para encontrar alojamientos únicos. Definitivamente volveré a usarla."</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <img src="/placeholder.svg?height=50&width=50" alt="Ana Martín">
+                                <div>
+                                    <h4>Ana Martín</h4>
+                                    <span>Valencia, España</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-container">
+                            <svg class="planet-logo" viewBox="0 0 100 100" width="60" height="60">
+                                <!-- Planeta -->
+                                <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+                                <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+                                <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+                                <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+                                <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+                                <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+                                
+                                <!-- Avión -->
+                                <g transform="translate(70,30) rotate(45)">
+                                    <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                                    <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                                    <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+                                </g>
+                                
+                                <!-- Estela del avión -->
+                                <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Air ipet 57</h3>
+                            <p>Tu aventura comienza aquí</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">
+                        Descubre el mundo con nosotros. Ofrecemos los mejores paquetes turísticos y alojamientos únicos para hacer de tu viaje una experiencia inolvidable.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Destinos</h4>
+                    <ul>
+                        <li><a href="paquetes.html?destino=paris">París</a></li>
+                        <li><a href="paquetes.html?destino=londres">Londres</a></li>
+                        <li><a href="paquetes.html?destino=tokio">Tokio</a></li>
+                        <li><a href="paquetes.html?destino=roma">Roma</a></li>
+                        <li><a href="paquetes.html?destino=seattle">Seattle</a></li>
+                        <li><a href="paquetes.html?destino=san-francisco">San Francisco</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="paquetes.html">Alojamientos</a></li>
+                        <li><a href="paquetes.html">Paquetes Turísticos</a></li>
+                        <li><a href="experiencias.html">Experiencias</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li><a href="contacto.html">Contacto</a></li>
+                        <li><a href="terms.html">Política de Cancelación</a></li>
+                        <li><a href="terms.html">Términos y Condiciones</a></li>
+                        <li><a href="privacy.html">Privacidad</a></li>
+                        <li><a href="contacto.html">Seguridad</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Suscríbete para recibir ofertas exclusivas y consejos de viaje.</p>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" placeholder="Tu email" required>
+                        <button type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +34 900 123 456</p>
+                        <p><i class="fas fa-envelope"></i> info@airipet57.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Air ipet 57. Todos los derechos reservados.</p>
+                    <div class="payment-methods">
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-paypal"></i>
+                        <i class="fab fa-cc-apple-pay"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function updateCartCount() {
+            const cartCount = document.getElementById('cartCount');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+        }
+
+        function addToCart(id, name, price, image) {
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    image: image,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartDropdown();
+            
+            // Show success message and redirect to cart
+            showNotification(`${name} agregado al carrito`, 'success');
+            
+           
+        }
+
+        function updateCartDropdown() {
+            const cartDropdownContent = document.getElementById('cartDropdownContent');
+            
+            if (cart.length === 0) {
+                cartDropdownContent.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Tu carrito está vacío</p>
+                        <a href="paquetes.html" class="btn btn--primary btn--small">Explorar Paquetes</a>
+                    </div>
+                `;
+            } else {
+                const cartItems = cart.slice(0, 3).map(item => `
+                    <div class="cart-dropdown-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h5>${item.name}</h5>
+                            <p>€${item.price} x ${item.quantity}</p>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="remove-item-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+                
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                
+                cartDropdownContent.innerHTML = `
+                    ${cartItems}
+                    ${cart.length > 3 ? `<p class="more-items">Y ${cart.length - 3} artículos más...</p>` : ''}
+                    <div class="cart-dropdown-total">
+                        <strong>Total: €${total.toLocaleString()}</strong>
+                    </div>
+                `;
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartDropdown();
+        }
+
+        function toggleFavorite(button, id) {
+            const icon = button.querySelector('i');
+            const isFavorited = icon.classList.contains('fas');
+            
+            if (isFavorited) {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                button.classList.remove('active');
+                showNotification('Eliminado de favoritos', 'info');
+            } else {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                button.classList.add('active');
+                showNotification('Agregado a favoritos', 'success');
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification notification--${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // User menu functionality
+        document.getElementById('userMenuBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        });
+
+        // Cart menu functionality
+        document.getElementById('cartBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('cartDropdown');
+            dropdown.classList.toggle('show');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
+            document.getElementById('userDropdown').classList.remove('show');
+            document.getElementById('cartDropdown').classList.remove('show');
+        });
+
+        // Search functionality
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const destino = document.getElementById('destinoSelect').value;
+            const fecha = document.getElementById('fechaSelect').value;
+            const personas = document.getElementById('personasSelect').value;
+            
+            let searchParams = new URLSearchParams();
+            if (destino) searchParams.append('destino', destino);
+            if (fecha) searchParams.append('fecha', fecha);
+            if (personas) searchParams.append('personas', personas);
+            
+            window.location.href = `paquetes.html?${searchParams.toString()}`;
+        });
+
+        // Newsletter form
+        document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            showNotification('¡Gracias por suscribirte a nuestro newsletter!', 'success');
+            this.reset();
+        });
+
+        // Initialize cart on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            updateCartDropdown();
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Accommodation filters functionality
+        function applyAccommodationFilters() {
+            const properties = document.querySelectorAll('.property-card');
+            const typeFilter = document.getElementById('accommodationTypeFilter').value;
+            const priceFilter = document.getElementById('accommodationPriceFilter').value;
+            const guestsFilter = document.getElementById('accommodationGuestsFilter').value;
+            
+            let visibleCount = 0;
+            
+            properties.forEach(property => {
+                let shouldShow = true;
+                const title = property.querySelector('h4').textContent.toLowerCase();
+                const priceText = property.querySelector('.property-price').textContent;
+                const price = parseInt(priceText.replace(/[^\d]/g, ''));
+                const detailsText = property.querySelector('.property-details').textContent;
+                
+                // Type filter
+                if (typeFilter) {
+                    const typeMap = {
+                        'hotel': ['hotel'],
+                        'apartamento': ['apartamento', 'departamento'],
+                        'habitacion': ['habitación', 'habitacion'],
+                        'suite': ['suite']
+                    };
+                    
+                    const typeKeywords = typeMap[typeFilter] || [];
+                    const hasType = typeKeywords.some(keyword => title.includes(keyword));
+                    
+                    if (!hasType) {
+                        shouldShow = false;
+                    }
+                }
+                
+                // Price filter
+                if (priceFilter && price > parseInt(priceFilter)) {
+                    shouldShow = false;
+                }
+                
+                // Guests filter
+                if (guestsFilter) {
+                    const guestsMatch = detailsText.match(/(\d+)-?(\d+)?\s*huéspedes?/);
+                    if (guestsMatch) {
+                        const minGuests = parseInt(guestsMatch[1]);
+                        const maxGuests = guestsMatch[2] ? parseInt(guestsMatch[2]) : minGuests;
+                        const filterGuests = parseInt(guestsFilter);
+                        
+                        if (filterGuests === 4) {
+                            // 4+ guests
+                            if (maxGuests < 4) shouldShow = false;
+                        } else {
+                            // Exact or within range
+                            if (filterGuests < minGuests || filterGuests > maxGuests) {
+                                shouldShow = false;
+                            }
+                        }
+                    }
+                }
+                
+                if (shouldShow) {
+                    property.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    property.style.display = 'none';
+                }
+            });
+            
+            if (visibleCount === 0) {
+                showNotification('No se encontraron alojamientos con esos criterios', 'info');
+            }
+        }
+
+        function sortAccommodations() {
+            const sortBy = document.getElementById('accommodationSortFilter').value;
+            const sections = document.querySelectorAll('.properties-section');
+            
+            sections.forEach(section => {
+                const grid = section.querySelector('.properties-grid');
+                const properties = Array.from(grid.querySelectorAll('.property-card'));
+                
+                properties.sort((a, b) => {
+                    const priceA = parseInt(a.querySelector('.property-price').textContent.replace(/[^\d]/g, ''));
+                    const priceB = parseInt(b.querySelector('.property-price').textContent.replace(/[^\d]/g, ''));
+                    
+                    switch(sortBy) {
+                        case 'price-low':
+                            return priceA - priceB;
+                        case 'price-high':
+                            return priceB - priceA;
+                        case 'guests':
+                            const guestsA = parseInt(a.querySelector('.property-details').textContent.match(/(\d+)/)[1]);
+                            const guestsB = parseInt(b.querySelector('.property-details').textContent.match(/(\d+)/)[1]);
+                            return guestsB - guestsA;
+                        default:
+                            return 0;
+                    }
+                });
+                
+                properties.forEach(property => grid.appendChild(property));
+            });
+        }
+
+        // Add event listeners for accommodation filters
+        document.getElementById('accommodationTypeFilter').addEventListener('change', applyAccommodationFilters);
+        document.getElementById('accommodationPriceFilter').addEventListener('change', applyAccommodationFilters);
+        document.getElementById('accommodationGuestsFilter').addEventListener('change', applyAccommodationFilters);
+        document.getElementById('accommodationSortFilter').addEventListener('change', sortAccommodations);
+
+        // Clear accommodation filters
+        document.getElementById('clearAccommodationFilters').addEventListener('click', function() {
+            document.getElementById('accommodationTypeFilter').value = '';
+            document.getElementById('accommodationPriceFilter').value = '';
+            document.getElementById('accommodationGuestsFilter').value = '';
+            document.getElementById('accommodationSortFilter').value = 'relevance';
+            
+            document.querySelectorAll('.property-card').forEach(property => {
+                property.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

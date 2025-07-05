@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paquetes Turísticos - Air ipet 57</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/autenticacion.css">
+    <link rel="stylesheet" href="css/perfil.css">
+    <link rel="stylesheet" href="css/adicional.css">
+    <link rel="stylesheet" href="css/paquetes.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__left">
+                    <div class="logo">
+                        <div class="logo-container">
+                            <svg class="planet-logo" viewBox="0 0 100 100" width="40" height="40">
+                                <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+                                <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+                                <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+                                <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+                                <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+                                <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+                                <g transform="translate(70,30) rotate(45)">
+                                    <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                                    <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                                    <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+                                </g>
+                                <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+                            </svg>
+                        </div>
+                        <h1><a href="index.html" style="text-decoration: none; color: inherit;">Air ipet 57</a></h1>
+                    </div>
+                </div>
+                
+                <div class="header__center">
+                    <nav class="main-nav">
+                        <a href="index.html" class="nav-link">Alojamientos</a>
+                        <a href="paquetes.html" class="nav-link active">Paquetes</a>
+                        <a href="vuelos.html" class="nav-link active">Vuelos</a>
+                        <a href="contacto.html" class="nav-link">Contacto</a>
+                        <a href="experiencias.html" class="nav-link">Experiencias</a>
+                    </nav>
+                </div>
+                
+                <div class="header__right">
+                    <div class="user-menu">
+                        <button class="user-btn" id="userMenuBtn">
+                            <i class="fas fa-user-circle"></i>
+                        </button>
+                        <div class="user-dropdown" id="userDropdown">
+                            <a href="perfil.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                Mi Perfil
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="inicio-sesion.html" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Cerrar Sesión
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-menu">
+                        <button class="cart-btn" id="cartBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </button>
+                        <div class="cart-dropdown" id="cartDropdown">
+                            <div class="cart-dropdown-header">
+                                <h4>Carrito de Compras</h4>
+                            </div>
+                            <div class="cart-dropdown-content" id="cartDropdownContent">
+                                <div class="empty-cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <p>Tu carrito está vacío</p>
+                                    <a href="paquetes.html" class="btn btn--primary btn--small">Explorar Paquetes</a>
+                                </div>
+                            </div>
+                            <div class="cart-dropdown-footer">
+                                <a href="carrito.html" class="btn btn--primary btn--full">Ver Carrito Completo</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="inicio-sesion.html" class="btn btn--primary">Iniciar sesión</a>
+                    <a href="registrarse.html" class="btn btn--secondary">Registrarse</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero__background">
+            <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Paquetes turísticos" class="hero__image">
+        </div>
+        <div class="hero__content">
+            <div class="container">
+                <h2 class="hero__title">
+                    <span class="highlight">Paquetes completos</span><br>
+                    para vivir el viaje perfecto
+                </h2>    
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <h3 class="section-title">Tipos de paquetes</h3>
+            <div class="categories-grid">
+                <div class="category-card" data-type="aventura">
+                    <div class="category-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h4>Aventura</h4>
+                    <p>Emociones extremas</p>
+                </div>
+                <div class="category-card" data-type="cultural">
+                    <div class="category-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h4>Cultural</h4>
+                    <p>Historia y tradiciones</p>
+                </div>
+                <div class="category-card" data-type="relax">
+                    <div class="category-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h4>Relax</h4>
+                    <p>Descanso total</p>
+                </div>
+                <div class="category-card" data-type="familiar">
+                    <div class="category-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Familiar</h4>
+                    <p>Diversión para todos</p>
+                </div>
+                <div class="category-card" data-type="romantico">
+                    <div class="category-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4>Romántico</h4>
+                    <p>Momentos especiales</p>
+                </div>
+                <div class="category-card" data-type="lujo">
+                    <div class="category-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h4>Lujo</h4>
+                    <p>Experiencias premium</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-header">
+                <h3>Filtrar paquetes</h3>
+                <button class="clear-filters" id="clearFilters">Limpiar filtros</button>
+            </div>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label>Precio máximo</label>
+                    <select id="precioFilter">
+                        <option value="">Sin límite</option>
+                        <option value="1500">Hasta €1,500</option>
+                        <option value="2500">Hasta €2,500</option>
+                        <option value="3500">Hasta €3,500</option>
+                        <option value="5000">Hasta €5,000</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Calificación mínima</label>
+                    <select id="ratingFilter">
+                        <option value="">Cualquiera</option>
+                        <option value="4.5">4.5+ estrellas</option>
+                        <option value="4.0">4.0+ estrellas</option>
+                        <option value="3.5">3.5+ estrellas</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Ordenar por</label>
+                    <select id="sortFilter">
+                        <option value="relevance">Relevancia</option>
+                        <option value="price-low">Precio: menor a mayor</option>
+                        <option value="price-high">Precio: mayor a menor</option>
+                        <option value="rating">Mejor calificación</option>
+                        <option value="duration">Duración</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages Sections -->
+    <main class="main">
+        <div class="container">
+            <!-- Results Info -->
+            <div class="results-info">
+                <h3 id="resultsCount">Mostrando todos los paquetes</h3>
+            </div>
+
+            <!-- Paquetes Destacados -->
+            <section class="packages-section">
+                <h3 class="section-title">Paquetes más populares <i class="fas fa-fire"></i></h3>
+                <div class="packages-grid" id="packagesGrid">
+                    <!-- Japón Imperial -->
+                    <div class="package-card" data-destination="japon" data-type="cultural" data-price="2890" data-rating="4.9" data-duration="10">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Japón Imperial: Tokio y Kioto" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg1')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <div class="package-badge package-badge--bestseller">Más vendido</div>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Cultural</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (234)</span>
+                                </div>
+                            </div>
+                            <h4>Japón Imperial: Tokio y Kioto</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Japón</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 10 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles 4*</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Desayunos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía español</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>JR Pass</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="original-price">€3200</span>
+                                        <span class="price">€2890</span>
+                                        <span class="discount">-10%</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg1', 'Japón Imperial: Tokio y Kioto', 2890, 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Islandia -->
+                    <div class="package-card" data-destination="islandia" data-type="aventura" data-price="2450" data-rating="4.8" data-duration="8">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Islandia: Tierra de Fuego y Hielo" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg2')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <div class="package-badge">Aventura</div>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Aventura</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8 (189)</span>
+                                </div>
+                            </div>
+                            <h4>Islandia: Tierra de Fuego y Hielo</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Islandia</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 8 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Coche alquiler</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Desayunos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€2450</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg2', 'Islandia: Tierra de Fuego y Hielo', 2450, 'https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Maldivas -->
+                    <div class="package-card" data-destination="maldivas" data-type="lujo" data-price="4200" data-rating="4.9" data-duration="7">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Maldivas: Paraíso Tropical" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg3')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <div class="package-badge package-badge--luxury">Lujo</div>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Lujo</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (156)</span>
+                                </div>
+                            </div>
+                            <h4>Maldivas: Paraíso Tropical</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Maldivas</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 7 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Resort 5*</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Todo incluido</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Spa</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Actividades</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="original-price">€4800</span>
+                                        <span class="price">€4200</span>
+                                        <span class="discount">-13%</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg3', 'Maldivas: Paraíso Tropical', 4200, 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Perú Místico -->
+                    <div class="package-card" data-destination="peru" data-type="cultural" data-price="1890" data-rating="4.7" data-duration="9">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Perú Místico: Machu Picchu" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg4')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <div class="package-badge">Cultural</div>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Cultural</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7 (298)</span>
+                                </div>
+                            </div>
+                            <h4>Perú Místico: Machu Picchu</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Perú</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 9 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Tren a Machu Picchu</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Comidas</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€1890</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg4', 'Perú Místico: Machu Picchu', 1890, 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nepal Trekking -->
+                    <div class="package-card" data-destination="nepal" data-type="aventura" data-price="3200" data-rating="4.8" data-duration="16">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1464822759844-d150baec0494?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Nepal: Trekking al Everest" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg5')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Aventura</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8 (89)</span>
+                                </div>
+                            </div>
+                            <h4>Nepal: Trekking al Everest</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Nepal</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 16 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Lodges</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía sherpa</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Permisos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Comidas</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€3200</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg5', 'Nepal: Trekking al Everest', 3200, 'https://images.unsplash.com/photo-1464822759844-d150baec0494?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Patagonia -->
+                    <div class="package-card" data-destination="patagonia" data-type="aventura" data-price="2650" data-rating="4.7" data-duration="12">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Patagonia: Fin del Mundo" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg6')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Aventura</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7 (134)</span>
+                                </div>
+                            </div>
+                            <h4>Patagonia: Fin del Mundo</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Argentina/Chile</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 12 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Transporte</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Comidas</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€2650</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg6', 'Patagonia: Fin del Mundo', 2650, 'https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Costa Rica -->
+                    <div class="package-card" data-destination="costa-rica" data-type="aventura" data-price="1980" data-rating="4.6" data-duration="10">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Costa Rica: Pura Vida" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg7')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Aventura</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.6 (167)</span>
+                                </div>
+                            </div>
+                            <h4>Costa Rica: Pura Vida</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Costa Rica</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 10 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Transporte</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Actividades</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€1980</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg7', 'Costa Rica: Pura Vida', 1980, 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Noruega -->
+                    <div class="package-card" data-destination="noruega" data-type="aventura" data-price="2890" data-rating="4.8" data-duration="8">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Noruega: Fiordos Espectaculares" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg8')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Aventura</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8 (145)</span>
+                                </div>
+                            </div>
+                            <h4>Noruega: Fiordos Espectaculares</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Noruega</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 8 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Crucero fiordos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Tren</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Comidas</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€2890</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg8', 'Noruega: Fiordos Espectaculares', 2890, 'https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- India -->
+                    <div class="package-card" data-destination="india" data-type="cultural" data-price="1650" data-rating="4.5" data-duration="11">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="India: Triángulo Dorado" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg9')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Cultural</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.5 (278)</span>
+                                </div>
+                            </div>
+                            <h4>India: Triángulo Dorado</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>India</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 11 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Transporte</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Comidas</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€1650</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg9', 'India: Triángulo Dorado', 1650, 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Egipto -->
+                    <div class="package-card" data-destination="egipto" data-type="cultural" data-price="1890" data-rating="4.6" data-duration="9">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Egipto: Faraones y Pirámides" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg10')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Cultural</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.6 (198)</span>
+                                </div>
+                            </div>
+                            <h4>Egipto: Faraones y Pirámides</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Egipto</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 9 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Crucero Nilo</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Comidas</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€1890</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg10', 'Egipto: Faraones y Pirámides', 1890, 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grecia -->
+                    <div class="package-card" data-destination="grecia" data-type="cultural" data-price="2100" data-rating="4.7" data-duration="10">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1566139884456-c9b0b1b6b5b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Grecia: Islas del Egeo" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg11')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Cultural</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7 (234)</span>
+                                </div>
+                            </div>
+                            <h4>Grecia: Islas del Egeo</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Grecia</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 10 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Ferry</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Desayunos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€2100</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg11', 'Grecia: Islas del Egeo', 2100, 'https://images.unsplash.com/photo-1566139884456-c9b0b1b6b5b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Marruecos -->
+                    <div class="package-card" data-destination="marruecos" data-type="cultural" data-price="1450" data-rating="4.5" data-duration="8">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Marruecos: Ciudades Imperiales" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg12')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Cultural</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.5 (189)</span>
+                                </div>
+                            </div>
+                            <h4>Marruecos: Ciudades Imperiales</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Marruecos</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 8 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Riads</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Transporte</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Comidas</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€1450</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg12', 'Marruecos: Ciudades Imperiales', 1450, 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dubai -->
+                    <div class="package-card" data-destination="dubai" data-type="lujo" data-price="3200" data-rating="4.8" data-duration="6">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Dubai: Lujo en el Desierto" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg13')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <div class="package-badge package-badge--luxury">Lujo</div>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Lujo</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8 (167)</span>
+                                </div>
+                            </div>
+                            <h4>Dubai: Lujo en el Desierto</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Emiratos Árabes</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 6 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hotel 5*</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Transfers</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Desayunos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Tours</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="original-price">€3600</span>
+                                        <span class="price">€3200</span>
+                                        <span class="discount">-11%</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg13', 'Dubai: Lujo en el Desierto', 3200, 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seychelles -->
+                    <div class="package-card" data-destination="seychelles" data-type="lujo" data-price="4800" data-rating="4.9" data-duration="8">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Seychelles: Exclusividad Total" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg14')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <div class="package-badge">Exclusivo</div>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Lujo</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (89)</span>
+                                </div>
+                            </div>
+                            <h4>Seychelles: Exclusividad Total</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Seychelles</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 8 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Resort 5*</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Todo incluido</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Spa</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Actividades</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€4800</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg14', 'Seychelles: Exclusividad Total', 4800, 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bora Bora -->
+                    <div class="package-card" data-destination="bora-bora" data-type="lujo" data-price="5200" data-rating="4.9" data-duration="7">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Bora Bora: Romance en el Pacífico" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg15')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <div class="package-badge">Romántico</div>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Lujo</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (134)</span>
+                                </div>
+                            </div>
+                            <h4>Bora Bora: Romance en el Pacífico</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Polinesia Francesa</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 7 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Overwater villa</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Todo incluido</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Spa</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Actividades</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€5200</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg15', 'Bora Bora: Romance en el Pacífico', 5200, 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Santorini -->
+                    <div class="package-card" data-destination="santorini" data-type="lujo" data-price="2800" data-rating="4.8" data-duration="5">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1566139884456-c9b0b1b6b5b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Santorini: Lujo Mediterráneo" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg16')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <div class="package-badge">Boutique</div>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Lujo</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8 (198)</span>
+                                </div>
+                            </div>
+                            <h4>Santorini: Lujo Mediterráneo</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Grecia</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 5 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hotel boutique</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Transfers</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Desayunos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Tours</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€2800</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg16', 'Santorini: Lujo Mediterráneo', 2800, 'https://images.unsplash.com/photo-1566139884456-c9b0b1b6b5b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orlando -->
+                    <div class="package-card" data-destination="orlando" data-type="familiar" data-price="2200" data-rating="4.6" data-duration="7">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1566139884456-c9b0b1b6b5b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Orlando: Magia Familiar" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg17')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Familiar</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.6 (345)</span>
+                                </div>
+                            </div>
+                            <h4>Orlando: Magia Familiar</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Estados Unidos</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 7 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hotel</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Entradas parques</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Desayunos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Transfers</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€2200</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg17', 'Orlando: Magia Familiar', 2200, 'https://images.unsplash.com/photo-1566139884456-c9b0b1b6b5b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tailandia -->
+                    <div class="package-card" data-destination="tailandia" data-type="familiar" data-price="2450" data-rating="4.7" data-duration="12">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tailandia: Aventura Familiar" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg18')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Familiar</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7 (234)</span>
+                                </div>
+                            </div>
+                            <h4>Tailandia: Aventura Familiar</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Tailandia</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 12 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Transporte</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Actividades</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€2450</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg18', 'Tailandia: Aventura Familiar', 2450, 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- España -->
+                    <div class="package-card" data-destination="espana" data-type="familiar" data-price="1890" data-rating="4.5" data-duration="10">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1566139884456-c9b0b1b6b5b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="España: Ruta Familiar" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg19')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Familiar</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.5 (278)</span>
+                                </div>
+                            </div>
+                            <h4>España: Ruta Familiar</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>España</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 10 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Tren AVE</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Actividades</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Guía</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€1890</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg19', 'España: Ruta Familiar', 1890, 'https://images.unsplash.com/photo-1566139884456-c9b0b1b6b5b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Canadá -->
+                    <div class="package-card" data-destination="canada" data-type="familiar" data-price="2650" data-rating="4.6" data-duration="9">
+                        <div class="package-card__image">
+                            <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Canadá: Naturaleza en Familia" loading="lazy">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'pkg20')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="package-card__content">
+                            <div class="package-header">
+                                <span class="package-type">Familiar</span>
+                                <div class="package-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.6 (156)</span>
+                                </div>
+                            </div>
+                            <h4>Canadá: Naturaleza en Familia</h4>
+                            <div class="package-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Canadá</span>
+                            </div>
+                            <div class="package-details">
+                                <span><i class="fas fa-calendar"></i> 9 días</span>
+                                <span><i class="fas fa-users"></i> Hasta 15 personas</span>
+                                <span><i class="fas fa-plane"></i> Vuelos incluidos</span>
+                                <span><i class="fas fa-bed"></i> Alojamiento</span>
+                            </div>
+                            <div class="package-includes">
+                                <h5>Incluye:</h5>
+                                <div class="includes-list">
+                                    <span class="include-item"><i class="fas fa-check"></i>Vuelos</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Hoteles</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Coche alquiler</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Actividades</span>
+                                    <span class="include-item"><i class="fas fa-check"></i>Seguro</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <div class="price-info">
+                                    <div>
+                                        <span class="price">€2650</span>
+                                    </div>
+                                    <span class="price-unit">por persona</span>
+                                </div>
+                                <button class="book-btn" onclick="addToCart('pkg20', 'Canadá: Naturaleza en Familia', 2650, 'https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')">
+                                    <i class="fas fa-cart-plus"></i>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benefits Section -->
+            <section class="benefits-section">
+                <div class="container">
+                    <h2 class="benefits-title">¿Por qué elegir nuestros paquetes?</h2>
+                    <div class="benefits-grid">
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h3>Todo Incluido</h3>
+                            <p>Vuelos, alojamiento, comidas y actividades. No te preocupes por nada.</p>
+                        </div>
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <h3>Guías Expertos</h3>
+                            <p>Acompañamiento profesional durante todo tu viaje.</p>
+                        </div>
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Seguro Completo</h3>
+                            <p>Protección total con seguro de viaje y cancelación.</p>
+                        </div>
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h3>Soporte 24/7</h3>
+                            <p>Asistencia las 24 horas durante tu viaje.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-container">
+                            <svg class="planet-logo" viewBox="0 0 100 100" width="60" height="60">
+                                <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+                                <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+                                <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+                                <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+                                <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+                                <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+                                <g transform="translate(70,30) rotate(45)">
+                                    <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                                    <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                                    <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+                                </g>
+                                <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Air ipet 57</h3>
+                            <p>Tu aventura comienza aquí</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">
+                        Descubre el mundo con nosotros. Ofrecemos los mejores paquetes turísticos y alojamientos únicos para hacer de tu viaje una experiencia inolvidable.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Destinos</h4>
+                    <ul>
+                        <li><a href="paquetes.html?destino=japon">Japón</a></li>
+                        <li><a href="paquetes.html?destino=islandia">Islandia</a></li>
+                        <li><a href="paquetes.html?destino=maldivas">Maldivas</a></li>
+                        <li><a href="paquetes.html?destino=peru">Perú</a></li>
+                        <li><a href="paquetes.html?destino=nepal">Nepal</a></li>
+                        <li><a href="paquetes.html?destino=dubai">Dubai</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Tipos de Paquetes</h4>
+                    <ul>
+                        <li><a href="paquetes.html?tipo=aventura">Aventura</a></li>
+                        <li><a href="paquetes.html?tipo=cultural">Cultural</a></li>
+                        <li><a href="paquetes.html?tipo=relax">Relax</a></li>
+                        <li><a href="paquetes.html?tipo=familiar">Familiar</a></li>
+                        <li><a href="paquetes.html?tipo=romantico">Romántico</a></li>
+                        <li><a href="paquetes.html?tipo=lujo">Lujo</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="paquetes.html">Paquetes Turísticos</a></li>
+                        <li><a href="experiencias.html">Experiencias</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                        <li><a href="terms.html">Términos y Condiciones</a></li>
+                        <li><a href="privacy.html">Privacidad</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Suscríbete para recibir ofertas exclusivas y consejos de viaje.</p>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" placeholder="Tu email" required>
+                        <button type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +34 900 123 456</p>
+                        <p><i class="fas fa-envelope"></i> info@airipet57.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Air ipet 57. Todos los derechos reservados.</p>
+                    <div class="payment-methods">
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-paypal"></i>
+                        <i class="fab fa-cc-apple-pay"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function updateCartCount() {
+            const cartCount = document.getElementById('cartCount');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+        }
+
+        function addToCart(id, name, price, image) {
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    image: image,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartDropdown();
+            
+            // Show success message
+            showNotification(`${name} agregado al carrito`, 'success');
+        }
+
+        function updateCartDropdown() {
+            const cartDropdownContent = document.getElementById('cartDropdownContent');
+            
+            if (cart.length === 0) {
+                cartDropdownContent.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Tu carrito está vacío</p>
+                        <a href="paquetes.html" class="btn btn--primary btn--small">Explorar Paquetes</a>
+                    </div>
+                `;
+            } else {
+                const cartItems = cart.slice(0, 3).map(item => `
+                    <div class="cart-dropdown-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h5>${item.name}</h5>
+                            <p>€${item.price} x ${item.quantity}</p>
+                        </div>
+                        <button onclick="removeFromCart('${item.id}')" class="remove-item-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+                
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                
+                cartDropdownContent.innerHTML = `
+                    ${cartItems}
+                    ${cart.length > 3 ? `<p class="more-items">Y ${cart.length - 3} artículos más...</p>` : ''}
+                    <div class="cart-dropdown-total">
+                        <strong>Total: €${total.toLocaleString()}</strong>
+                    </div>
+                `;
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartDropdown();
+            showNotification('Producto eliminado del carrito', 'info');
+        }
+
+        function toggleFavorite(button, id) {
+            const icon = button.querySelector('i');
+            const isFavorited = icon.classList.contains('fas');
+            
+            if (isFavorited) {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                button.classList.remove('active');
+                showNotification('Eliminado de favoritos', 'info');
+            } else {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                button.classList.add('active');
+                showNotification('Agregado a favoritos', 'success');
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification notification--${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // User menu functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const userDropdown = document.getElementById('userDropdown');
+            const cartBtn = document.getElementById('cartBtn');
+            const cartDropdown = document.getElementById('cartDropdown');
+
+            if (userMenuBtn && userDropdown) {
+                userMenuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('show');
+                    if (cartDropdown) cartDropdown.classList.remove('show');
+                });
+            }
+
+            if (cartBtn && cartDropdown) {
+                cartBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    cartDropdown.classList.toggle('show');
+                    if (userDropdown) userDropdown.classList.remove('show');
+                });
+            }
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', () => {
+                if (userDropdown) userDropdown.classList.remove('show');
+                if (cartDropdown) cartDropdown.classList.remove('show');
+            });
+
+            // Initialize cart
+            updateCartCount();
+            updateCartDropdown();
+        });
+
+        // Filter and search functionality
+        function applyFilters() {
+            const packages = document.querySelectorAll('.package-card');
+            const destinoFilter = document.getElementById('destinoFilter').value;
+            const duracionFilter = document.getElementById('duracionFilter').value;
+            const tipoFilter = document.getElementById('tipoFilter').value;
+            const precioFilter = document.getElementById('precioFilter').value;
+            const ratingFilter = document.getElementById('ratingFilter').value;
+            
+            let visibleCount = 0;
+            
+            packages.forEach(pkg => {
+                let shouldShow = true;
+                
+                // Destination filter
+                if (destinoFilter && pkg.getAttribute('data-destination') !== destinoFilter) {
+                    shouldShow = false;
+                }
+                
+                // Type filter
+                if (tipoFilter && pkg.getAttribute('data-type') !== tipoFilter) {
+                    shouldShow = false;
+                }
+                
+                // Price filter
+                if (precioFilter) {
+                    const price = parseInt(pkg.getAttribute('data-price'));
+                    if (price > parseInt(precioFilter)) {
+                        shouldShow = false;
+                    }
+                }
+                
+                // Rating filter
+                if (ratingFilter) {
+                    const rating = parseFloat(pkg.getAttribute('data-rating'));
+                    if (rating < parseFloat(ratingFilter)) {
+                        shouldShow = false;
+                    }
+                }
+                
+                // Duration filter
+                if (duracionFilter) {
+                    const duration = parseInt(pkg.getAttribute('data-duration'));
+                    switch(duracionFilter) {
+                        case '3-5':
+                            if (duration < 3 || duration > 5) shouldShow = false;
+                            break;
+                        case '6-10':
+                            if (duration < 6 || duration > 10) shouldShow = false;
+                            break;
+                        case '11-15':
+                            if (duration < 11 || duration > 15) shouldShow = false;
+                            break;
+                        case '15+':
+                            if (duration <= 15) shouldShow = false;
+                            break;
+                    }
+                }
+                
+                if (shouldShow) {
+                    pkg.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    pkg.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('resultsCount').textContent = `Mostrando ${visibleCount} paquetes`;
+            
+            if (visibleCount === 0) {
+                showNotification('No se encontraron paquetes con esos criterios', 'info');
+            }
+        }
+
+        // Sort functionality
+        function sortPackages() {
+            const sortBy = document.getElementById('sortFilter').value;
+            const packagesGrid = document.getElementById('packagesGrid');
+            const packages = Array.from(packagesGrid.querySelectorAll('.package-card'));
+            
+            packages.sort((a, b) => {
+                switch(sortBy) {
+                    case 'price-low':
+                        return parseInt(a.getAttribute('data-price')) - parseInt(b.getAttribute('data-price'));
+                    case 'price-high':
+                        return parseInt(b.getAttribute('data-price')) - parseInt(a.getAttribute('data-price'));
+                    case 'rating':
+                        return parseFloat(b.getAttribute('data-rating')) - parseFloat(a.getAttribute('data-rating'));
+                    case 'duration':
+                        return parseInt(a.getAttribute('data-duration')) - parseInt(b.getAttribute('data-duration'));
+                    default:
+                        return 0;
+                }
+            });
+            
+            packages.forEach(pkg => packagesGrid.appendChild(pkg));
+        }
+
+        // Event listeners for filters
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter event listeners
+            const destinoFilter = document.getElementById('destinoFilter');
+            const duracionFilter = document.getElementById('duracionFilter');
+            const tipoFilter = document.getElementById('tipoFilter');
+            const precioFilter = document.getElementById('precioFilter');
+            const ratingFilter = document.getElementById('ratingFilter');
+            const sortFilter = document.getElementById('sortFilter');
+            const searchBtn = document.getElementById('searchBtn');
+            const clearFilters = document.getElementById('clearFilters');
+
+            if (destinoFilter) destinoFilter.addEventListener('change', applyFilters);
+            if (duracionFilter) duracionFilter.addEventListener('change', applyFilters);
+            if (tipoFilter) tipoFilter.addEventListener('change', applyFilters);
+            if (precioFilter) precioFilter.addEventListener('change', applyFilters);
+            if (ratingFilter) ratingFilter.addEventListener('change', applyFilters);
+            if (sortFilter) sortFilter.addEventListener('change', sortPackages);
+            
+            // Search button
+            if (searchBtn) searchBtn.addEventListener('click', applyFilters);
+            
+            // Clear filters
+            if (clearFilters) {
+                clearFilters.addEventListener('click', function() {
+                    if (destinoFilter) destinoFilter.value = '';
+                    if (duracionFilter) duracionFilter.value = '';
+                    if (tipoFilter) tipoFilter.value = '';
+                    if (precioFilter) precioFilter.value = '';
+                    if (ratingFilter) ratingFilter.value = '';
+                    if (sortFilter) sortFilter.value = 'relevance';
+                    
+                    document.querySelectorAll('.package-card').forEach(pkg => {
+                        pkg.style.display = 'block';
+                    });
+                    
+                    document.getElementById('resultsCount').textContent = 'Mostrando todos los paquetes';
+                });
+            }
+            
+            // Category cards filter
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    if (tipoFilter) {
+                        tipoFilter.value = type;
+                        applyFilters();
+                        
+                        // Scroll to results
+                        document.querySelector('.packages-section').scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Newsletter form
+            const newsletterForm = document.getElementById('newsletterForm');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = this.querySelector('input[type="email"]').value;
+                    showNotification('¡Gracias por suscribirte a nuestro newsletter!', 'success');
+                    this.reset();
+                });
+            }
+            
+            // URL parameters handling
+            const urlParams = new URLSearchParams(window.location.search);
+            const destino = urlParams.get('destino');
+            const tipo = urlParams.get('tipo');
+            
+            if (destino && destinoFilter) {
+                destinoFilter.value = destino;
+                applyFilters();
+            }
+            
+            if (tipo && tipoFilter) {
+                tipoFilter.value = tipo;
+                applyFilters();
+            }
+        });
+    </script>
+</body>
+</html>

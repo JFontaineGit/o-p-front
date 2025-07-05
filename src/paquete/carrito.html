@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - Air ipet 57</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/autenticacion.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__left">
+                    <div class="logo">
+                        <div class="logo-container">
+                            <svg class="planet-logo" viewBox="0 0 100 100" width="40" height="40">
+                                <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+                                <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+                                <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+                                <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+                                <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+                                <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+                                <g transform="translate(70,30) rotate(45)">
+                                    <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                                    <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                                    <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+                                </g>
+                                <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+                            </svg>
+                        </div>
+                        <h1>Air ipet 57</h1>
+                    </div>
+                </div>
+                
+                <div class="header__center">
+                    <nav class="main-nav">
+                        <a href="index.html" class="nav-link">Inicio</a>
+                        <a href="paquetes.html" class="nav-link">Paquetes</a>
+                        <a href="contacto.html" class="nav-link">Contacto</a>
+                        <a href="experiencias.html" class="nav-link">Experiencias</a>
+                    </nav>
+                </div>
+                
+                <div class="header__right">
+                    <button class="user-btn">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                    <button class="cart-btn active">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </button>
+                    <a href="inicio-sesion.html" class="btn btn--primary">Iniciar sesión</a>
+                    <a href="registrarse.html" class="btn btn--secondary">Registrarse</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <div class="container">
+            <div class="cart-header">
+                <h2><i class="fas fa-shopping-cart"></i> Tu Carrito de Compras</h2>
+                <p>Revisa tus paquetes seleccionados antes de proceder al pago</p>
+            </div>
+            
+            <div class="cart-container">
+                <div class="cart-items">
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Paquete París">
+                        </div>
+                        <div class="cart-item-details">
+                            <h3>Paquete Romántico París</h3>
+                            <p class="cart-item-description">5 días / 4 noches • Hotel 4 estrellas • Desayuno incluido</p>
+                            <div class="cart-item-dates">
+                                <i class="fas fa-calendar"></i>
+                                <span>15 - 20 Marzo 2024</span>
+                            </div>
+                            <div class="cart-item-guests">
+                                <i class="fas fa-users"></i>
+                                <span>2 adultos</span>
+                            </div>
+                        </div>
+                        <div class="cart-item-controls">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateQuantity(1, -1)">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn" onclick="updateQuantity(1, 1)">+</button>
+                            </div>
+                            <div class="cart-item-price">
+                                <span class="price">€1,299</span>
+                            </div>
+                            <button class="remove-btn" onclick="removeItem(1)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Paquete Londres">
+                        </div>
+                        <div class="cart-item-details">
+                            <h3>Escapada a Londres</h3>
+                            <p class="cart-item-description">3 días / 2 noches • Hotel boutique • Tour incluido</p>
+                            <div class="cart-item-dates">
+                                <i class="fas fa-calendar"></i>
+                                <span>22 - 25 Marzo 2024</span>
+                            </div>
+                            <div class="cart-item-guests">
+                                <i class="fas fa-users"></i>
+                                <span>2 adultos</span>
+                            </div>
+                        </div>
+                        <div class="cart-item-controls">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateQuantity(2, -1)">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn" onclick="updateQuantity(2, 1)">+</button>
+                            </div>
+                            <div class="cart-item-price">
+                                <span class="price">€899</span>
+                            </div>
+                            <button class="remove-btn" onclick="removeItem(2)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Experiencia Tokio">
+                        </div>
+                        <div class="cart-item-details">
+                            <h3>Experiencia Cultural Tokio</h3>
+                            <p class="cart-item-description">Tour gastronómico • Ceremonia del té • Guía local</p>
+                            <div class="cart-item-dates">
+                                <i class="fas fa-calendar"></i>
+                                <span>10 Abril 2024</span>
+                            </div>
+                            <div class="cart-item-guests">
+                                <i class="fas fa-users"></i>
+                                <span>2 adultos</span>
+                            </div>
+                        </div>
+                        <div class="cart-item-controls">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateQuantity(3, -1)">-</button>
+                                <span class="quantity">2</span>
+                                <button class="quantity-btn" onclick="updateQuantity(3, 1)">+</button>
+                            </div>
+                            <div class="cart-item-price">
+                                <span class="price">€398</span>
+                            </div>
+                            <button class="remove-btn" onclick="removeItem(3)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cart-summary">
+                    <div class="summary-card">
+                        <h3>Resumen del Pedido</h3>
+                        
+                        <div class="summary-line">
+                            <span>Subtotal</span>
+                            <span>€2,596</span>
+                        </div>
+                        
+                        <div class="summary-line">
+                            <span>Impuestos</span>
+                            <span>€259</span>
+                        </div>
+                        
+                        <div class="summary-line">
+                            <span>Seguro de viaje</span>
+                            <span>€45</span>
+                        </div>
+                        
+                        <div class="summary-divider"></div>
+                        
+                        <div class="summary-line total">
+                            <span>Total</span>
+                            <span>€2,900</span>
+                        </div>
+                        
+                        <div class="promo-code">
+                            <input type="text" placeholder="Código promocional" id="promoCode">
+                            <button class="btn btn--secondary" onclick="applyPromo()">Aplicar</button>
+                        </div>
+                        
+                        <button class="btn btn--primary btn--full checkout-btn">
+                            <i class="fas fa-credit-card"></i>
+                            Proceder al Pago
+                        </button>
+                        
+                        <div class="security-badges">
+                            <div class="security-badge">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Pago Seguro</span>
+                            </div>
+                            <div class="security-badge">
+                                <i class="fas fa-undo"></i>
+                                <span>Cancelación Gratuita</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="help-card">
+                        <h4>¿Necesitas ayuda?</h4>
+                        <p>Nuestro equipo está aquí para ayudarte</p>
+                        <div class="help-options">
+                            <a href="tel:+34900123456" class="help-option">
+                                <i class="fas fa-phone"></i>
+                                <span>+34 900 123 456</span>
+                            </a>
+                            <a href="mailto:info@airipet57.com" class="help-option">
+                                <i class="fas fa-envelope"></i>
+                                <span>info@airipet57.com</span>
+                            </a>
+                            <a href="contacto.html" class="help-option">
+                                <i class="fas fa-comments"></i>
+                                <span>Chat en vivo</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="continue-shopping">
+                <a href="paquetes.html" class="btn btn--outline">
+                    <i class="fas fa-arrow-left"></i>
+                    Continuar Comprando
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-container">
+                            <svg class="planet-logo" viewBox="0 0 100 100" width="60" height="60">
+                                <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+                                <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+                                <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+                                <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+                                <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+                                <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+                                <g transform="translate(70,30) rotate(45)">
+                                    <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                                    <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                                    <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+                                </g>
+                                <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Air ipet 57</h3>
+                            <p>Tu aventura comienza aquí</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">
+                        Descubre el mundo con nosotros. Ofrecemos los mejores paquetes turísticos y alojamientos únicos para hacer de tu viaje una experiencia inolvidable.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Destinos</h4>
+                    <ul>
+                        <li><a href="#">París</a></li>
+                        <li><a href="#">Londres</a></li>
+                        <li><a href="#">Tokio</a></li>
+                        <li><a href="#">Roma</a></li>
+                        <li><a href="#">Seattle</a></li>
+                        <li><a href="#">San Francisco</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="#">Alojamientos</a></li>
+                        <li><a href="#">Paquetes Turísticos</a></li>
+                        <li><a href="#">Experiencias</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li><a href="contacto.html">Contacto</a></li>
+                        <li><a href="terms.html">Términos y Condiciones</a></li>
+                        <li><a href="privacy.html">Privacidad</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Suscríbete para recibir ofertas exclusivas y consejos de viaje.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Tu email" required>
+                        <button type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +34 900 123 456</p>
+                        <p><i class="fas fa-envelope"></i> info@airipet57.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Air ipet 57. Todos los derechos reservados.</p>
+                    <div class="payment-methods">
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-paypal"></i>
+                        <i class="fab fa-cc-apple-pay"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function updateQuantity(itemId, change) {
+            const quantityElement = document.querySelector(`.cart-item:nth-child(${itemId}) .quantity`);
+            let currentQuantity = parseInt(quantityElement.textContent);
+            let newQuantity = currentQuantity + change;
+            
+            if (newQuantity < 1) newQuantity = 1;
+            if (newQuantity > 10) newQuantity = 10;
+            
+            quantityElement.textContent = newQuantity;
+            updateTotals();
+        }
+
+        function removeItem(itemId) {
+            if (confirm('¿Estás seguro de que quieres eliminar este artículo del carrito?')) {
+                const cartItem = document.querySelector(`.cart-item:nth-child(${itemId})`);
+                cartItem.remove();
+                updateTotals();
+                updateCartCount();
+            }
+        }
+
+        function updateTotals() {
+            // Aquí iría la lógica para recalcular los totales
+            console.log('Actualizando totales...');
+        }
+
+        function updateCartCount() {
+            const cartItems = document.querySelectorAll('.cart-item').length;
+            const cartCount = document.querySelector('.cart-count');
+            cartCount.textContent = cartItems;
+            
+            if (cartItems === 0) {
+                cartCount.style.display = 'none';
+            }
+        }
+
+        function applyPromo() {
+            const promoCode = document.getElementById('promoCode').value;
+            if (promoCode.trim() === '') {
+                alert('Por favor, ingresa un código promocional');
+                return;
+            }
+            
+            // Aquí iría la lógica para aplicar el código promocional
+            alert('Funcionalidad de código promocional pendiente de implementar');
+        }
+
+        // Checkout button
+        document.querySelector('.checkout-btn').addEventListener('click', function() {
+            // Aquí iría la lógica para proceder al checkout
+            alert('Redirigiendo al proceso de pago...');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiencias Únicas - Vive aventuras inolvidables | Air ipet 57</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/autenticacion.css">
+    <link rel="stylesheet" href="css/perfil.css">
+    <link rel="stylesheet" href="css/adicional.css">
+    <link rel="stylesheet" href="css/experiencias.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__left">
+                    <div class="logo">
+                        <div class="logo-container">
+                            <svg class="planet-logo" viewBox="0 0 100 100" width="40" height="40">
+                                <!-- Planeta -->
+                                <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+                                <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+                                <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+                                <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+                                <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+                                <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+                                
+                                <!-- Avión -->
+                                <g transform="translate(70,30) rotate(45)">
+                                    <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                                    <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                                    <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+                                </g>
+                                
+                                <!-- Estela del avión -->
+                                <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+                            </svg>
+                        </div>
+                        <h1><a href="index.html" style="text-decoration: none; color: inherit;">Air ipet 57</a></h1>
+                    </div>
+                </div>
+                
+                <div class="header__center">
+                    <nav class="main-nav">
+                        <a href="index.html" class="nav-link">Alojamientos</a>
+                        <a href="paquetes.html" class="nav-link">Paquetes</a>
+                        <a href="vuelos.html" class="nav-link">Vuelos</a>
+                        <a href="contacto.html" class="nav-link">Contacto</a>
+                        <a href="experiencias.html" class="nav-link active">Experiencias</a>
+                    </nav>
+                </div>
+                
+                <div class="header__right">
+                    <div class="user-menu">
+                        <button class="user-btn" id="userMenuBtn">
+                            <i class="fas fa-user-circle"></i>
+                        </button>
+                        <div class="user-dropdown" id="userDropdown">
+                            <a href="perfil.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                Mi Perfil
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="inicio-sesion.html" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Cerrar Sesión
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-menu">
+                        <button class="cart-btn" id="cartBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </button>
+                        <div class="cart-dropdown" id="cartDropdown">
+                            <div class="cart-dropdown-header">
+                                <h4>Carrito de Experiencias</h4>
+                            </div>
+                            <div class="cart-dropdown-content" id="cartDropdownContent">
+                                <div class="empty-cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <p>Tu carrito está vacío</p>
+                                    <a href="experiencias.html" class="btn btn--primary btn--small">Explorar Experiencias</a>
+                                </div>
+                            </div>
+                            <div class="cart-dropdown-footer">
+                                <a href="carrito.html" class="btn btn--primary btn--full">Ver Carrito Completo</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="inicio-sesion.html" class="btn btn--primary">Iniciar sesión</a>
+                    <a href="registrarse.html" class="btn btn--secondary">Registrarse</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero__background">
+            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Aventuras y experiencias" class="hero__image">
+        </div>
+        <div class="hero__content">
+            <div class="container">
+                <h2 class="hero__title">
+                    Descubre <span class="highlight">experiencias únicas</span><br>
+                    que transformarán tu viaje
+                </h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Filters Section -->
+    <section class="accommodation-filters-section">
+        <div class="container">
+            <div class="filters-header">
+                <h3>Filtrar experiencias</h3>
+                <button class="clear-accommodation-filters" id="clearExperienceFilters">Limpiar filtros</button>
+            </div>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label>Categoría</label>
+                    <select id="experienceCategoryFilter">
+                        <option value="">Todas</option>
+                        <option value="aventura">Aventura</option>
+                        <option value="cultura">Cultura</option>
+                        <option value="gastronomia">Gastronomía</option>
+                        <option value="naturaleza">Naturaleza</option>
+                        <option value="arte">Arte y Creatividad</option>
+                        <option value="deportes">Deportes</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Precio máximo</label>
+                    <select id="experiencePriceFilter">
+                        <option value="">Sin límite</option>
+                        <option value="50">Hasta €50</option>
+                        <option value="100">Hasta €100</option>
+                        <option value="200">Hasta €200</option>
+                        <option value="300">Hasta €300</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Duración</label>
+                    <select id="experienceDurationFilter">
+                        <option value="">Cualquiera</option>
+                        <option value="1-3">1-3 horas</option>
+                        <option value="4-6">4-6 horas</option>
+                        <option value="dia-completo">Día completo</option>
+                        <option value="varios-dias">Varios días</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Ordenar por</label>
+                    <select id="experienceSortFilter">
+                        <option value="relevance">Relevancia</option>
+                        <option value="price-low">Precio: menor a mayor</option>
+                        <option value="price-high">Precio: mayor a menor</option>
+                        <option value="rating">Mejor valoradas</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <h3 class="section-title">Explora por categorías</h3>
+            <div class="categories-grid" id="categoriesGrid">
+                <div class="category-card" data-category="aventura" onclick="filterByCategory('aventura')">
+                    <div class="category-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h4>Aventura</h4>
+                    <p>Emociones extremas</p>
+                </div>
+                <div class="category-card" data-category="cultura" onclick="filterByCategory('cultura')">
+                    <div class="category-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h4>Cultura</h4>
+                    <p>Historia y tradiciones</p>
+                </div>
+                <div class="category-card" data-category="gastronomia" onclick="filterByCategory('gastronomia')">
+                    <div class="category-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h4>Gastronomía</h4>
+                    <p>Sabores locales</p>
+                </div>
+                <div class="category-card" data-category="naturaleza" onclick="filterByCategory('naturaleza')">
+                    <div class="category-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h4>Naturaleza</h4>
+                    <p>Conecta con la tierra</p>
+                </div>
+                <div class="category-card" data-category="arte" onclick="filterByCategory('arte')">
+                    <div class="category-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h4>Arte</h4>
+                    <p>Creatividad y expresión</p>
+                </div>
+                <div class="category-card" data-category="deportes" onclick="filterByCategory('deportes')">
+                    <div class="category-icon">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <h4>Deportes</h4>
+                    <p>Actividad y diversión</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experiences Sections -->
+    <main class="main">
+        <div class="container">
+            <!-- Experiencias Populares -->
+            <section class="experiences-section">
+                <h3 class="section-title">Experiencias más populares <i class="fas fa-fire"></i></h3>
+                <div class="experiences-grid" id="popularGrid">
+                    <div class="experience-card" data-category="aventura" data-price="299" data-duration="4" data-id="exp1">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Paracaidismo">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp1')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <div class="experience-badge">Más vendida</div>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Aventura</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (127)</span>
+                                </div>
+                            </div>
+                            <h4>Paracaidismo sobre los Alpes</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 4 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 8 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Marco</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€299</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp1', 'Paracaidismo sobre los Alpes', 299, 'https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="cultura" data-price="85" data-duration="3" data-id="exp2">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Tour histórico">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp2')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Cultura</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8 (89)</span>
+                                </div>
+                            </div>
+                            <h4>Tour privado por Roma antigua</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 3 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 6 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Isabella</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€85</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp2', 'Tour privado por Roma antigua', 85, 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="gastronomia" data-price="65" data-duration="2.5" data-id="exp3">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Clase de cocina">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp3')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Gastronomía</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (156)</span>
+                                </div>
+                            </div>
+                            <h4>Clase de pasta italiana auténtica</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 2.5 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 10 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Giuseppe</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€65</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp3', 'Clase de pasta italiana auténtica', 65, 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="naturaleza" data-price="45" data-duration="6" data-id="exp4">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1464822759844-d150baec0494?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Senderismo">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp4')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Naturaleza</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7 (92)</span>
+                                </div>
+                            </div>
+                            <h4>Senderismo al amanecer en los Pirineos</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 6 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 12 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Carlos</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€45</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp4', 'Senderismo al amanecer en los Pirineos', 45, 'https://images.unsplash.com/photo-1464822759844-d150baec0494?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experiencias de Aventura -->
+            <section class="experiences-section">
+                <h3 class="section-title">Aventuras extremas <i class="fas fa-chevron-right"></i></h3>
+                <div class="experiences-grid" id="adventureGrid">
+                    <div class="experience-card" data-category="aventura" data-price="120" data-duration="5" data-id="exp5">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Rafting">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp5')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Aventura</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8 (74)</span>
+                                </div>
+                            </div>
+                            <h4>Rafting en aguas bravas</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 5 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 8 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Adventure Team</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€120</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp5', 'Rafting en aguas bravas', 120, 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="aventura" data-price="180" data-duration="4" data-id="exp6">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Buceo">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp6')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Aventura</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (112)</span>
+                                </div>
+                            </div>
+                            <h4>Buceo en arrecife de coral</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 4 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 6 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Ocean Divers</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€180</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp6', 'Buceo en arrecife de coral', 180, 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="aventura" data-price="95" data-duration="3" data-id="exp7">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1551524164-6cf2ac531fb4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Escalada">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp7')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Aventura</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.6 (58)</span>
+                                </div>
+                            </div>
+                            <h4>Escalada en roca para principiantes</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 3 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 4 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Rock Masters</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€95</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp7', 'Escalada en roca para principiantes', 95, 'https://images.unsplash.com/photo-1551524164-6cf2ac531fb4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="aventura" data-price="75" data-duration="2" data-id="exp8">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Tirolina">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp8')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Aventura</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7 (83)</span>
+                                </div>
+                            </div>
+                            <h4>Tirolina sobre el cañón</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 2 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 10 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Zip Adventures</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€75</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp8', 'Tirolina sobre el cañón', 75, 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experiencias Culturales -->
+            <section class="experiences-section">
+                <h3 class="section-title">Inmersión cultural <i class="fas fa-chevron-right"></i></h3>
+                <div class="experiences-grid" id="cultureGrid">
+                    <div class="experience-card" data-category="cultura" data-price="55" data-duration="2" data-id="exp9">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Flamenco">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp9')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Cultura</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (145)</span>
+                                </div>
+                            </div>
+                            <h4>Clase de flamenco auténtico</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 2 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 8 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Carmen</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€55</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp9', 'Clase de flamenco auténtico', 55, 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="cultura" data-price="120" data-duration="3" data-id="exp10">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Museo">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp10')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Cultura</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8 (67)</span>
+                                </div>
+                            </div>
+                            <h4>Tour privado por el Louvre</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 3 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 6 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Marie</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€120</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp10', 'Tour privado por el Louvre', 120, 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="cultura" data-price="40" data-duration="1.5" data-id="exp11">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Ceremonia del té">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp11')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Cultura</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (89)</span>
+                                </div>
+                            </div>
+                            <h4>Ceremonia del té japonesa</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 1.5 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 4 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Yuki</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€40</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp11', 'Ceremonia del té japonesa', 40, 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="arte" data-price="80" data-duration="3" data-id="exp12">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Taller de cerámica">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp12')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Arte</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7 (76)</span>
+                                </div>
+                            </div>
+                            <h4>Taller de cerámica tradicional</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 3 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 6 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Elena</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€80</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp12', 'Taller de cerámica tradicional', 80, 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experiencias Gastronómicas -->
+            <section class="experiences-section">
+                <h3 class="section-title">Sabores del mundo <i class="fas fa-chevron-right"></i></h3>
+                <div class="experiences-grid" id="foodGrid">
+                    <div class="experience-card" data-category="gastronomia" data-price="350" data-duration="4" data-id="exp13">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Cena con chef">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp13')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Gastronomía</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (203)</span>
+                                </div>
+                            </div>
+                            <h4>Cena privada con chef estrella Michelin</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 4 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 8 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Chef Antoine</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€350</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp13', 'Cena privada con chef estrella Michelin', 350, 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="gastronomia" data-price="75" data-duration="3" data-id="exp14">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Tour gastronómico">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp14')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Gastronomía</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8 (134)</span>
+                                </div>
+                            </div>
+                            <h4>Tour gastronómico por mercados locales</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 3 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 10 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Local Foodie</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€75</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp14', 'Tour gastronómico por mercados locales', 75, 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="gastronomia" data-price="95" data-duration="2.5" data-id="exp15">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Cata de vinos">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp15')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Gastronomía</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (98)</span>
+                                </div>
+                            </div>
+                            <h4>Cata de vinos en viñedo familiar</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 2.5 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 12 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Familia Rossi</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€95</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp15', 'Cata de vinos en viñedo familiar', 95, 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experience-card" data-category="gastronomia" data-price="150" data-duration="3" data-id="exp16">
+                        <div class="experience-card__image">
+                            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Clase de sushi">
+                            <button class="favorite-btn" onclick="toggleFavorite(this, 'exp16')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="experience-card__content">
+                            <div class="experience-header">
+                                <span class="experience-category">Gastronomía</span>
+                                <div class="experience-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8 (156)</span>
+                                </div>
+                            </div>
+                            <h4>Masterclass de sushi con chef japonés</h4>
+                            <div class="experience-details">
+                                <span><i class="fas fa-clock"></i> 3 horas</span>
+                                <span><i class="fas fa-users"></i> Hasta 6 personas</span>
+                            </div>
+                            <div class="experience-host">
+                                <img src="/placeholder.svg?height=24&width=24" alt="Anfitrión">
+                                <span>Con Chef Takeshi</span>
+                            </div>
+                            <div class="experience-price">
+                                <span class="price">€150</span>
+                                <span class="price-unit">por persona</span>
+                            </div>
+                            <button class="btn btn--primary btn--small add-to-cart" onclick="addToCart('exp16', 'Masterclass de sushi con chef japonés', 150, 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80')">
+                                <i class="fas fa-cart-plus"></i>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="cta-section">
+                <div class="cta-content">
+                    <h2>¿Tienes una experiencia única que compartir?</h2>
+                    <p>Únete a nuestra comunidad de anfitriones y comparte tu pasión con viajeros de todo el mundo.</p>
+                    <button class="btn btn--cta">Convertirse en anfitrión</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-container">
+                            <svg class="planet-logo" viewBox="0 0 100 100" width="60" height="60">
+                                <!-- Planeta -->
+                                <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
+                                <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
+                                <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
+                                <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
+                                <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
+                                <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+                                
+                                <!-- Avión -->
+                                <g transform="translate(70,30) rotate(45)">
+                                    <path d="M 0 0 L 8 -1 L 10 0 L 8 1 Z" fill="#ff9800"/>
+                                    <path d="M 2 -3 L 6 -1 L 6 1 L 2 3 Z" fill="#ff9800"/>
+                                    <path d="M 8 -0.5 L 12 -0.5 L 12 0.5 L 8 0.5 Z" fill="#ffb74d"/>
+                                </g>
+                                
+                                <!-- Estela del avión -->
+                                <path d="M 75 35 Q 85 40 90 45" fill="none" stroke="#ff9800" stroke-width="1" opacity="0.5" stroke-dasharray="2,2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Air ipet 57</h3>
+                            <p>Experiencias que transforman</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">
+                        Conectamos viajeros con experiencias auténticas y anfitriones apasionados para crear momentos inolvidables alrededor del mundo.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Experiencias</h4>
+                    <ul>
+                        <li><a href="#" onclick="filterByCategory('aventura')">Aventura</a></li>
+                        <li><a href="#" onclick="filterByCategory('cultura')">Cultura</a></li>
+                        <li><a href="#" onclick="filterByCategory('gastronomia')">Gastronomía</a></li>
+                        <li><a href="#" onclick="filterByCategory('naturaleza')">Naturaleza</a></li>
+                        <li><a href="#" onclick="filterByCategory('arte')">Arte</a></li>
+                        <li><a href="#" onclick="filterByCategory('deportes')">Deportes</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Para Anfitriones</h4>
+                    <ul>
+                        <li><a href="#">Crear experiencia</a></li>
+                        <li><a href="#">Centro de recursos</a></li>
+                        <li><a href="#">Comunidad</a></li>
+                        <li><a href="#">Estándares de calidad</a></li>
+                        <li><a href="#">Seguros</a></li>
+                        <li><a href="#">Pagos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li><a href="contacto.html">Centro de Ayuda</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                        <li><a href="terms.html">Política de Cancelación</a></li>
+                        <li><a href="terms.html">Términos y Condiciones</a></li>
+                        <li><a href="privacy.html">Privacidad</a></li>
+                        <li><a href="contacto.html">Seguridad</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Descubre nuevas experiencias cada semana.</p>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" placeholder="Tu email" required>
+                        <button type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +34 900 123 456</p>
+                        <p><i class="fas fa-envelope"></i> info@airipet57.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Air ipet 57. Todos los derechos reservados.</p>
+                    <div class="payment-methods">
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-paypal"></i>
+                        <i class="fab fa-cc-apple-pay"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function updateCartCount() {
+            const cartCount = document.getElementById('cartCount');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+        }
+
+        function addToCart(id, name, price, image) {
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    image: image,
+                    quantity: 1,
+                    type: 'experience'
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartDropdown();
+            
+            showNotification(`${name} agregado al carrito`, 'success');
+        }
+
+        function updateCartDropdown() {
+            const cartDropdownContent = document.getElementById('cartDropdownContent');
+            
+            if (cart.length === 0) {
+                cartDropdownContent.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Tu carrito está vacío</p>
+                        <a href="experiencias.html" class="btn btn--primary btn--small">Explorar Experiencias</a>
+                    </div>
+                `;
+            } else {
+                const cartItems = cart.slice(0, 3).map(item => `
+                    <div class="cart-dropdown-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h5>${item.name}</h5>
+                            <p>€${item.price} x ${item.quantity}</p>
+                        </div>
+                        <button onclick="removeFromCart('${item.id}')" class="remove-item-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+                
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                
+                cartDropdownContent.innerHTML = `
+                    ${cartItems}
+                    ${cart.length > 3 ? `<p class="more-items">Y ${cart.length - 3} artículos más...</p>` : ''}
+                    <div class="cart-dropdown-total">
+                        <strong>Total: €${total.toLocaleString()}</strong>
+                    </div>
+                `;
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartDropdown();
+        }
+
+        function toggleFavorite(button, id) {
+            const icon = button.querySelector('i');
+            const isFavorited = icon.classList.contains('fas');
+            
+            if (isFavorited) {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                button.classList.remove('active');
+                showNotification('Eliminado de favoritos', 'info');
+            } else {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                button.classList.add('active');
+                showNotification('Agregado a favoritos', 'success');
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification notification--${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // User menu functionality
+        document.getElementById('userMenuBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        });
+
+        // Cart menu functionality
+        document.getElementById('cartBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('cartDropdown');
+            dropdown.classList.toggle('show');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
+            document.getElementById('userDropdown').classList.remove('show');
+            document.getElementById('cartDropdown').classList.remove('show');
+        });
+
+        // Experience filters functionality
+        function applyExperienceFilters() {
+            const experiences = document.querySelectorAll('.experience-card');
+            const categoryFilter = document.getElementById('experienceCategoryFilter').value;
+            const priceFilter = document.getElementById('experiencePriceFilter').value;
+            const durationFilter = document.getElementById('experienceDurationFilter').value;
+            
+            let visibleCount = 0;
+            
+            experiences.forEach(experience => {
+                let shouldShow = true;
+                const category = experience.getAttribute('data-category');
+                const price = parseInt(experience.getAttribute('data-price'));
+                const duration = parseFloat(experience.getAttribute('data-duration'));
+                
+                // Category filter
+                if (categoryFilter && category !== categoryFilter) {
+                    shouldShow = false;
+                }
+                
+                // Price filter
+                if (priceFilter && price > parseInt(priceFilter)) {
+                    shouldShow = false;
+                }
+                
+                // Duration filter
+                if (durationFilter) {
+                    switch(durationFilter) {
+                        case '1-3':
+                            if (duration < 1 || duration > 3) shouldShow = false;
+                            break;
+                        case '4-6':
+                            if (duration < 4 || duration > 6) shouldShow = false;
+                            break;
+                        case 'dia-completo':
+                            if (duration < 7 || duration > 10) shouldShow = false;
+                            break;
+                        case 'varios-dias':
+                            if (duration <= 10) shouldShow = false;
+                            break;
+                    }
+                }
+                
+                if (shouldShow) {
+                    experience.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    experience.style.display = 'none';
+                }
+            });
+            
+            if (visibleCount === 0) {
+                showNotification('No se encontraron experiencias con esos criterios', 'info');
+            }
+        }
+
+        function sortExperiences() {
+            const sortBy = document.getElementById('experienceSortFilter').value;
+            const sections = document.querySelectorAll('.experiences-section');
+            
+            sections.forEach(section => {
+                const grid = section.querySelector('.experiences-grid');
+                const experiences = Array.from(grid.querySelectorAll('.experience-card'));
+                
+                experiences.sort((a, b) => {
+                    const priceA = parseInt(a.getAttribute('data-price'));
+                    const priceB = parseInt(b.getAttribute('data-price'));
+                    
+                    switch(sortBy) {
+                        case 'price-low':
+                            return priceA - priceB;
+                        case 'price-high':
+                            return priceB - priceA;
+                        case 'rating':
+                            const ratingA = parseFloat(a.querySelector('.experience-rating span').textContent);
+                            const ratingB = parseFloat(b.querySelector('.experience-rating span').textContent);
+                            return ratingB - ratingA;
+                        default:
+                            return 0;
+                    }
+                });
+                
+                experiences.forEach(experience => grid.appendChild(experience));
+            });
+        }
+
+        function filterByCategory(category) {
+            document.getElementById('experienceCategoryFilter').value = category;
+            applyExperienceFilters();
+            
+            // Scroll to experiences section
+            document.querySelector('.experiences-section').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Add event listeners for experience filters
+        document.getElementById('experienceCategoryFilter').addEventListener('change', applyExperienceFilters);
+        document.getElementById('experiencePriceFilter').addEventListener('change', applyExperienceFilters);
+        document.getElementById('experienceDurationFilter').addEventListener('change', applyExperienceFilters);
+        document.getElementById('experienceSortFilter').addEventListener('change', sortExperiences);
+
+        // Clear experience filters
+        document.getElementById('clearExperienceFilters').addEventListener('click', function() {
+            document.getElementById('experienceCategoryFilter').value = '';
+            document.getElementById('experiencePriceFilter').value = '';
+            document.getElementById('experienceDurationFilter').value = '';
+            document.getElementById('experienceSortFilter').value = 'relevance';
+            
+            document.querySelectorAll('.experience-card').forEach(experience => {
+                experience.style.display = 'block';
+            });
+        });
+
+        // Newsletter form
+        document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            showNotification('¡Gracias por suscribirte a nuestro newsletter!', 'success');
+            this.reset();
+        });
+
+        // Initialize cart on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            updateCartDropdown();
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Category cards interaction
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // CTA button functionality
+        document.querySelector('.btn--cta').addEventListener('click', function() {
+            showNotification('¡Gracias por tu interés! Te contactaremos pronto.', 'success');
+        });
+    </script>
+
+    <style>
+        /* Additional styles for notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            max-width: 350px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification--success {
+            border-left: 4px solid #10b981;
+        }
+
+        .notification--info {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .notification i {
+            color: #10b981;
+            font-size: 18px;
+        }
+
+        .notification--info i {
+            color: #3b82f6;
+        }
+
+        .notification span {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        /* Category card hover effects */
+        .category-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Experience card enhancements */
+        .experience-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .favorite-btn.active i {
+            color: #ef4444;
+        }
+
+        /* Cart dropdown styles */
+        .cart-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .cart-dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-dropdown-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-info h5 {
+            margin: 0 0 4px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .cart-item-info p {
+            margin: 0;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .remove-item-btn:hover {
+            background-color: #fef2f2;
+        }
+
+        .cart-dropdown-total {
+            padding: 12px 0;
+            border-top: 1px solid #f3f4f6;
+            text-align: center;
+        }
+
+        .more-items {
+            text-align: center;
+            color: #6b7280;
+            font-size: 12px;
+            margin: 8px 0;
+        }
+    </style>
+</body>
+</html>

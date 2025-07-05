@@ -1,0 +1,94 @@
+<div class="cart-summary" [class.cart-summary--loading]="loading">
+  <div class="cart-summary__header">
+    <h3 class="cart-summary__title">Resumen del Carrito</h3>
+    <div class="cart-summary__items-count">
+      <span class="material-icons">shopping_cart</span>
+      <span>{{ totalItems }} {{ totalItems === 1 ? 'artículo' : 'artículos' }}</span>
+    </div>
+  </div>
+
+  <div class="cart-summary__content">
+    <!-- Estado vacío -->
+    <div *ngIf="!hasItems && !loading" class="cart-summary__empty">
+      <div class="empty-icon">
+        <span class="material-icons">shopping_cart_outlined</span>
+      </div>
+      <h4 class="empty-title">Tu carrito está vacío</h4>
+      <p class="empty-description">
+        Agrega algunos productos para comenzar tu compra
+      </p>
+      <button 
+        class="btn btn--primary"
+        (click)="onContinueShopping()">
+        <span class="material-icons">add_shopping_cart</span>
+        Continuar Comprando
+      </button>
+    </div>
+
+    <!-- Resumen con items -->
+    <div *ngIf="hasItems" class="cart-summary__details">
+      <div class="summary-row">
+        <span class="summary-label">Subtotal:</span>
+        <span class="summary-value">{{ formattedSubtotal }}</span>
+      </div>
+      
+      <!-- Aquí se pueden agregar impuestos, descuentos, etc. -->
+      <div class="summary-row summary-row--total">
+        <span class="summary-label">Total:</span>
+        <span class="summary-value summary-value--total">{{ formattedTotal }}</span>
+      </div>
+    </div>
+
+    <!-- Estados de carga -->
+    <div *ngIf="loading" class="cart-summary__loading">
+      <div class="loading-skeleton loading-skeleton--title"></div>
+      <div class="loading-skeleton loading-skeleton--row"></div>
+      <div class="loading-skeleton loading-skeleton--row"></div>
+      <div class="loading-skeleton loading-skeleton--total"></div>
+    </div>
+  </div>
+
+  <!-- Botones de acción -->
+  <div *ngIf="hasItems" class="cart-summary__actions">
+    <button 
+      class="btn btn--danger btn--full"
+      (click)="onClearCart()"
+      [disabled]="loading || checkoutLoading">
+      <span class="material-icons">delete_sweep</span>
+      Vaciar Carrito
+    </button>
+    
+    <button 
+      class="btn btn--secondary btn--full"
+      (click)="onContinueShopping()"
+      [disabled]="loading || checkoutLoading">
+      <span class="material-icons">arrow_back</span>
+      Continuar Comprando
+    </button>
+    
+    <button 
+      class="btn btn--primary btn--full"
+      (click)="onCheckout()"
+      [disabled]="loading || checkoutLoading">
+      <span class="material-icons" *ngIf="!checkoutLoading">shopping_cart_checkout</span>
+      <span class="loading-spinner" *ngIf="checkoutLoading"></span>
+      {{ checkoutLoading ? 'Procesando...' : 'Proceder al Pago' }}
+    </button>
+  </div>
+
+  <!-- Información adicional -->
+  <div *ngIf="hasItems" class="cart-summary__info">
+    <div class="info-item">
+      <span class="material-icons">security</span>
+      <span>Pago seguro</span>
+    </div>
+    <div class="info-item">
+      <span class="material-icons">local_shipping</span>
+      <span>Envío gratuito</span>
+    </div>
+    <div class="info-item">
+      <span class="material-icons">undo</span>
+      <span>Devolución fácil</span>
+    </div>
+  </div>
+</div>

@@ -34,6 +34,10 @@ export const routes: Routes = [
             {
                 path: 'user_panel',
                 loadComponent: () => import('./components/user-panel/user-panel').then(m => m.UserPanel)
+            },
+            {
+                path: 'cart',
+                loadComponent: () => import('./components/cart/cart').then(m => m.Cart)
             }
         ] // Aquí van las demás rutas hijas
 

@@ -1,0 +1,399 @@
+@use '../../shared/_variables.scss' as v;
+@use '../../shared/_mixins.scss' as m;
+@use '../../shared/_media-queries.scss' as mq;
+@use '../../shared/_cart-index.scss' as cart;
+@use 'sass:color';
+
+// =============================================================================
+// CART PAGE COMPONENT
+// =============================================================================
+
+.cart-page {
+  min-height: 100vh;
+  background-color: v.$color-background;
+  font-family: v.$font-family-base;
+  position: relative;
+}
+
+.cart-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: v.$spacing-lg;
+  position: relative;
+}
+
+.cart-layout {
+  display: flex;
+  gap: v.$spacing-2xl;
+  align-items: flex-start;
+}
+
+.cart-items {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.cart-sidebar {
+  width: 350px;
+  flex-shrink: 0;
+  position: sticky;
+  top: v.$spacing-lg;
+  z-index: 10;
+}
+
+// =============================================================================
+// CART HEADER
+// =============================================================================
+
+.cart-header {
+  margin-bottom: v.$spacing-2xl;
+  padding-bottom: v.$spacing-lg;
+  border-bottom: 1px solid v.$color-border;
+}
+
+.cart-title {
+  font-size: 2rem;
+  font-weight: v.$font-weight-bold;
+  color: v.$color-text-dark;
+  margin: 0 0 v.$spacing-sm 0;
+  line-height: 1.2;
+}
+
+.cart-subtitle {
+  font-size: v.$font-size-base;
+  color: v.$color-text-light;
+  margin: 0;
+  line-height: 1.5;
+}
+
+// =============================================================================
+// CART ITEMS SECTION
+// =============================================================================
+
+.cart-items__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: v.$spacing-lg;
+  padding-bottom: v.$spacing-md;
+  border-bottom: 1px solid v.$color-border;
+}
+
+.items-title {
+  font-size: 1.5rem;
+  font-weight: v.$font-weight-bold;
+  color: v.$color-text-dark;
+  margin: 0;
+}
+
+.items-count {
+  font-size: v.$font-size-sm;
+  color: v.$color-text-light;
+  background-color: v.$color-primary;
+  color: white;
+  padding: v.$spacing-xs v.$spacing-sm;
+  border-radius: v.$border-radius-small;
+  font-weight: v.$font-weight-medium;
+}
+
+.cart-items__list {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-md;
+}
+
+// =============================================================================
+// CART EMPTY STATE
+// =============================================================================
+
+.cart-empty {
+  text-align: center;
+  padding: v.$spacing-3xl v.$spacing-xl;
+  background-color: white;
+  border-radius: v.$border-radius;
+  box-shadow: v.$color-shadow-light;
+  border: 1px solid v.$color-border;
+}
+
+.empty-icon {
+  margin-bottom: v.$spacing-lg;
+  
+  .material-icons {
+    font-size: 4rem;
+    color: v.$color-text-light;
+    opacity: 0.5;
+  }
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: v.$font-weight-bold;
+  color: v.$color-text-dark;
+  margin: 0 0 v.$spacing-md 0;
+}
+
+.empty-description {
+  font-size: v.$font-size-base;
+  color: v.$color-text-light;
+  margin: 0 0 v.$spacing-xl 0;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+// =============================================================================
+// LOADING OVERLAY
+// =============================================================================
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: color.adjust(v.$color-background, $alpha: -0.1);
+  @include m.flex-center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.loading-spinner {
+  @include m.flex-center(column);
+  gap: v.$spacing-md;
+  padding: v.$spacing-xl;
+  background-color: white;
+  border-radius: v.$border-radius;
+  box-shadow: v.$color-shadow-light;
+  color: v.$color-text-light;
+
+  .material-icons {
+    font-size: 2rem;
+    color: v.$color-primary;
+  }
+
+  span {
+    font-size: v.$font-size-sm;
+    font-weight: v.$font-weight-medium;
+  }
+}
+
+// =============================================================================
+// ERROR BANNER
+// =============================================================================
+
+.error-banner {
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: v.$border-radius;
+  margin-bottom: v.$spacing-lg;
+  overflow: hidden;
+}
+
+.error-content {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-sm;
+  padding: v.$spacing-md v.$spacing-lg;
+  color: #dc2626;
+  font-size: v.$font-size-sm;
+  font-weight: v.$font-weight-medium;
+
+  .material-icons {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  span {
+    flex: 1;
+  }
+}
+
+.error-close {
+  background: none;
+  border: none;
+  color: #dc2626;
+  cursor: pointer;
+  padding: v.$spacing-xs;
+  border-radius: v.$border-radius-small;
+  transition: v.$transition;
+
+  &:hover {
+    background-color: rgba(220, 38, 38, 0.1);
+  }
+
+  .material-icons {
+    font-size: 1.25rem;
+  }
+}
+
+// =============================================================================
+// BUTTONS
+// =============================================================================
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$spacing-xs;
+  padding: v.$spacing-md v.$spacing-lg;
+  border: none;
+  border-radius: v.$border-radius;
+  font-size: v.$font-size-base;
+  font-weight: v.$font-weight-medium;
+  text-decoration: none;
+  cursor: pointer;
+  transition: v.$transition;
+  min-height: 48px;
+
+  &--primary {
+    background-color: v.$color-primary;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: color.adjust(v.$color-primary, $lightness: -10%);
+      transform: translateY(-1px);
+      box-shadow: v.$color-shadow-hover;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .material-icons {
+    font-size: 1.25rem;
+  }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+@include mq.mobile-only {
+  .cart-container {
+    padding: v.$spacing-md;
+  }
+
+  .cart-layout {
+    flex-direction: column;
+    gap: v.$spacing-lg;
+  }
+
+  .cart-sidebar {
+    width: 100%;
+    position: static;
+    order: 2;
+  }
+
+  .cart-items {
+    order: 1;
+    width: 100%;
+  }
+
+  .cart-header {
+    margin-bottom: v.$spacing-lg;
+  }
+
+  .cart-title {
+    font-size: 1.5rem;
+  }
+
+  .cart-empty {
+    padding: v.$spacing-xl v.$spacing-lg;
+
+    .empty-icon .material-icons {
+      font-size: 3rem;
+    }
+
+    .empty-title {
+      font-size: 1.25rem;
+    }
+  }
+
+  .cart-items__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: v.$spacing-sm;
+  }
+}
+
+@include mq.tablet-only {
+  .cart-layout {
+    gap: v.$spacing-xl;
+  }
+
+  .cart-sidebar {
+    width: 280px;
+  }
+}
+
+@include mq.desktop-up {
+  .cart-container {
+    padding: v.$spacing-2xl;
+  }
+
+  .cart-layout {
+    gap: v.$spacing-3xl;
+  }
+
+  .cart-sidebar {
+    width: 380px;
+  }
+}
+
+// =============================================================================
+// ANIMATIONS
+// =============================================================================
+
+.cart-items__list {
+  app-cart-item {
+    animation: fadeInUp 0.3s ease-out;
+    animation-fill-mode: both;
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.05}s;
+      }
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-items__list app-cart-item {
+    animation: none;
+  }
+
+  .btn {
+    transition: none;
+  }
+}
+
+// Focus visible para navegación por teclado
+.btn:focus-visible,
+.error-close:focus-visible {
+  outline: 2px solid v.$color-primary;
+  outline-offset: 2px;
+}

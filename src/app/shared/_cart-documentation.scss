@@ -1,0 +1,447 @@
+// ========================================
+// DOCUMENTACIÓN DE DESIGN TOKENS DEL CARRITO
+// ========================================
+
+/*
+  ESTE ARCHIVO CONTIENE EJEMPLOS DE USO DE LOS DESIGN TOKENS DEL CARRITO
+  NO IMPORTAR EN PRODUCCIÓN - SOLO PARA REFERENCIA Y DESARROLLO
+*/
+
+// ========================================
+// CÓMO USAR LOS DESIGN TOKENS
+// ========================================
+
+/*
+  1. IMPORTAR EN TU COMPONENTE:
+  
+  @use '../../shared/_cart-variables.scss' as cart;
+  @use '../../shared/_cart-mixins.scss' as cart-mixins;
+  @use '../../shared/_cart-utilities.scss' as cart-utils;
+
+  2. USAR VARIABLES DIRECTAMENTE:
+  
+  .mi-clase {
+    color: cart.$cart-primary;
+    padding: cart.$cart-spacing-md;
+    font-size: cart.$cart-font-size-lg;
+  }
+
+  3. USAR MIXINS:
+  
+  .mi-boton {
+    @include cart-mixins.cart-button-primary;
+    @include cart-mixins.cart-button-size('lg');
+  }
+
+  4. USAR CLASES UTILITARIAS:
+  
+  <div class="cart-container cart-p-lg cart-bg-surface">
+    <button class="cart-btn cart-btn-primary cart-text-lg">
+      Mi Botón
+    </button>
+  </div>
+*/
+
+// ========================================
+// EJEMPLOS DE COMPONENTES
+// ========================================
+
+// Ejemplo de botón del carrito
+.cart-button-example {
+  @include cart-mixins.cart-button-primary;
+  @include cart-mixins.cart-button-size('lg');
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: cart.$cart-shadow-lg;
+  }
+}
+
+// Ejemplo de tarjeta del carrito
+.cart-card-example {
+  @include cart-mixins.cart-card;
+  @include cart-mixins.cart-flex-column;
+  padding: cart.$cart-spacing-lg;
+  gap: cart.$cart-spacing-md;
+  
+  .cart-card-title {
+    @include cart-mixins.cart-heading(3);
+    color: cart.$cart-text-primary;
+  }
+  
+  .cart-card-content {
+    @include cart-mixins.cart-body-text('base', 'secondary');
+    line-height: cart.$cart-line-height-relaxed;
+  }
+  
+  .cart-card-actions {
+    @include cart-mixins.cart-flex-between;
+    margin-top: auto;
+  }
+}
+
+// Ejemplo de input del carrito
+.cart-input-example {
+  @include cart-mixins.cart-input-base;
+  
+  &:focus {
+    border-color: cart.$cart-primary;
+    box-shadow: 0 0 0 cart.$cart-focus-ring-width rgba(cart.$cart-focus-ring-color, cart.$cart-focus-ring-opacity);
+  }
+  
+  &.error {
+    border-color: cart.$cart-danger;
+  }
+}
+
+// Ejemplo de estado de carga
+.cart-loading-example {
+  @include cart-mixins.cart-loading;
+  
+  &::after {
+    border-top-color: cart.$cart-primary;
+  }
+}
+
+// Ejemplo de skeleton
+.cart-skeleton-example {
+  @include cart-mixins.cart-skeleton;
+  height: cart.$cart-skeleton-height;
+  width: 100%;
+}
+
+// ========================================
+// EJEMPLOS DE LAYOUT
+// ========================================
+
+// Layout principal del carrito
+.cart-layout-example {
+  @include cart-mixins.cart-container;
+  @include cart-mixins.cart-grid(1fr cart.$cart-sidebar-width, cart.$cart-spacing-xl);
+  
+  @include cart-mixins.cart-mobile-only {
+    @include cart-mixins.cart-grid(1fr, cart.$cart-spacing-lg);
+  }
+}
+
+// Lista de items del carrito
+.cart-items-list-example {
+  @include cart-mixins.cart-flex-column;
+  gap: cart.$cart-spacing-md;
+  
+  .cart-item {
+    @include cart-mixins.cart-card;
+    @include cart-mixins.cart-flex(row, space-between, center);
+    padding: cart.$cart-spacing-md;
+    gap: cart.$cart-spacing-md;
+    
+    @include cart-mixins.cart-mobile-only {
+      @include cart-mixins.cart-flex-column;
+      align-items: stretch;
+    }
+  }
+}
+
+// Sidebar del carrito
+.cart-sidebar-example {
+  @include cart-mixins.cart-card-elevated;
+  position: sticky;
+  top: cart.$cart-spacing-lg;
+  height: fit-content;
+  padding: cart.$cart-spacing-lg;
+  
+  @include cart-mixins.cart-mobile-only {
+    position: static;
+    margin-top: cart.$cart-spacing-lg;
+  }
+}
+
+// ========================================
+// EJEMPLOS DE TIPOGRAFÍA
+// ========================================
+
+.cart-typography-example {
+  .cart-title {
+    @include cart-mixins.cart-heading(1);
+    margin-bottom: cart.$cart-spacing-lg;
+  }
+  
+  .cart-subtitle {
+    @include cart-mixins.cart-heading(3);
+    color: cart.$cart-text-secondary;
+    margin-bottom: cart.$cart-spacing-md;
+  }
+  
+  .cart-description {
+    @include cart-mixins.cart-body-text('base', 'secondary');
+    line-height: cart.$cart-line-height-relaxed;
+  }
+  
+  .cart-caption {
+    @include cart-mixins.cart-caption;
+    margin-top: cart.$cart-spacing-sm;
+  }
+}
+
+// ========================================
+// EJEMPLOS DE ANIMACIONES
+// ========================================
+
+.cart-animations-example {
+  .cart-fade-in-item {
+    @include cart-mixins.cart-fade-in;
+  }
+  
+  .cart-slide-in-item {
+    @include cart-mixins.cart-slide-in-up;
+  }
+  
+  .cart-scale-in-item {
+    @include cart-mixins.cart-scale-in;
+  }
+  
+  .cart-bounce-in-item {
+    @include cart-mixins.cart-bounce-in;
+  }
+}
+
+// ========================================
+// EJEMPLOS DE RESPONSIVE
+// ========================================
+
+.cart-responsive-example {
+  // Desktop
+  @include cart-mixins.cart-desktop-up {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: cart.$cart-spacing-xl;
+  }
+  
+  // Tablet
+  @include cart-mixins.cart-tablet-only {
+    display: flex;
+    flex-direction: column;
+    gap: cart.$cart-spacing-lg;
+  }
+  
+  // Mobile
+  @include cart-mixins.cart-mobile-only {
+    display: flex;
+    flex-direction: column;
+    gap: cart.$cart-spacing-md;
+  }
+}
+
+// ========================================
+// EJEMPLOS DE ACCESIBILIDAD
+// ========================================
+
+.cart-accessibility-example {
+  .cart-sr-only-text {
+    @include cart-mixins.cart-sr-only;
+  }
+  
+  .cart-focusable-button {
+    @include cart-mixins.cart-button-primary;
+    @include cart-mixins.cart-focus-visible;
+  }
+  
+  .cart-reduced-motion {
+    @include cart-mixins.cart-reduced-motion;
+  }
+}
+
+// ========================================
+// EJEMPLOS DE ESTADOS
+// ========================================
+
+.cart-states-example {
+  .cart-item {
+    @include cart-mixins.cart-card;
+    transition: cart.$cart-transition-normal;
+    
+    &:hover {
+      @include cart-mixins.cart-card-interactive;
+    }
+    
+    &.cart-loading {
+      @include cart-mixins.cart-loading;
+    }
+    
+    &.cart-disabled {
+      @include cart-mixins.cart-disabled;
+    }
+    
+    &.cart-error {
+      border-color: cart.$cart-danger;
+      background-color: cart.$cart-danger-light;
+    }
+    
+    &.cart-success {
+      border-color: cart.$cart-success;
+      background-color: cart.$cart-success-light;
+    }
+  }
+}
+
+// ========================================
+// EJEMPLOS DE UTILIDADES
+// ========================================
+
+.cart-utilities-example {
+  .cart-truncated-text {
+    @include cart-mixins.cart-truncate;
+    max-width: 200px;
+  }
+  
+  .cart-multiline-text {
+    @include cart-mixins.cart-truncate-multiline(3);
+    max-height: 4.5em;
+  }
+  
+  .cart-scrollable-content {
+    @include cart-mixins.cart-scrollbar;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .cart-print-hidden {
+    @include cart-mixins.cart-print-hidden;
+  }
+}
+
+// ========================================
+// EJEMPLOS DE COLORES
+// ========================================
+
+.cart-colors-example {
+  .cart-primary-bg {
+    background-color: cart.$cart-primary;
+    color: cart.$cart-text-inverse;
+  }
+  
+  .cart-secondary-bg {
+    background-color: cart.$cart-secondary;
+    color: cart.$cart-text-inverse;
+  }
+  
+  .cart-success-bg {
+    background-color: cart.$cart-success;
+    color: cart.$cart-text-inverse;
+  }
+  
+  .cart-danger-bg {
+    background-color: cart.$cart-danger;
+    color: cart.$cart-text-inverse;
+  }
+  
+  .cart-warning-bg {
+    background-color: cart.$cart-warning;
+    color: cart.$cart-text-inverse;
+  }
+  
+  .cart-surface-bg {
+    background-color: cart.$cart-surface;
+    color: cart.$cart-text-primary;
+  }
+  
+  .cart-background-bg {
+    background-color: cart.$cart-background;
+    color: cart.$cart-text-primary;
+  }
+}
+
+// ========================================
+// EJEMPLOS DE SOMBRAS
+// ========================================
+
+.cart-shadows-example {
+  .cart-shadow-xs { box-shadow: cart.$cart-shadow-xs; }
+  .cart-shadow-sm { box-shadow: cart.$cart-shadow-sm; }
+  .cart-shadow-md { box-shadow: cart.$cart-shadow-md; }
+  .cart-shadow-lg { box-shadow: cart.$cart-shadow-lg; }
+  .cart-shadow-xl { box-shadow: cart.$cart-shadow-xl; }
+}
+
+// ========================================
+// EJEMPLOS DE BORDES
+// ========================================
+
+.cart-borders-example {
+  .cart-border-light { border: cart.$cart-border-width-1 solid cart.$cart-border-light; }
+  .cart-border-medium { border: cart.$cart-border-width-1 solid cart.$cart-border-medium; }
+  .cart-border-dark { border: cart.$cart-border-width-1 solid cart.$cart-border-dark; }
+  .cart-border-focus { border: cart.$cart-border-width-1 solid cart.$cart-border-focus; }
+  
+  .cart-rounded-sm { border-radius: cart.$cart-border-radius-sm; }
+  .cart-rounded-md { border-radius: cart.$cart-border-radius-md; }
+  .cart-rounded-lg { border-radius: cart.$cart-border-radius-lg; }
+  .cart-rounded-xl { border-radius: cart.$cart-border-radius-xl; }
+}
+
+// ========================================
+// EJEMPLOS DE ESPACIADO
+// ========================================
+
+.cart-spacing-example {
+  .cart-spacing-xs { padding: cart.$cart-spacing-xs; }
+  .cart-spacing-sm { padding: cart.$cart-spacing-sm; }
+  .cart-spacing-md { padding: cart.$cart-spacing-md; }
+  .cart-spacing-lg { padding: cart.$cart-spacing-lg; }
+  .cart-spacing-xl { padding: cart.$cart-spacing-xl; }
+  .cart-spacing-2xl { padding: cart.$cart-spacing-2xl; }
+  .cart-spacing-3xl { padding: cart.$cart-spacing-3xl; }
+}
+
+// ========================================
+// EJEMPLOS DE TAMAÑOS DE FUENTE
+// ========================================
+
+.cart-font-sizes-example {
+  .cart-text-xs { font-size: cart.$cart-font-size-xs; }
+  .cart-text-sm { font-size: cart.$cart-font-size-sm; }
+  .cart-text-base { font-size: cart.$cart-font-size-base; }
+  .cart-text-lg { font-size: cart.$cart-font-size-lg; }
+  .cart-text-xl { font-size: cart.$cart-font-size-xl; }
+  .cart-text-2xl { font-size: cart.$cart-font-size-2xl; }
+  .cart-text-3xl { font-size: cart.$cart-font-size-3xl; }
+  .cart-text-4xl { font-size: cart.$cart-font-size-4xl; }
+}
+
+// ========================================
+// EJEMPLOS DE PESOS DE FUENTE
+// ========================================
+
+.cart-font-weights-example {
+  .cart-font-light { font-weight: cart.$cart-font-weight-light; }
+  .cart-font-normal { font-weight: cart.$cart-font-weight-normal; }
+  .cart-font-medium { font-weight: cart.$cart-font-weight-medium; }
+  .cart-font-semibold { font-weight: cart.$cart-font-weight-semibold; }
+  .cart-font-bold { font-weight: cart.$cart-font-weight-bold; }
+  .cart-font-extrabold { font-weight: cart.$cart-font-weight-extrabold; }
+}
+
+// ========================================
+// EJEMPLOS DE TRANSICIONES
+// ========================================
+
+.cart-transitions-example {
+  .cart-transition-fast { transition: cart.$cart-transition-fast; }
+  .cart-transition-normal { transition: cart.$cart-transition-normal; }
+  .cart-transition-slow { transition: cart.$cart-transition-slow; }
+  .cart-transition-slower { transition: cart.$cart-transition-slower; }
+}
+
+// ========================================
+// EJEMPLOS DE Z-INDEX
+// ========================================
+
+.cart-z-index-example {
+  .cart-z-dropdown { z-index: cart.$cart-z-dropdown; }
+  .cart-z-sticky { z-index: cart.$cart-z-sticky; }
+  .cart-z-fixed { z-index: cart.$cart-z-fixed; }
+  .cart-z-modal-backdrop { z-index: cart.$cart-z-modal-backdrop; }
+  .cart-z-modal { z-index: cart.$cart-z-modal; }
+  .cart-z-popover { z-index: cart.$cart-z-popover; }
+  .cart-z-tooltip { z-index: cart.$cart-z-tooltip; }
+} 

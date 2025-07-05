@@ -1,0 +1,35 @@
+// ========================================
+// ÍNDICE DE DESIGN TOKENS DEL CARRITO
+// ========================================
+
+/*
+  ESTE ARCHIVO IMPORTA TODOS LOS DESIGN TOKENS DEL CARRITO
+  ÚSALO EN TUS COMPONENTES PARA ACCEDER A TODO EL SISTEMA DE DISEÑO
+  
+  EJEMPLO DE USO:
+  @use '../../shared/_cart-index.scss' as cart;
+  
+  .mi-componente {
+    color: cart.$cart-primary;
+    @include cart.cart-button-primary;
+  }
+*/
+
+// Importar variables
+@forward './_cart-variables.scss';
+
+// Importar mixins
+@forward './_cart-mixins.scss';
+
+// Importar utilidades
+@forward './_cart-utilities.scss';
+
+// Re-exportar todo con namespace 'cart'
+@use './_cart-variables.scss' as cart-vars;
+@use './_cart-mixins.scss' as cart-mixins;
+@use './_cart-utilities.scss' as cart-utils;
+
+// Crear namespace unificado
+$cart: cart-vars;
+$cart-mixins: cart-mixins;
+$cart-utils: cart-utils; 

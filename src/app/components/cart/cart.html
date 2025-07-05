@@ -1,0 +1,85 @@
+<section class="cart-page" role="main" aria-label="Carrito de compras">
+  <div class="cart-container">
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="loading">
+      <div class="loading-spinner">
+        <span class="material-icons">shopping_cart</span>
+        <span>Cargando carrito...</span>
+      </div>
+    </div>
+    
+    <!-- Error Banner -->
+    <div class="error-banner" *ngIf="showError">
+      <div class="error-content">
+        <span class="material-icons">error_outline</span>
+        <span>{{ error }}</span>
+        <button class="error-close" (click)="error = null">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Header del carrito -->
+    <div class="cart-header">
+      <h1 class="cart-title">Mi Carrito</h1>
+      <p class="cart-subtitle" *ngIf="hasItems">
+        {{ cart?.items_cnt }} {{ cart?.items_cnt === 1 ? 'producto' : 'productos' }} en tu carrito
+      </p>
+    </div>
+    
+    <!-- Layout principal -->
+    <div class="cart-layout" *ngIf="!loading">
+      
+      <!-- Lista de productos -->
+      <div class="cart-items">
+        <div class="cart-items__header" *ngIf="hasItems">
+          <h2 class="items-title">Productos</h2>
+          <span class="items-count">{{ cart?.items_cnt }} {{ cart?.items_cnt === 1 ? 'artículo' : 'artículos' }}</span>
+        </div>
+        
+        <!-- Estado vacío -->
+        <div class="cart-empty" *ngIf="isEmpty">
+          <div class="empty-icon">
+            <span class="material-icons">shopping_cart_outlined</span>
+          </div>
+          <h2 class="empty-title">Tu carrito está vacío</h2>
+          <p class="empty-description">
+            Parece que aún no has agregado ningún producto a tu carrito.
+          </p>
+          <button 
+            class="btn btn--primary"
+            (click)="onContinueShopping()">
+            <span class="material-icons">add_shopping_cart</span>
+            Explorar Productos
+          </button>
+        </div>
+        
+        <!-- Lista de items -->
+        <div class="cart-items__list" *ngIf="hasItems">
+          <app-cart-item
+            *ngFor="let item of cart?.items; trackBy: trackByItemId"
+            [item]="item"
+            [loading]="loading"
+            (quantityChange)="onQuantityChange($event)"
+            (remove)="onRemoveItem($event)">
+          </app-cart-item>
+        </div>
+      </div>
+      
+      <!-- Sidebar con resumen -->
+      <div class="cart-sidebar">
+        <app-cart-summary
+          [cart]="cart"
+          [loading]="loading"
+          [checkoutLoading]="checkoutLoading"
+          (checkout)="onCheckout()"
+          (clear)="onClearCart()"
+          (continueShopping)="onContinueShopping()">
+        </app-cart-summary>
+      </div>
+      
+    </div>
+    
+  </div>
+</section>
