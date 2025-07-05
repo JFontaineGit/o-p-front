@@ -10,7 +10,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatBadgeModule } from '@angular/material/badge';
+import { Subject, takeUntil, catchError, of } from 'rxjs';
 import { StorageService, StorageKeys } from '../../../services/core/storage.service'; 
+import { CartService } from '../../../services/carts/cart.service';
 import type { Product } from '../../../interfaces/product.interface'; 
 
 @Component({
@@ -45,9 +47,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     avatar: null as string | null,
   };
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private cartService: CartService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -60,7 +65,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -82,16 +90,57 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private initializeCart() {
-    const cart = this.storageService.getObject<Product[]>(StorageKeys.Carrito);
-    this.cartItemCount = cart ? cart.length : 0;
+    // Intentar obtener el carrito del backend primero
+    this.cartService.getCart()
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError((error) => {
+          console.warn('Error getting cart from backend, falling back to storage:', error);
+          // Fallback al StorageService si falla el backend
+          const cart = this.storageService.getObject<Product[]>(StorageKeys.Carrito);
+          this.cartItemCount = cart ? cart.length : 0;
+          return of(null);
+        })
+      )
+      .subscribe((cart) => {
+        if (cart) {
+          this.cartItemCount = cart.items_cnt;
+        }
+      });
   }
 
   updateCartItemCount(product: Product) {
-    const cart = this.storageService.getObject<Product[]>(StorageKeys.Carrito) || [];
-    cart.push(product);
-    this.storageService.setObject(StorageKeys.Carrito, cart);
-    this.cartItemCount = cart.length;
-    console.log('Carrito actualizado:', cart);
+    // Intentar agregar al carrito del backend
+    const cartItem = {
+      availability_id: product.id,
+      product_metadata_id: product.id,
+      qty: 1,
+      unit_price: product.price,
+      config: {
+        title: product.title,
+        description: product.description,
+        imageUrl: product.imageUrl
+      }
+    };
+
+    this.cartService.addCartItem(cartItem)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError((error) => {
+          console.warn('Error adding to backend cart, falling back to storage:', error);
+          // Fallback al StorageService si falla el backend
+          const cart = this.storageService.getObject<Product[]>(StorageKeys.Carrito) || [];
+          cart.push(product);
+          this.storageService.setObject(StorageKeys.Carrito, cart);
+          this.cartItemCount = cart.length;
+          return of(null);
+        })
+      )
+      .subscribe((response) => {
+        if (response) {
+          this.cartItemCount = response.items_cnt;
+        }
+      });
   }
 
   toggleMobileMenu() {

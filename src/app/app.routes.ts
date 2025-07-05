@@ -38,6 +38,10 @@ export const routes: Routes = [
             {
                 path: 'cart',
                 loadComponent: () => import('./components/cart/cart').then(m => m.Cart)
+            },
+            {
+                path: 'carrito',
+                loadComponent: () => import('./components/cart/cart').then(m => m.Cart)
             }
         ] // Aquí van las demás rutas hijas
 

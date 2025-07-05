@@ -19,6 +19,7 @@
           [price]="product.price"
           [imageUrl]="product.imageUrl"
           [isFavorite]="favoriteIds.has(product.id)"
+          [isAddingToCart]="isAddingToCart(product.id)"
           (addToCart)="onAddToCart($event)"
           (toggleFavorite)="onToggleFavorite($event)">
         </app-product-card>
@@ -51,7 +52,8 @@
           [duration]="package.duration"
           [maxPeople]="package.maxPeople"
           [isFavorite]="favoriteIds.has(package.id)"
-          (addToCart)="onAddToCart($event)"
+          [isAddingToCart]="isAddingToCart(package.id)"
+          (addToCart)="onAddPackageToCart($event)"
           (toggleFavorite)="onToggleFavorite($event)">
         </app-product-card>
       </div>

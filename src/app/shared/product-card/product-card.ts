@@ -20,6 +20,7 @@ export class ProductCard {
   @Input() imageUrl = ""
   @Input() id = 0
   @Input() isFavorite = false
+  @Input() isAddingToCart = false
 
   // Nuevos inputs
   @Input() mode: CardMode = "product"

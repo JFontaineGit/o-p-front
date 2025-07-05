@@ -80,9 +80,11 @@
         type="button"
         class="add-to-cart-btn"
         (click)="onAddToCart()"
+        [disabled]="isAddingToCart"
         [attr.aria-label]="'Agregar ' + title + ' al carrito'">
-        <span class="material-icons">add_shopping_cart</span>
-        <span class="btn-text">Agregar al Carrito</span>
+        <span class="material-icons" *ngIf="!isAddingToCart">add_shopping_cart</span>
+        <span class="loading-spinner" *ngIf="isAddingToCart"></span>
+        <span class="btn-text">{{ isAddingToCart ? 'Agregando...' : 'Agregar al Carrito' }}</span>
       </button>
     </div>
   </div>

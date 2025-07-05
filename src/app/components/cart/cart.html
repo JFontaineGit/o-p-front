@@ -14,9 +14,15 @@
       <div class="error-content">
         <span class="material-icons">error_outline</span>
         <span>{{ error }}</span>
-        <button class="error-close" (click)="error = null">
-          <span class="material-icons">close</span>
-        </button>
+        <div class="error-actions">
+          <button class="btn btn--secondary" (click)="onRetry()">
+            <span class="material-icons">refresh</span>
+            Reintentar
+          </button>
+          <button class="error-close" (click)="error = null">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
       </div>
     </div>
     
