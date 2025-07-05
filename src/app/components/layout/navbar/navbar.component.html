@@ -6,14 +6,14 @@
       <div class="header__left">
         <div class="logo">
           <div class="logo-container">
-            <svg class="planet-logo" viewBox="0 0 100 100" width="40" height="40">
+            <svg class="planet-logo" viewBox="0 0  مغزيات100 100" width="40" height="40">
               <!-- Planeta -->
               <circle cx="50" cy="50" r="25" fill="#4285f4" stroke="#1976d2" stroke-width="2"/>
               <circle cx="45" cy="45" r="3" fill="#81c784" opacity="0.8"/>
               <circle cx="55" cy="40" r="2" fill="#81c784" opacity="0.8"/>
               <circle cx="52" cy="55" r="2.5" fill="#81c784" opacity="0.8"/>
               <circle cx="42" cy="58" r="1.5" fill="#81c784" opacity="0.8"/>
-              <path d="M 35 45 Q 50 35 65 45 Q 50 55 35 45" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
+              <path d="M 35 45 Q 50 35 65 45 Q 50 5535" fill="none" stroke="#81c784" stroke-width="1.5" opacity="0.6"/>
               
               <!-- Avión -->
               <g transform="translate(70,30) rotate(45)">
@@ -80,7 +80,7 @@
                 <mat-icon>person</mat-icon>
               </div>
               <div class="user-info">
-                <span class="user-name">{{ userData.name }}</span>
+                <span class="user-name">{{ getFullName() }}</span>
                 <span class="user-email">{{ userData.email }}</span>
               </div>
             </div>
@@ -208,7 +208,7 @@
             <mat-icon>person</mat-icon>
           </div>
           <div class="mobile-user-details">
-            <span class="mobile-user-name">{{ userData.name }}</span>
+            <span class="mobile-user-name">{{ getFullName() }}</span>
             <span class="mobile-user-email">{{ userData.email }}</span>
           </div>
         </div>
