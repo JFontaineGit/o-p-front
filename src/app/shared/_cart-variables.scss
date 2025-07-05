@@ -114,6 +114,7 @@ $cart-border-radius-lg: 0.5rem;      // 8px
 $cart-border-radius-xl: 0.75rem;     // 12px
 $cart-border-radius-2xl: 1rem;       // 16px
 $cart-border-radius-full: 9999px;
+$cart-border-radius: $cart-border-radius-md; // Variable general
 
 // Anchos de borde
 $cart-border-width-0: 0;

@@ -2,6 +2,7 @@
 // MIXINS ESPECÍFICOS DEL CARRITO
 // ========================================
 
+@use 'sass:color';
 @use './_variables.scss' as vars;
 @use './_cart-variables.scss' as cart;
 
@@ -12,10 +13,10 @@
 @mixin cart-container {
   max-width: cart.$cart-container-max-width;
   margin: 0 auto;
-  padding: vars.$global-padding;
+  padding: cart.$cart-spacing-lg;
   
   @media (max-width: cart.$cart-breakpoint-md) {
-    padding: vars.$global-padding-mobile;
+    padding: cart.$cart-spacing-md;
   }
 }
 
@@ -131,12 +132,12 @@
   border-color: $border-color;
   
   &:hover:not(:disabled) {
-    background: $hover-background or darken($background, 10%);
+    background: $hover-background or color.adjust($background, $lightness: -10%);
     color: $hover-color or $color;
   }
   
   &:active:not(:disabled) {
-    background: darken($background, 15%);
+    background: color.adjust($background, $lightness: -15%);
   }
 }
 

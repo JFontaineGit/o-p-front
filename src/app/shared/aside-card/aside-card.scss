@@ -1,5 +1,5 @@
 @use '../_variables.scss' as v;
-@use '../../styles/_mixins.scss' as m;
+@use '../_mixins.scss' as m;
 
 :host {
   --bg-white: v.$color-bg-white;

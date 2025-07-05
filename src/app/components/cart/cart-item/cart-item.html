@@ -32,7 +32,7 @@
       class="quantity-input"
       [value]="item.qty"
       min="1"
-      (change)="onQuantityChange($event.target.valueAsNumber)"
+      (change)="onQuantityChange(+($any($event.target).value))"
       [disabled]="loading"
       aria-label="Cantidad">
     

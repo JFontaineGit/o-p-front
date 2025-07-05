@@ -1,6 +1,8 @@
 import { Component, Input } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { ProductCard } from "../product-card"
+import { CartService } from "../../../services/carts/cart.service"
+import { CartItemAdd } from "../../../services/interfaces/cart.interfaces"
 import type { Product, TravelPackage } from "../../../interfaces/product.interface"
 
 @Component({
@@ -13,6 +15,9 @@ import type { Product, TravelPackage } from "../../../interfaces/product.interfa
 export class ProductList {
   @Input() mode: 'products' | 'packages' | 'all' = 'all'
   favoriteIds = new Set<number>()
+  addingToCart = new Set<number>() // Para tracking de loading por producto
+  
+  constructor(private cartService: CartService) {}
   
   // Productos
   products: Product[] = [
@@ -175,8 +180,73 @@ export class ProductList {
   }
 
   onAddToCart(product: Product) {
-    console.log("Producto agregado al carrito:", product)
-    // implementar logica de carrito
+    if (this.addingToCart.has(product.id)) return; // Evitar múltiples clicks
+    
+    this.addingToCart.add(product.id);
+    
+    const cartItem: CartItemAdd = {
+      availability_id: product.id, // Usar el ID del producto como availability_id
+      product_metadata_id: product.id, // Usar el ID del producto como product_metadata_id
+      qty: 1,
+      unit_price: product.price,
+      config: {
+        title: product.title,
+        description: product.description,
+        imageUrl: product.imageUrl
+      }
+    };
+
+    this.cartService.addCartItem(cartItem)
+      .subscribe({
+        next: (response) => {
+          alert(`¡${product.title} agregado al carrito!`);
+          this.addingToCart.delete(product.id);
+        },
+        error: (error) => {
+          console.error('Error adding to cart:', error);
+          alert('Error al agregar al carrito. Por favor, intenta de nuevo.');
+          this.addingToCart.delete(product.id);
+        }
+      });
+  }
+
+  onAddPackageToCart(packageItem: TravelPackage) {
+    if (this.addingToCart.has(packageItem.id)) return; // Evitar múltiples clicks
+    
+    this.addingToCart.add(packageItem.id);
+    
+    const cartItem: CartItemAdd = {
+      availability_id: packageItem.id, // Usar el ID del paquete como availability_id
+      product_metadata_id: packageItem.id, // Usar el ID del paquete como product_metadata_id
+      qty: 1,
+      unit_price: packageItem.price,
+      config: {
+        title: packageItem.title,
+        description: packageItem.description,
+        imageUrl: packageItem.imageUrl,
+        destination: packageItem.destination,
+        duration: packageItem.duration,
+        maxPeople: packageItem.maxPeople,
+        features: packageItem.features
+      }
+    };
+
+    this.cartService.addCartItem(cartItem)
+      .subscribe({
+        next: (response) => {
+          alert(`¡${packageItem.title} agregado al carrito!`);
+          this.addingToCart.delete(packageItem.id);
+        },
+        error: (error) => {
+          console.error('Error adding package to cart:', error);
+          alert('Error al agregar al carrito. Por favor, intenta de nuevo.');
+          this.addingToCart.delete(packageItem.id);
+        }
+      });
+  }
+
+  isAddingToCart(id: number): boolean {
+    return this.addingToCart.has(id);
   }
 
   onToggleFavorite(event: { id: number; isFavorite: boolean }) {

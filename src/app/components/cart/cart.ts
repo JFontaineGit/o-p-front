@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Subject, takeUntil, finalize, catchError, of } from 'rxjs';
+import { Subject, takeUntil, finalize, catchError, of, forkJoin } from 'rxjs';
 import { CartItemComponent } from './cart-item/cart-item';
 import { CartSummaryComponent } from './cart-summary/cart-summary';
 import { CartService } from '../../services/carts/cart.service';
@@ -111,17 +111,21 @@ export class Cart implements OnInit, OnDestroy {
     if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
       // Implementar lógica para vaciar carrito
       // Por ahora, eliminamos todos los items uno por uno
-      const deletePromises = this.cart.items.map(item => 
-        this.cartService.deleteCartItem(item.id).toPromise()
+      const deleteObservables = this.cart.items.map(item => 
+        this.cartService.deleteCartItem(item.id)
       );
 
-      Promise.all(deletePromises)
-        .then(() => {
+      forkJoin(deleteObservables)
+        .pipe(
+          takeUntil(this.destroy$),
+          catchError((error) => {
+            alert('Error al vaciar el carrito. Por favor, intenta de nuevo.');
+            console.error('Error clearing cart:', error);
+            return of(null);
+          })
+        )
+        .subscribe(() => {
           this.loadCart(); // Recargar carrito
-        })
-        .catch((error) => {
-          alert('Error al vaciar el carrito. Por favor, intenta de nuevo.');
-          console.error('Error clearing cart:', error);
         });
     }
   }

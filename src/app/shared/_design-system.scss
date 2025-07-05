@@ -1,0 +1,43 @@
+// =============================================================================
+// DESIGN SYSTEM - SISTEMA CENTRALIZADO DE DESIGN TOKENS
+// =============================================================================
+
+// Importar todos los design tokens del proyecto
+@forward './_variables.scss';
+@forward './_cart-variables.scss';
+@forward './_mixins.scss';
+@forward './_cart-mixins.scss';
+@forward './_media-queries.scss';
+@forward './_cart-index.scss';
+
+// Importar tokens de componentes específicos
+@forward '../components/layout/_variables.scss' as layout-*;
+@forward '../components/layout/_mixins.scss' as layout-*;
+
+// =============================================================================
+// NAMESPACES UNIFICADOS
+// =============================================================================
+
+// Namespace principal para el sistema de diseño
+@use './_variables.scss' as ds;
+@use './_cart-variables.scss' as cart;
+@use './_mixins.scss' as mixins;
+@use './_cart-mixins.scss' as cart-mixins;
+@use './_media-queries.scss' as mq;
+@use './_cart-index.scss' as cart-index;
+@use '../components/layout/_variables.scss' as layout;
+@use '../components/layout/_mixins.scss' as layout-mixins;
+
+// =============================================================================
+// EXPORTAR TODO COMO UN SOLO NAMESPACE
+// =============================================================================
+
+// Crear un namespace unificado que contenga todo
+@forward './_variables.scss' as ds-*;
+@forward './_cart-variables.scss' as cart-*;
+@forward './_mixins.scss' as mixins-*;
+@forward './_cart-mixins.scss' as cart-mixins-*;
+@forward './_media-queries.scss' as mq-*;
+@forward './_cart-index.scss' as cart-index-*;
+@forward '../components/layout/_variables.scss' as layout-*;
+@forward '../components/layout/_mixins.scss' as layout-mixins-*; 

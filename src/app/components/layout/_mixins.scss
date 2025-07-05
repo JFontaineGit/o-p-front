@@ -52,6 +52,23 @@
   color: inherit;
 }
 
+// Mixin para botones base
+@mixin button-base {
+  @include button-reset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var.$navbar-radius;
+  font-size: var.$font-size-nav;
+  font-weight: 500;
+  text-decoration: none;
+  transition: var.$navbar-transition;
+  cursor: pointer;
+  @include focus-ring-nav;
+}
+
 // Mixin para hover effects
 @mixin hover-effect($bg-color: var.$navbar-hover-bg, $text-color: null) {
   transition: var.$navbar-transition;

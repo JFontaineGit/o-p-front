@@ -1,4 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID, TransferState, makeStateKey } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { LoggerService } from './logger.service';
 
@@ -10,8 +10,6 @@ export enum StorageKeys {
   ViajeArmado = 'viajePersonalizado',
 }
 
-const TOKEN_STATE_KEY = makeStateKey<string>('access_token');
-
 @Injectable({
   providedIn: 'root'
 })
@@ -21,8 +19,7 @@ export class StorageService {
 
   constructor(
     @Inject(PLATFORM_ID) platformId: Object,
-    private readonly logger: LoggerService,
-    private readonly transferState: TransferState
+    private readonly logger: LoggerService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.logger.debug(`StorageService inicializado, isBrowser=${this.isBrowser}`);
@@ -138,11 +135,6 @@ export class StorageService {
     } else {
       this.logger.debug(`Token guardado en memoria: ${trimmed.substring(0, 20)}...`);
     }
-
-    if (!this.isBrowser) {
-      this.transferState.set(TOKEN_STATE_KEY, trimmed);
-      this.logger.debug('Token guardado en TransferState para hidratar en navegador');
-    }
   }
 
   getToken(): string | null {
@@ -150,16 +142,6 @@ export class StorageService {
     if (cached) {
       this.logger.debug(`Token recuperado de memoria: ${cached.substring(0, 20)}...`);
       return cached;
-    }
-
-    if (this.isBrowser && this.transferState.hasKey(TOKEN_STATE_KEY)) {
-      const transferred = this.transferState.get(TOKEN_STATE_KEY, null);
-      if (transferred) {
-        this.logger.debug(`Token recuperado de TransferState: ${transferred.substring(0, 20)}...`);
-        this.memoryStorage.set(StorageKeys.Token, transferred);
-        this.transferState.remove(TOKEN_STATE_KEY);
-        return transferred;
-      }
     }
 
     if (this.isLocalStorageAvailable()) {

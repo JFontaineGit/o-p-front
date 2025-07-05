@@ -1,5 +1,45 @@
 @use '../styles/_mixins.scss' as *;
 
+// =============================================================================
+// MIXINS DE MEDIA QUERIES
+// =============================================================================
+
+@mixin mobile-only {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media (min-width: 769px) and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin desktop-only {
+  @media (min-width: 1025px) {
+    @content;
+  }
+}
+
+@mixin mobile-and-tablet {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin tablet-and-desktop {
+  @media (min-width: 769px) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: 1025px) {
+    @content;
+  }
+}
+
 // Responsive Design para products-section
 @media (max-width: 1024px) {
   .products-grid {
