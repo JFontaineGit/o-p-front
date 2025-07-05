@@ -9,21 +9,25 @@ import { RefreshTokenResponse } from '../services/interfaces/auth.interfaces';
 import { AUTH_ENDPOINTS } from '../services/auth/auth-endpoints';
 
 const PUBLIC_ENDPOINTS = [
-  AUTH_ENDPOINTS.REGISTER, 
-  AUTH_ENDPOINTS.LOGIN,   
-  AUTH_ENDPOINTS.REFRESH, 
+  AUTH_ENDPOINTS.REGISTER,
+  AUTH_ENDPOINTS.LOGIN,
+  AUTH_ENDPOINTS.REFRESH,
 ];
 
 export const customInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
+  const injector = inject(Injector);
   const storageService = inject(StorageService);
   const logger = inject(LoggerService);
   const router = inject(Router);
-  const injector = inject(Injector);
+
   const isPublic = PUBLIC_ENDPOINTS.some(endpoint => req.url.includes(endpoint));
-  const token = storageService.getToken();
+
+  const token = storageService.isRunningInBrowser() ? storageService.getToken() : null;
+
+  logger.debug(`Interceptor ejecutado: URL=${req.url}, isPublic=${isPublic}, token=${token?.substring(0, 20)}...`);
 
   if (isPublic || !token) {
+    logger.debug(`Pasando solicitud sin token: ${req.url}`);
     return next(req);
   }
 
@@ -36,20 +40,32 @@ export const customInterceptor: HttpInterceptorFn = (req, next) => {
   return next(clonedReq).pipe(
     catchError(error => {
       if (error.status === 401) {
+        logger.debug('Intento de refrescar token');
+
+        const authService = injector.get(AuthService);
+
         return authService.refreshToken().pipe(
           switchMap((response: RefreshTokenResponse) => {
-            storageService.setToken(response.access_token);
+            logger.debug('Token refrescado:', response.data.access_token.substring(0, 20) + '...');
+            storageService.setToken(response.data.access_token);
+            if (response.data.refresh_token) {
+              storageService.setRefreshToken(response.data.refresh_token);
+            }
+
             const newClonedReq = req.clone({
               setHeaders: {
-                Authorization: `Bearer ${response.access_token}`,
+                Authorization: `Bearer ${response.data.access_token}`,
+                'X-Retry-After-Refresh': 'true',
               },
             });
+
             return next(newClonedReq);
           }),
           catchError(refreshError => {
             logger.error('Error al refrescar el token', refreshError);
             authService.logout().subscribe({
               complete: () => {
+                logger.debug('Sesión cerrada, redirigiendo a /login');
                 router.navigate(['/login'], { queryParams: { returnUrl: req.url } });
               },
             });
@@ -57,6 +73,7 @@ export const customInterceptor: HttpInterceptorFn = (req, next) => {
           })
         );
       }
+
       logger.error(`Error en la petición ${req.url}`, error);
       return throwError(() => error);
     })

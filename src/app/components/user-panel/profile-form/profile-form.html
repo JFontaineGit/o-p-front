@@ -21,36 +21,36 @@
     
     <div class="profile-form__row profile-form__row--two-cols">
       <div class="form-group">
-        <label for="firstName" class="form-label">
+        <label for="first_name" class="form-label">
           <i class="fas fa-user-circle" aria-hidden="true"></i> Nombre <span class="required">*</span>
         </label>
         <input 
-          id="firstName"
+          id="first_name"
           type="text" 
           class="form-input"
-          [class.form-input--error]="hasFieldError('firstName')"
-          formControlName="firstName"
+          [class.form-input--error]="hasFieldError('first_name')"
+          formControlName="first_name"
           placeholder="Ej: Juan"
           required>
-        <div class="form-error" *ngIf="getFieldError('firstName')">
-          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('firstName') }}
+        <div class="form-error" *ngIf="getFieldError('first_name')">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('first_name') }}
         </div>
       </div>
       
       <div class="form-group">
-        <label for="lastName" class="form-label">
+        <label for="last_name" class="form-label">
           <i class="fas fa-user-circle" aria-hidden="true"></i> Apellido <span class="required">*</span>
         </label>
         <input 
-          id="lastName"
+          id="last_name"
           type="text" 
           class="form-input"
-          [class.form-input--error]="hasFieldError('lastName')"
-          formControlName="lastName"
+          [class.form-input--error]="hasFieldError('last_name')"
+          formControlName="last_name"
           placeholder="Ej: Pérez"
           required>
-        <div class="form-error" *ngIf="getFieldError('lastName')">
-          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('lastName') }}
+        <div class="form-error" *ngIf="getFieldError('last_name')">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('last_name') }}
         </div>
       </div>
     </div>
@@ -74,142 +74,45 @@
       </div>
       
       <div class="form-group">
-        <label for="phone" class="form-label">
+        <label for="telephone" class="form-label">
           <i class="fas fa-phone" aria-hidden="true"></i> Teléfono <span class="required">*</span>
         </label>
         <input 
-          id="phone"
+          id="telephone"
           type="tel" 
           class="form-input"
-          [class.form-input--error]="hasFieldError('phone')"
-          formControlName="phone"
+          [class.form-input--error]="hasFieldError('telephone')"
+          formControlName="telephone"
           placeholder="Ej: +1234567890"
           required>
-        <div class="form-error" *ngIf="getFieldError('phone')">
-          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('phone') }}
+        <div class="form-error" *ngIf="getFieldError('telephone')">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('telephone') }}
         </div>
       </div>
     </div>
     
     <div class="profile-form__row profile-form__row--two-cols">
       <div class="form-group">
-        <label for="birthDate" class="form-label">
+        <label for="born_date" class="form-label">
           <i class="fas fa-calendar-alt" aria-hidden="true"></i> Fecha de Nacimiento
         </label>
         <input 
-          id="birthDate"
+          id="born_date"
           type="date" 
           class="form-input"
-          formControlName="birthDate">
+          formControlName="born_date">
       </div>
       
       <div class="form-group">
-        <label for="nationality" class="form-label">
-          <i class="fas fa-globe" aria-hidden="true"></i> Nacionalidad
-        </label>
-        <select 
-          id="nationality" 
-          class="form-select"
-          formControlName="nationality">
-          <option value="">Selecciona una opción</option>
-          <option value="ES">España</option>
-          <option value="FR">Francia</option>
-          <option value="IT">Italia</option>
-          <option value="DE">Alemania</option>
-          <option value="PT">Portugal</option>
-          <option value="UK">Reino Unido</option>
-        </select>
-      </div>
-    </div>
-  </fieldset>
-  
-  <!-- Dirección -->
-  <fieldset class="profile-form__section">
-    <legend class="profile-form__section-title">
-      <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Dirección
-    </legend>
-    
-    <div class="form-group form-group--full-width">
-      <label for="address" class="form-label">
-        <i class="fas fa-home" aria-hidden="true"></i> Dirección
-      </label>
-      <input 
-        id="address"
-        type="text" 
-        class="form-input"
-        formControlName="address"
-        placeholder="Ej: Calle Principal 123">
-    </div>
-    
-    <div class="profile-form__row profile-form__row--two-cols">
-      <div class="form-group">
-        <label for="city" class="form-label">
-          <i class="fas fa-city" aria-hidden="true"></i> Ciudad
+        <label for="state" class="form-label">
+          <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Estado
         </label>
         <input 
-          id="city"
+          id="state"
           type="text" 
           class="form-input"
-          formControlName="city"
-          placeholder="Ej: Madrid">
-      </div>
-      
-      <div class="form-group">
-        <label for="postalCode" class="form-label">
-          <i class="fas fa-mail-bulk" aria-hidden="true"></i> Código Postal
-        </label>
-        <input 
-          id="postalCode"
-          type="text" 
-          class="form-input"
-          [class.form-input--error]="hasFieldError('postalCode')"
-          formControlName="postalCode"
-          placeholder="Ej: 12345">
-        <div class="form-error" *ngIf="getFieldError('postalCode')">
-          <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ getFieldError('postalCode') }}
-        </div>
-      </div>
-    </div>
-  </fieldset>
-  
-  <!-- Preferencias -->
-  <fieldset class="profile-form__section" formGroupName="preferences">
-    <legend class="profile-form__section-title">
-      <i class="fas fa-suitcase" aria-hidden="true"></i> Preferencias de Viaje
-    </legend>
-    
-    <div class="profile-form__row profile-form__row--two-cols">
-      <div class="form-group">
-        <label for="travelStyle" class="form-label">
-          <i class="fas fa-plane" aria-hidden="true"></i> Estilo de Viaje
-        </label>
-        <select 
-          id="travelStyle" 
-          class="form-select"
-          formControlName="travelStyle">
-          <option value="">Selecciona una opción</option>
-          <option value="luxury">Lujo</option>
-          <option value="comfort">Confort</option>
-          <option value="budget">Económico</option>
-          <option value="adventure">Aventura</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label for="accommodation" class="form-label">
-          <i class="fas fa-hotel" aria-hidden="true"></i> Tipo de Alojamiento Preferido
-        </label>
-        <select 
-          id="accommodation" 
-          class="form-select"
-          formControlName="accommodation">
-          <option value="">Selecciona una opción</option>
-          <option value="hotel">Hotel</option>
-          <option value="apartment">Apartamento</option>
-          <option value="hostel">Hostel</option>
-          <option value="resort">Resort</option>
-          <option value="villa">Villa</option>
-        </select>
+          formControlName="state"
+          placeholder="Ej: Activo">
       </div>
     </div>
   </fieldset>
