@@ -1,0 +1,108 @@
+<aside class="travel-cart-summary" [class.travel-cart-summary--loading]="summaryState.isLoading"
+  role="complementary" aria-label="Resumen del carrito">
+  <header class="travel-cart-summary__header">
+    <div class="summary-title-section">
+      <h2 class="travel-cart-summary__title">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        Resumen del Viaje
+      </h2>
+      <div class="travel-cart-summary__items-count" *ngIf="summaryState.hasItems">
+        <span class="material-symbols-outlined">inventory</span>
+        <span>{{ summaryState.totalItems }} {{ summaryState.totalItems === 1 ? 'paquete' : 'paquetes' }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="travel-cart-summary__content">
+    <div class="travel-cart-summary__empty" *ngIf="summaryState.isEmpty">
+      <div class="empty-illustration">
+        <span class="material-symbols-outlined">luggage</span>
+        <span class="material-symbols-outlined">flight_takeoff</span>
+      </div>
+      <h3 class="empty-title">¡Tu aventura te espera!</h3>
+      <p class="empty-description">
+        Descubre destinos increíbles y crea recuerdos inolvidables.
+        Agrega algunos paquetes para comenzar tu próximo viaje.
+      </p>
+      <button type="button" class="btn btn--primary btn--full" (click)="onContinueShopping()">
+        <span class="material-symbols-outlined">explore</span>
+        Explorar Destinos
+      </button>
+    </div>
+
+    <div class="travel-cart-summary__details" *ngIf="summaryState.hasItems">
+      <div class="summary-breakdown">
+        <div class="summary-row summary-row--total">
+          <span class="summary-label">
+            <span class="material-symbols-outlined">payments</span>
+            Total a pagar
+          </span>
+          <span class="summary-value summary-value--total">{{ summaryState.formattedTotal }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="travel-cart-summary__loading" *ngIf="summaryState.isLoading">
+      <div class="loading-skeleton loading-skeleton--title"></div>
+      <div class="loading-skeleton loading-skeleton--row"></div>
+      <div class="loading-skeleton loading-skeleton--divider"></div>
+      <div class="loading-skeleton loading-skeleton--total"></div>
+    </div>
+  </div>
+
+  <div class="travel-cart-summary__actions" *ngIf="summaryState.hasItems">
+    <button type="button" class="btn btn--primary btn--full btn--checkout" (click)="onCheckout()"
+      [disabled]="summaryState.isLoading || summaryState.isCheckoutLoading">
+      <span class="material-symbols-outlined" *ngIf="!summaryState.isCheckoutLoading">flight_takeoff</span>
+      <span class="loading-spinner" *ngIf="summaryState.isCheckoutLoading"></span>
+      <span class="btn-text">
+        {{ summaryState.isCheckoutLoading ? 'Procesando tu viaje...' : 'Reservar Ahora' }}
+      </span>
+    </button>
+    <div class="secondary-actions">
+      <button type="button" class="btn btn--secondary btn--half" (click)="onContinueShopping()"
+        [disabled]="summaryState.isLoading || summaryState.isCheckoutLoading">
+        <span class="material-symbols-outlined">explore</span>
+        <span>Seguir Explorando</span>
+      </button>
+      <button type="button" class="btn btn--ghost btn--half" (click)="onClearCart()"
+        [disabled]="summaryState.isLoading || summaryState.isCheckoutLoading">
+        <span class="material-symbols-outlined">delete_sweep</span>
+        <span>Limpiar</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="travel-cart-summary__trust-signals" *ngIf="summaryState.hasItems">
+    <div class="trust-item">
+      <span class="material-symbols-outlined">verified_user</span>
+      <div class="trust-content">
+        <span class="trust-title">Pago Seguro</span>
+        <span class="trust-description">Protección SSL 256-bit</span>
+      </div>
+    </div>
+    <div class="trust-item">
+      <span class="material-symbols-outlined">support_agent</span>
+      <div class="trust-content">
+        <span class="trust-title">Soporte 24/7</span>
+        <span class="trust-description">Asistencia en tu viaje</span>
+      </div>
+    </div>
+    <div class="trust-item">
+      <span class="material-symbols-outlined">event_available</span>
+      <div class="trust-content">
+        <span class="trust-title">Cancelación Flexible</span>
+        <span class="trust-description">Hasta 24h antes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="travel-cart-summary__policies" *ngIf="summaryState.hasItems">
+    <p class="policy-text">
+      Al continuar, aceptas nuestros
+      <a href="/terminos" class="policy-link">Términos y Condiciones</a>
+      y
+      <a href="/privacidad" class="policy-link">Política de Privacidad</a>.
+    </p>
+  </div>
+</aside>

@@ -1,0 +1,62 @@
+<article class="travel-cart-item" [class.travel-cart-item--loading]="itemState.isLoading"
+  [attr.aria-label]="'Producto: ' + itemState.title">
+  <div class="travel-cart-item__image-container">
+    <img [src]="itemState.image" [alt]="itemState.title" class="travel-cart-item__image" loading="lazy">
+  </div>
+
+  <div class="travel-cart-item__content">
+    <div class="travel-cart-item__header">
+      <h3 class="travel-cart-item__title">{{ itemState.title }}</h3>
+    </div>
+    <p class="travel-cart-item__description" *ngIf="itemState.description">
+      {{ itemState.description }}
+    </p>
+    <div class="travel-cart-item__pricing">
+      <div class="price-container">
+        <span class="price-currency">{{ itemState.currency }}</span>
+        <span class="price-amount">{{ itemState.formattedPrice }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="travel-cart-item__quantity-section">
+    <label class="quantity-label" [for]="'quantity-' + itemState.id">Cantidad</label>
+    <div class="travel-cart-item__quantity-controls">
+      <button type="button" class="quantity-btn quantity-btn--decrease" (click)="changeQuantity(itemState.quantity - 1)"
+        [disabled]="itemState.isLoading || itemState.quantity <= 1"
+        [attr.aria-label]="'Disminuir cantidad de ' + itemState.title">
+        <span class="material-symbols-outlined">remove</span>
+      </button>
+      <input type="number" class="quantity-input" [id]="'quantity-' + itemState.id" [value]="itemState.quantity"
+        [min]="1" [max]="99" (input)="onQuantityInput($event)" [disabled]="itemState.isLoading"
+        [attr.aria-label]="'Cantidad de ' + itemState.title">
+      <button type="button" class="quantity-btn quantity-btn--increase" (click)="changeQuantity(itemState.quantity + 1)"
+        [disabled]="itemState.isLoading" [attr.aria-label]="'Aumentar cantidad de ' + itemState.title">
+        <span class="material-symbols-outlined">add</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="travel-cart-item__subtotal-section">
+    <div class="subtotal-container">
+      <span class="subtotal-label">Subtotal</span>
+      <div class="subtotal-amount">
+        <span class="subtotal-currency">{{ itemState.currency }}</span>
+        <span class="subtotal-value">{{ itemState.formattedSubtotal }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="travel-cart-item__actions">
+    <button type="button" class="action-btn action-btn--remove" (click)="removeItem()" [disabled]="itemState.isLoading"
+      [attr.aria-label]="'Eliminar ' + itemState.title + ' del carrito'">
+      <span class="material-symbols-outlined">delete</span>
+    </button>
+  </div>
+
+  <div class="travel-cart-item__loading-overlay" *ngIf="itemState.isLoading">
+    <div class="loading-spinner">
+      <span class="material-symbols-outlined">refresh</span>
+    </div>
+  </div>
+</article>

@@ -1,284 +1,737 @@
-@use '../../shared/_global-config.scss' as *;
+@use '../../shared/_variables.scss' as *;
+@use '../../shared/_mixins.scss' as *;
+@use '../../shared/_media-queries.scss' as *;
+@use 'sass:color';
 
 // =============================================================================
-// CART PAGE COMPONENT - OPTIMIZED
+// TRAVEL CART PAGE COMPONENT
 // =============================================================================
 
-.cart-page {
+.travel-cart-page {
   min-height: 100vh;
-  background-color: $color-background;
-  font-family: $font-family-base;
-  position: relative;
-  @include card;
-}
-
-.cart-container {
-  @include cart.cart-container;
-}
-
-.cart-layout {
-  @include cart.cart-flex(row, flex-start, flex-start, cart.$cart-spacing-2xl);
-}
-
-.cart-items {
-  flex: 1;
-  min-width: 0;
+  background: linear-gradient(135deg, $travel-bg-secondary 0%, $travel-bg-primary 100%);
+  font-family: $travel-font-family;
   position: relative;
 }
 
-.cart-sidebar {
-  width: 350px;
-  flex-shrink: 0;
-  position: sticky;
-  top: cart.$cart-spacing-lg;
-  z-index: 10;
-}
-
-// =============================================================================
-// CART HEADER
-// =============================================================================
-
-.cart-header {
-  margin-bottom: cart.$cart-spacing-2xl;
-  padding-bottom: cart.$cart-spacing-lg;
-  border-bottom: cart.$cart-border-width-1 solid cart.$cart-border-light;
-}
-
-.cart-title {
-  @include cart.cart-heading(1);
-  margin: 0 0 cart.$cart-spacing-sm 0;
-}
-
-.cart-subtitle {
-  @include cart.cart-text-style('base', 'normal', 'secondary');
-  margin: 0;
-}
-
-// =============================================================================
-// CART ITEMS SECTION
-// =============================================================================
-
-.cart-items__header {
-  @include cart.cart-flex(row, space-between, center, cart.$cart-spacing-lg);
-  margin-bottom: cart.$cart-spacing-lg;
-  padding-bottom: cart.$cart-spacing-md;
-  border-bottom: cart.$cart-border-width-1 solid cart.$cart-border-light;
-}
-
-.items-title {
-  @include cart.cart-heading(2);
-  margin: 0;
-}
-
-.items-count {
-  @include cart.cart-text-style('sm', 'medium', 'inverse');
-  background-color: cart.$cart-primary;
-  padding: cart.$cart-spacing-xs cart.$cart-spacing-sm;
-  border-radius: cart.$cart-border-radius-sm;
-}
-
-.cart-items__list {
-  @include cart.cart-flex(column, flex-start, stretch, cart.$cart-spacing-md);
-}
-
-// =============================================================================
-// CART EMPTY STATE
-// =============================================================================
-
-.cart-empty {
-  @include cart.cart-card;
-  text-align: center;
-  padding: cart.$cart-spacing-3xl cart.$cart-spacing-xl;
-}
-
-.empty-icon {
-  margin-bottom: cart.$cart-spacing-lg;
-  
-  .material-icons {
-    font-size: 4rem;
-    color: cart.$cart-text-tertiary;
-    opacity: 0.5;
-  }
-}
-
-.empty-title {
-  @include cart.cart-heading(2);
-  margin: 0 0 cart.$cart-spacing-md 0;
-}
-
-.empty-description {
-  @include cart.cart-text-style('base', 'normal', 'secondary');
-  margin: 0 0 cart.$cart-spacing-xl 0;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
+.travel-cart-container {
+  @include travel-container($travel-container-xl);
+  padding-top: $travel-space-8;
+  padding-bottom: $travel-space-16;
 }
 
 // =============================================================================
 // LOADING OVERLAY
 // =============================================================================
 
-.loading-overlay {
-  position: absolute;
+.travel-cart-page__loading-overlay {
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(cart.$cart-background, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(2px);
+  background: linear-gradient(135deg, rgba($travel-primary, 0.95) 0%, rgba($travel-primary-dark, 0.98) 100%);
+  @include travel-flex-center;
+  z-index: $travel-z-modal-backdrop;
+  backdrop-filter: blur(10px);
 }
 
-.loading-spinner {
-  @include cart.cart-card;
-  @include cart.cart-flex(column, center, center, cart.$cart-spacing-md);
-  padding: cart.$cart-spacing-xl;
-  color: cart.$cart-text-secondary;
+.loading-content {
+  text-align: center;
+  color: $travel-text-inverse;
+  max-width: 400px;
+  padding: $travel-space-8;
+}
 
-  .material-icons {
-    font-size: 2rem;
-    color: cart.$cart-primary;
-  }
+.loading-animation {
+  @include travel-flex(row, center, center, $travel-space-4);
+  margin-bottom: $travel-space-6;
+  font-size: 48px;
 
-  span {
-    @include cart.cart-text-style('sm', 'medium', 'secondary');
+  .material-symbols-outlined {
+    font-size: inherit;
+    
+    &:nth-child(1) {
+      animation: travel-bounce 2s infinite;
+      color: $travel-accent;
+    }
+    
+    &:nth-child(2) {
+      animation: travel-bounce 2s infinite 0.3s;
+      color: $travel-secondary;
+    }
+    
+    &:nth-child(3) {
+      animation: travel-bounce 2s infinite 0.6s;
+      color: $travel-text-inverse;
+    }
   }
+}
+
+.loading-title {
+  @include travel-heading(3);
+  color: $travel-text-inverse;
+  margin-bottom: $travel-space-3;
+}
+
+.loading-description {
+  @include travel-text(base, normal);
+  color: rgba($travel-text-inverse, 0.8);
+  margin: 0;
 }
 
 // =============================================================================
 // ERROR BANNER
 // =============================================================================
 
-.error-banner {
-  background-color: cart.$cart-danger-light;
-  border: cart.$cart-border-width-1 solid cart.$cart-danger;
-  border-radius: cart.$cart-border-radius;
-  margin-bottom: cart.$cart-spacing-lg;
+.travel-cart-page__error-banner {
+  @include travel-card($travel-space-4);
+  background: linear-gradient(135deg, $travel-danger-light 0%, rgba($travel-danger, 0.1) 100%);
+  border: 2px solid $travel-danger;
+  border-radius: $travel-radius-lg;
+  margin-bottom: $travel-space-6;
   overflow: hidden;
 }
 
 .error-content {
-  @include cart.cart-flex(row, flex-start, center, cart.$cart-spacing-md);
-  padding: cart.$cart-spacing-md;
-  color: cart.$cart-danger;
+  @include travel-flex(row, space-between, flex-start, $travel-space-4);
+}
 
-  .material-icons {
-    font-size: 1.25rem;
-    flex-shrink: 0;
-  }
-
-  span {
-    @include cart.cart-text-style('base', 'medium', 'primary');
-    flex: 1;
+.error-icon {
+  .material-symbols-outlined {
+    font-size: 32px;
+    color: $travel-danger;
   }
 }
 
+.error-message {
+  flex: 1;
+}
+
+.error-title {
+  @include travel-heading(5);
+  color: $travel-danger;
+  margin-bottom: $travel-space-2;
+}
+
+.error-description {
+  @include travel-text(sm, normal, secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
 .error-actions {
-  @include cart.cart-flex(row, flex-end, center, cart.$cart-spacing-sm);
+  @include travel-flex(row, flex-end, center, $travel-space-2);
   flex-shrink: 0;
 }
 
 .error-close {
-  @include cart.cart-button-ghost(cart.$cart-danger);
-  @include cart.cart-button-size('sm');
-  padding: cart.$cart-spacing-xs;
-  min-width: auto;
+  @include travel-button-base;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background-color: transparent;
+  color: $travel-danger;
+  border: none;
+
+  &:hover {
+    background-color: rgba($travel-danger, 0.1);
+  }
+
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
+}
+
+// =============================================================================
+// BREADCRUMB NAVIGATION
+// =============================================================================
+
+.travel-cart-page__breadcrumb {
+  margin-bottom: $travel-space-6;
+}
+
+.breadcrumb-list {
+  @include travel-flex(row, flex-start, center, $travel-space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumb-item {
+  @include travel-flex(row, flex-start, center, $travel-space-1);
+}
+
+.breadcrumb-link {
+  @include travel-flex(row, flex-start, center, $travel-space-1);
+  @include travel-text(sm, medium, tertiary);
+  text-decoration: none;
+  transition: color $travel-transition-base;
+
+  &:hover {
+    color: $travel-primary;
+  }
+
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
+}
+
+.breadcrumb-separator {
+  .material-symbols-outlined {
+    font-size: 16px;
+    color: $travel-text-tertiary;
+  }
+}
+
+.breadcrumb-item--current {
+  @include travel-text(sm, semibold, primary);
+  color: $travel-primary;
+
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
+}
+
+// =============================================================================
+// HEADER SECTION
+// =============================================================================
+
+.travel-cart-page__header {
+  margin-bottom: $travel-space-8;
+}
+
+.header-content {
+  @include travel-flex(column, flex-start, stretch, $travel-space-6);
+
+  @include travel-lg-up {
+    @include travel-flex(row, space-between, flex-start, $travel-space-8);
+  }
+}
+
+.header-main {
+  flex: 1;
+}
+
+.travel-cart-page__title {
+  @include travel-flex(row, flex-start, center, $travel-space-3);
+  @include travel-heading(1);
+  color: $travel-text-primary;
+  margin-bottom: $travel-space-3;
+
+  .material-symbols-outlined {
+    font-size: 40px;
+    color: $travel-primary;
+  }
+
+  @include travel-md-down {
+    font-size: $travel-text-2xl;
+    
+    .material-symbols-outlined {
+      font-size: 32px;
+    }
+  }
+}
+
+.travel-cart-page__subtitle {
+  @include travel-text(lg, normal, secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+// =============================================================================
+// BOOKING PROGRESS
+// =============================================================================
+
+.booking-progress {
+  @include travel-flex(row, center, center, 0);
+  background-color: $travel-bg-primary;
+  border: 1px solid $travel-border-light;
+  border-radius: $travel-radius-xl;
+  padding: $travel-space-4;
+  box-shadow: $travel-shadow-sm;
+
+  @include travel-md-down {
+    padding: $travel-space-3;
+  }
+}
+
+.progress-step {
+  @include travel-flex(column, center, center, $travel-space-2);
+  position: relative;
+
+  &--active {
+    .step-icon {
+      background-color: $travel-primary;
+      color: $travel-text-inverse;
+      box-shadow: 0 0 0 4px rgba($travel-primary, 0.2);
+    }
+
+    .step-label {
+      color: $travel-primary;
+      font-weight: $travel-font-semibold;
+    }
+  }
+}
+
+.step-icon {
+  width: 48px;
+  height: 48px;
+  @include travel-flex-center;
+  background-color: $travel-bg-tertiary;
+  color: $travel-text-tertiary;
+  border-radius: 50%;
+  transition: all $travel-transition-base;
+
+  .material-symbols-outlined {
+    font-size: 24px;
+  }
+
+  @include travel-md-down {
+    width: 40px;
+    height: 40px;
+    
+    .material-symbols-outlined {
+      font-size: 20px;
+    }
+  }
+}
+
+.step-label {
+  @include travel-text(sm, medium, tertiary);
+  text-align: center;
+  white-space: nowrap;
+
+  @include travel-md-down {
+    font-size: $travel-text-xs;
+  }
+}
+
+.progress-connector {
+  width: 60px;
+  height: 2px;
+  background-color: $travel-border-medium;
+  margin: 0 $travel-space-4;
+
+  @include travel-md-down {
+    width: 40px;
+    margin: 0 $travel-space-2;
+  }
+}
+
+// =============================================================================
+// MAIN LAYOUT
+// =============================================================================
+
+.travel-cart-page__layout {
+  @include travel-flex(row, flex-start, flex-start, $travel-space-8);
+
+  @include travel-md-down {
+    flex-direction: column;
+    gap: $travel-space-6;
+  }
+}
+
+.travel-cart-page__items-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.travel-cart-page__summary-section {
+  width: $travel-cart-summary-width;
+  flex-shrink: 0;
+
+  @include travel-md-down {
+    width: 100%;
+    order: -1;
+  }
+}
+
+// =============================================================================
+// ITEMS SECTION
+// =============================================================================
+
+.items-section-header {
+  @include travel-flex(row, space-between, flex-start, $travel-space-4);
+  margin-bottom: $travel-space-6;
+  padding-bottom: $travel-space-4;
+  border-bottom: 2px solid $travel-border-light;
+
+  @include travel-md-down {
+    flex-direction: column;
+    gap: $travel-space-4;
+  }
+}
+
+.section-title-group {
+  @include travel-flex(row, flex-start, center, $travel-space-3);
+  flex-wrap: wrap;
+}
+
+.items-section-title {
+  @include travel-flex(row, flex-start, center, $travel-space-2);
+  @include travel-heading(3);
+  color: $travel-text-primary;
+  margin: 0;
+
+  .material-symbols-outlined {
+    font-size: 28px;
+    color: $travel-secondary;
+  }
+}
+
+.items-count-badge {
+  @include travel-text(sm, bold, inverse);
+  background: linear-gradient(135deg, $travel-primary 0%, $travel-primary-dark 100%);
+  color: $travel-text-inverse;
+  padding: $travel-space-2 $travel-space-3;
+  border-radius: $travel-radius-full;
+  box-shadow: $travel-shadow-sm;
+}
+
+.items-controls {
+  position: relative;
+}
+
+.control-btn {
+  @include travel-button-secondary;
+  @include travel-flex(row, center, center, $travel-space-2);
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}
+
+.sort-dropdown {
+  position: absolute;
+  top: calc(100% + $travel-space-2);
+  right: 0;
+  background-color: $travel-bg-primary;
+  border: 1px solid $travel-border-medium;
+  border-radius: $travel-radius-lg;
+  box-shadow: $travel-shadow-lg;
+  padding: $travel-space-2;
+  min-width: 200px;
+  z-index: $travel-z-dropdown;
+  animation: travel-fade-in-up 0.2s ease-out;
+}
+
+.sort-option {
+  @include travel-button-ghost;
+  @include travel-flex(row, flex-start, center, $travel-space-2);
+  width: 100%;
+  justify-content: flex-start;
+  padding: $travel-space-3;
+  border-radius: $travel-radius-md;
+
+  &--active {
+    background-color: $travel-primary-light;
+    color: $travel-primary;
+  }
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}
+
+// =============================================================================
+// EMPTY STATE
+// =============================================================================
+
+.travel-cart-page__empty-state {
+  @include travel-card($travel-space-8);
+  text-align: center;
+  background: linear-gradient(135deg, $travel-bg-primary 0%, $travel-gray-50 100%);
+  border: 2px dashed $travel-border-medium;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.empty-illustration {
+  position: relative;
+  margin-bottom: $travel-space-8;
+  height: 120px;
+  @include travel-flex-center;
+}
+
+.empty-icons {
+  @include travel-flex(row, center, center, $travel-space-6);
+  font-size: 48px;
+
+  .material-symbols-outlined {
+    font-size: inherit;
+    
+    &:nth-child(1) {
+      color: $travel-primary;
+      animation: travel-bounce 3s infinite;
+    }
+    
+    &:nth-child(2) {
+      color: $travel-accent;
+      animation: travel-bounce 3s infinite 1s;
+    }
+    
+    &:nth-child(3) {
+      color: $travel-secondary;
+      animation: travel-bounce 3s infinite 2s;
+    }
+  }
+}
+
+.empty-plane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: $travel-text-tertiary;
+  animation: travel-bounce 4s infinite;
+
+  .material-symbols-outlined {
+    font-size: inherit;
+  }
+}
+
+.empty-content {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.empty-title {
+  @include travel-heading(2);
+  color: $travel-text-primary;
+  margin-bottom: $travel-space-4;
+}
+
+.empty-description {
+  @include travel-text(base, normal, secondary);
+  line-height: 1.6;
+  margin-bottom: $travel-space-6;
+}
+
+.empty-suggestions {
+  margin-bottom: $travel-space-8;
+}
+
+.suggestions-title {
+  @include travel-heading(5);
+  color: $travel-text-primary;
+  margin-bottom: $travel-space-4;
+}
+
+.suggestion-tags {
+  @include travel-flex(row, center, center, $travel-space-3);
+  flex-wrap: wrap;
+  margin-bottom: $travel-space-6;
+}
+
+.suggestion-tag {
+  @include travel-button-base;
+  @include travel-flex(row, center, center, $travel-space-2);
+  background-color: $travel-bg-secondary;
+  color: $travel-text-secondary;
+  border: 1px solid $travel-border-medium;
+  border-radius: $travel-radius-full;
+  padding: $travel-space-2 $travel-space-4;
+
+  &:hover {
+    background-color: $travel-primary-light;
+    color: $travel-primary;
+    border-color: $travel-primary;
+    transform: translateY(-2px);
+    box-shadow: $travel-shadow-md;
+  }
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}
+
+// =============================================================================
+// ITEMS LIST
+// =============================================================================
+
+.travel-cart-page__items-list {
+  @include travel-flex(column, flex-start, stretch, $travel-space-4);
+}
+
+// =============================================================================
+// RECOMMENDATIONS SECTION
+// =============================================================================
+
+.travel-cart-page__recommendations {
+  margin-top: $travel-space-12;
+  padding-top: $travel-space-8;
+  border-top: 2px solid $travel-border-light;
+}
+
+.recommendations-header {
+  text-align: center;
+  margin-bottom: $travel-space-8;
+}
+
+.recommendations-title {
+  @include travel-flex(row, center, center, $travel-space-3);
+  @include travel-heading(3);
+  color: $travel-text-primary;
+  margin-bottom: $travel-space-3;
+
+  .material-symbols-outlined {
+    font-size: 32px;
+    color: $travel-accent;
+  }
+}
+
+.recommendations-subtitle {
+  @include travel-text(base, normal, secondary);
+  margin: 0;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.recommendations-grid {
+  @include travel-grid(1, $travel-space-6);
+
+  @include travel-sm-up {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include travel-lg-up {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.recommendation-card {
+  @include travel-card($travel-space-0);
+  overflow: hidden;
+  transition: all $travel-transition-base;
+
+  &:hover {
+    @include travel-card-hover;
+  }
+}
+
+.recommendation-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $travel-transition-base;
+  }
+
+  .recommendation-card:hover & img {
+    transform: scale(1.05);
+  }
+}
+
+.recommendation-badge {
+  position: absolute;
+  top: $travel-space-3;
+  right: $travel-space-3;
+  background: linear-gradient(135deg, $travel-danger 0%, color.adjust($travel-danger, $lightness: 10%) 100%);
+  color: $travel-text-inverse;
+  padding: $travel-space-1 $travel-space-2;
+  border-radius: $travel-radius-sm;
+  font-size: $travel-text-xs;
+  font-weight: $travel-font-bold;
+}
+
+.recommendation-content {
+  padding: $travel-space-4;
+}
+
+.recommendation-title {
+  @include travel-heading(5);
+  color: $travel-text-primary;
+  margin-bottom: $travel-space-2;
+  @include travel-text-clamp(2);
+}
+
+.recommendation-description {
+  @include travel-text(sm, normal, secondary);
+  margin-bottom: $travel-space-4;
+  @include travel-text-clamp(3);
+}
+
+.recommendation-price {
+  @include travel-flex(row, flex-start, baseline, $travel-space-2);
+  margin-bottom: $travel-space-4;
+}
+
+.price-from {
+  @include travel-text(xs, normal, tertiary);
+}
+
+.price-amount {
+  @include travel-text(lg, bold, primary);
+  color: $travel-primary;
+}
+
+// =============================================================================
+// BUTTONS
+// =============================================================================
+
+.btn {
+  @include travel-button-base;
+
+  &--primary {
+    @include travel-button-primary;
+  }
+
+  &--secondary {
+    @include travel-button-secondary;
+  }
+
+  &--large {
+    padding: $travel-space-4 $travel-space-8;
+    font-size: $travel-text-lg;
+  }
+
+  &--small {
+    padding: $travel-space-2 $travel-space-3;
+    font-size: $travel-text-sm;
+  }
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
 }
 
 // =============================================================================
 // RESPONSIVE DESIGN
 // =============================================================================
 
-@include cart.cart-mobile-only {
-  .cart-container {
-    padding: cart.$cart-spacing-md;
+@include travel-md-down {
+  .travel-cart-container {
+    padding-top: $travel-space-4;
+    padding-bottom: $travel-space-8;
   }
 
-  .cart-layout {
+  .travel-cart-page__title {
     flex-direction: column;
-    gap: cart.$cart-spacing-lg;
+    text-align: center;
+    gap: $travel-space-2;
   }
 
-  .cart-sidebar {
-    width: 100%;
-    position: static;
-    order: 2;
+  .empty-illustration {
+    height: 80px;
   }
 
-  .cart-items {
-    order: 1;
-    width: 100%;
+  .empty-icons {
+    font-size: 36px;
+    gap: $travel-space-4;
   }
 
-  .cart-header {
-    margin-bottom: cart.$cart-spacing-lg;
+  .suggestion-tags {
+    justify-content: center;
   }
 
-  .cart-title {
-    font-size: 1.5rem;
-  }
-
-  .cart-empty {
-    padding: cart.$cart-spacing-xl cart.$cart-spacing-lg;
-
-    .empty-icon .material-icons {
-      font-size: 3rem;
-    }
-
-    .empty-title {
-      font-size: 1.25rem;
-    }
-  }
-
-  .cart-items__header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: cart.$cart-spacing-sm;
-  }
-}
-
-@include cart.cart-desktop-up {
-  .cart-container {
-    padding: cart.$cart-spacing-2xl;
-  }
-
-  .cart-layout {
-    gap: cart.$cart-spacing-3xl;
-  }
-
-  .cart-sidebar {
-    width: 380px;
-  }
-}
-
-// =============================================================================
-// ANIMATIONS
-// =============================================================================
-
-.cart-items__list {
-  app-cart-item {
-    animation: fadeInUp 0.3s ease-out;
-    animation-fill-mode: both;
-
-    @for $i from 1 through 10 {
-      &:nth-child(#{$i}) {
-        animation-delay: #{$i * 0.05}s;
-      }
-    }
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .recommendations-grid {
+    gap: $travel-space-4;
   }
 }
 
@@ -286,19 +739,44 @@
 // ACCESSIBILITY
 // =============================================================================
 
-@media (prefers-reduced-motion: reduce) {
-  .cart-items__list app-cart-item {
+@include travel-reduced-motion {
+  .loading-animation .material-symbols-outlined,
+  .empty-icons .material-symbols-outlined,
+  .empty-plane .material-symbols-outlined {
     animation: none;
   }
 
-  .btn {
-    transition: none;
+  .suggestion-tag:hover {
+    transform: none;
+  }
+
+  .recommendation-card:hover .recommendation-image img {
+    transform: none;
   }
 }
 
-// Focus visible para navegación por teclado
-.btn:focus-visible,
-.error-close:focus-visible {
-  outline: 2px solid cart.$cart-primary;
-  outline-offset: 2px;
+.control-btn:focus-visible,
+.sort-option:focus-visible,
+.suggestion-tag:focus-visible,
+.error-close:focus-visible,
+.breadcrumb-link:focus-visible {
+  @include travel-focus-ring;
+}
+
+// =============================================================================
+// ANIMATIONS
+// =============================================================================
+
+.travel-cart-page__items-list > * {
+  @include travel-fade-in(0.4s);
+}
+
+.recommendation-card {
+  @include travel-fade-in(0.5s);
+  
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
 }

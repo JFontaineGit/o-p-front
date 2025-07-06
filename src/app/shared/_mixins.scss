@@ -1,5 +1,9 @@
 @use './_variables.scss' as vars;
 
+// =============================================================================
+// GENERAL MIXINS
+// =============================================================================
+
 @mixin hover-lift($distance: vars.$hover-lift) {
   transition: vars.$transition;
   
@@ -8,7 +12,6 @@
   }
 }
 
-// Media queries usando los breakpoints del sistema
 @mixin mobile-only {
   @media (max-width: 480px) {
     @content;
@@ -33,17 +36,14 @@
   }
 }
 
-// Usar la animación existente del sistema
 @mixin card-animation {
   @include animation-fade-in-up();
 }
 
-// Gradient background
 @mixin gradient-bg($color1, $color2, $direction: 135deg) {
   background: linear-gradient(#{$direction}, #{$color1}, #{$color2});
 }
 
-// Card base usando variables del sistema
 @mixin card-base {
   background: vars.$color-bg-white;
   border-radius: vars.$border-radius;
@@ -52,7 +52,6 @@
   border: 1px solid vars.$color-border;
 }
 
-// Flex center mixin
 @mixin flex-center($direction: row) {
   display: flex;
   align-items: center;
@@ -60,7 +59,6 @@
   flex-direction: $direction;
 }
 
-// Focus ring mixin
 @mixin focus-ring($color: vars.$color-primary, $width: 2px) {
   &:focus-visible {
     outline: none;
@@ -68,18 +66,335 @@
   }
 }
 
-// Animation fade in up
 @mixin animation-fade-in-up {
   animation: fadeInUp 0.6s ease-out;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+// =============================================================================
+// TRAVEL CART - LAYOUT MIXINS
+// =============================================================================
+
+@mixin travel-flex($direction: row, $justify: flex-start, $align: stretch, $gap: vars.$travel-space-4) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin travel-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin travel-grid($columns: 1, $gap: vars.$travel-space-4) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}
+
+@mixin travel-container($max-width: vars.$travel-container-xl) {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 vars.$travel-space-4;
+}
+
+// =============================================================================
+// TRAVEL CART - CARD MIXINS
+// =============================================================================
+
+@mixin travel-card($padding: vars.$travel-space-6) {
+  background-color: vars.$travel-bg-primary;
+  border: 1px solid vars.$travel-border-light;
+  border-radius: vars.$travel-radius-lg;
+  box-shadow: vars.$travel-shadow-sm;
+  padding: $padding;
+  transition: all vars.$travel-transition-base;
+}
+
+@mixin travel-card-hover {
+  box-shadow: vars.$travel-shadow-md;
+  transform: translateY(-2px);
+  border-color: vars.$travel-border-medium;
+}
+
+@mixin travel-card-interactive {
+  cursor: pointer;
+  
+  &:hover {
+    @include travel-card-hover;
   }
-  to {
-    opacity: 1;
+  
+  &:active {
     transform: translateY(0);
+    box-shadow: vars.$travel-shadow-sm;
+  }
+}
+
+// =============================================================================
+// TRAVEL CART - BUTTON MIXINS
+// =============================================================================
+
+@mixin travel-button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: vars.$travel-space-2;
+  padding: vars.$travel-space-3 vars.$travel-space-4;
+  border: 1px solid transparent;
+  border-radius: vars.$travel-radius-md;
+  font-family: vars.$travel-font-family;
+  font-size: vars.$travel-text-sm;
+  font-weight: vars.$travel-font-medium;
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all vars.$travel-transition-base;
+  user-select: none;
+  
+  &:disabled {
+    opacity: vars.$travel-opacity-disabled;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  &:focus-visible {
+    @include travel-focus-ring;
+  }
+}
+
+@mixin travel-button-primary {
+  @include travel-button-base;
+  background-color: vars.$travel-primary;
+  color: vars.$travel-text-inverse;
+  border-color: vars.$travel-primary;
+  
+  &:hover:not(:disabled) {
+    background-color: vars.$travel-primary-dark;
+    border-color: vars.$travel-primary-dark;
+    transform: translateY(-1px);
+    box-shadow: vars.$travel-shadow-md;
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: vars.$travel-shadow-sm;
+  }
+}
+
+@mixin travel-button-secondary {
+  @include travel-button-base;
+  background-color: vars.$travel-bg-primary;
+  color: vars.$travel-text-primary;
+  border-color: vars.$travel-border-medium;
+  
+  &:hover:not(:disabled) {
+    background-color: vars.$travel-bg-secondary;
+    border-color: vars.$travel-border-dark;
+    transform: translateY(-1px);
+    box-shadow: vars.$travel-shadow-md;
+  }
+}
+
+@mixin travel-button-danger {
+  @include travel-button-base;
+  background-color: vars.$travel-danger;
+  color: vars.$travel-text-inverse;
+  border-color: vars.$travel-danger;
+  
+&:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: vars.$travel-shadow-md;
+}
+}
+
+@mixin travel-button-ghost {
+  @include travel-button-base;
+  background-color: transparent;
+  color: vars.$travel-text-secondary;
+  border-color: transparent;
+  
+  &:hover:not(:disabled) {
+    background-color: vars.$travel-bg-secondary;
+    color: vars.$travel-text-primary;
+  }
+}
+
+// =============================================================================
+// TRAVEL CART - INPUT MIXINS
+// =============================================================================
+
+@mixin travel-input-base {
+  width: 100%;
+  padding: vars.$travel-space-3 vars.$travel-space-4;
+  border: 1px solid vars.$travel-border-medium;
+  border-radius: vars.$travel-radius-md;
+  font-family: vars.$travel-font-family;
+  font-size: vars.$travel-text-sm;
+  line-height: 1.5;
+  color: vars.$travel-text-primary;
+  background-color: vars.$travel-bg-primary;
+  transition: all vars.$travel-transition-base;
+  
+  &::placeholder {
+    color: vars.$travel-text-tertiary;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: vars.$travel-primary;
+    box-shadow: 0 0 0 vars.$travel-focus-ring-width rgba(vars.$travel-primary, 0.2);
+  }
+  
+  &:disabled {
+    opacity: vars.$travel-opacity-disabled;
+    cursor: not-allowed;
+    background-color: vars.$travel-bg-tertiary;
+  }
+}
+
+@mixin travel-input-number {
+  @include travel-input-base;
+  text-align: center;
+  
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+}
+
+// =============================================================================
+// TRAVEL CART - TEXT MIXINS
+// =============================================================================
+
+@mixin travel-text($size: base, $weight: normal, $color: primary) {
+  font-family: vars.$travel-font-family;
+  
+  @if $size == xs { font-size: vars.$travel-text-xs; }
+  @else if $size == sm { font-size: vars.$travel-text-sm; }
+  @else if $size == base { font-size: vars.$travel-text-base; }
+  @else if $size == lg { font-size: vars.$travel-text-lg; }
+  @else if $size == xl { font-size: vars.$travel-text-xl; }
+  @else if $size == 2xl { font-size: vars.$travel-text-2xl; }
+  @else if $size == 3xl { font-size: vars.$travel-text-3xl; }
+  @else if $size == 4xl { font-size: vars.$travel-text-4xl; }
+  
+  @if $weight == light { font-weight: vars.$travel-font-light; }
+  @else if $weight == normal { font-weight: vars.$travel-font-normal; }
+  @else if $weight == medium { font-weight: vars.$travel-font-medium; }
+  @else if $weight == semibold { font-weight: vars.$travel-font-semibold; }
+  @else if $weight == bold { font-weight: vars.$travel-font-bold; }
+  @else if $weight == extrabold { font-weight: vars.$travel-font-extrabold; }
+  
+  @if $color == primary { color: vars.$travel-text-primary; }
+  @else if $color == secondary { color: vars.$travel-text-secondary; }
+  @else if $color == tertiary { color: vars.$travel-text-tertiary; }
+  @else if $color == disabled { color: vars.$travel-text-disabled; }
+  @else if $color == inverse { color: vars.$travel-text-inverse; }
+}
+
+@mixin travel-heading($level: 1) {
+  font-family: vars.$travel-font-family;
+  font-weight: vars.$travel-font-bold;
+  line-height: 1.2;
+  color: vars.$travel-text-primary;
+  margin: 0;
+  
+  @if $level == 1 {
+    font-size: vars.$travel-text-4xl;
+  } @else if $level == 2 {
+    font-size: vars.$travel-text-3xl;
+  } @else if $level == 3 {
+    font-size: vars.$travel-text-2xl;
+  } @else if $level == 4 {
+    font-size: vars.$travel-text-xl;
+  } @else if $level == 5 {
+    font-size: vars.$travel-text-lg;
+  } @else if $level == 6 {
+    font-size: vars.$travel-text-base;
+  }
+}
+
+@mixin travel-text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin travel-text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// =============================================================================
+// TRAVEL CART - UTILITY MIXINS
+// =============================================================================
+
+@mixin travel-focus-ring($color: vars.$travel-focus-ring-color, $width: vars.$travel-focus-ring-width, $offset: vars.$travel-focus-ring-offset) {
+  outline: $width solid $color;
+  outline-offset: $offset;
+}
+
+@mixin travel-skeleton {
+  background: linear-gradient(
+    90deg,
+    vars.$travel-gray-200 25%,
+    vars.$travel-gray-100 50%,
+    vars.$travel-gray-200 75%
+  );
+  background-size: 200% 100%;
+  animation: travel-skeleton-loading 1.5s infinite;
+  border-radius: vars.$travel-radius-sm;
+}
+
+@mixin travel-loading-spinner($size: 20px, $color: vars.$travel-primary) {
+  width: $size;
+  height: $size;
+  border: 2px solid transparent;
+  border-top: 2px solid $color;
+  border-radius: 50%;
+  animation: travel-spin 1s linear infinite;
+}
+
+@mixin travel-fade-in($duration: 0.3s, $delay: 0s) {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: travel-fade-in-up $duration ease-out $delay forwards;
+}
+
+// =============================================================================
+// TRAVEL CART - ACCESSIBILITY MIXINS
+// =============================================================================
+
+@mixin travel-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin travel-high-contrast {
+  @media (prefers-contrast: high) {
+    @content;
+  }
+}
+
+@mixin travel-dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
   }
 }

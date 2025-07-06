@@ -11,14 +11,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Subject, takeUntil, catchError, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { StorageService, StorageKeys } from '../../../services/core/storage.service';
-import { CartService } from '../../../services/carts/cart.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { UserService } from '../../../services/users/user.service';
+import { StorageService, StorageKeys } from '../../../services/core/storage.service';
 import type { Product } from '../../../interfaces/product.interface';
 import type { UserMe } from '../../../services/interfaces/user.interfaces';
+import { catchError, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -58,12 +57,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     is_staff: false,
   };
 
-  private destroy$ = new Subject<void>();
-
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private storageService: StorageService,
-    private cartService: CartService,
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
@@ -80,10 +76,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  ngOnDestroy() {}
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -130,57 +123,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private initializeCart() {
-    // Intentar obtener el carrito del backend primero
-    this.cartService.getCart()
-      .pipe(
-        takeUntil(this.destroy$),
-        catchError((error) => {
-          console.warn('Error getting cart from backend, falling back to storage:', error);
-          // Fallback al StorageService si falla el backend
-          const cart = this.storageService.getObject<Product[]>(StorageKeys.Carrito);
-          this.cartItemCount = cart ? cart.length : 0;
-          return of(null);
-        })
-      )
-      .subscribe((cart) => {
-        if (cart) {
-          this.cartItemCount = cart.items_cnt;
-        }
-      });
+    const cart = this.storageService.getObject<Product[]>(StorageKeys.Carrito);
+    this.cartItemCount = cart ? cart.length : 0;
   }
 
   updateCartItemCount(product: Product) {
-    // Intentar agregar al carrito del backend
-    const cartItem = {
-      availability_id: product.id,
-      product_metadata_id: product.id,
-      qty: 1,
-      unit_price: product.price,
-      config: {
-        title: product.title,
-        description: product.description,
-        imageUrl: product.imageUrl
-      }
-    };
-
-    this.cartService.addCartItem(cartItem)
-      .pipe(
-        takeUntil(this.destroy$),
-        catchError((error) => {
-          console.warn('Error adding to backend cart, falling back to storage:', error);
-          // Fallback al StorageService si falla el backend
-          const cart = this.storageService.getObject<Product[]>(StorageKeys.Carrito) || [];
-          cart.push(product);
-          this.storageService.setObject(StorageKeys.Carrito, cart);
-          this.cartItemCount = cart.length;
-          return of(null);
-        })
-      )
-      .subscribe((response) => {
-        if (response) {
-          this.cartItemCount = response.items_cnt;
-        }
-      });
+    const cart = this.storageService.getObject<Product[]>(StorageKeys.Carrito) || [];
+    cart.push(product);
+    this.storageService.setObject(StorageKeys.Carrito, cart);
+    this.cartItemCount = cart.length;
+    console.log('Carrito actualizado:', cart);
   }
 
   toggleMobileMenu() {
@@ -204,39 +156,52 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.authService.logout().pipe(
-      takeUntil(this.destroy$),
-      tap(() => {
+    this.authService.logout().subscribe({
+      next: () => {
         this.isLoggedIn = false;
+        this.storageService.removeItem(StorageKeys.Carrito);
         this.cartItemCount = 0;
+        this.userData = {
+          id: 0,
+          first_name: 'Usuario',
+          last_name: '',
+          email: 'usuario@email.com',
+          telephone: '',
+          state: '',
+          created_at: '',
+          is_staff: false,
+        };
         this.closeMobileMenu();
-        this.router.navigate(['/home']);
-        this.snackBar.open('Sesión cerrada exitosamente', 'Cerrar', { duration: 3000 });
-      }),
-      catchError((error) => {
+        this.router.navigate(['/login']);
+        this.snackBar.open('Sesión cerrada correctamente', 'Cerrar', { duration: 3000 });
+      },
+      error: (error) => {
         console.error('Error al cerrar sesión:', error);
         this.snackBar.open('Error al cerrar sesión', 'Cerrar', { duration: 3000 });
-        return of(null);
-      })
-    ).subscribe();
+      }
+    });
   }
 
+  // Solo para depuración, eliminar en producción
   toggleLogin() {
     if (this.isLoggedIn) {
       this.logout();
     } else {
-      this.router.navigate(['/login']);
+      this.authService.login({ email: 'test@example.com', password: 'test123' }).subscribe({
+        next: (response) => {
+          this.isLoggedIn = true;
+          this.loadUserData();
+          this.snackBar.open('Inicio de sesión simulado', 'Cerrar', { duration: 3000 });
+        },
+        error: (error) => {
+          console.error('Error en login simulado:', error);
+          this.snackBar.open('Error en login simulado', 'Cerrar', { duration: 3000 });
+        }
+      });
     }
   }
 
   getFullName(): string {
-    if (this.userData.first_name && this.userData.last_name) {
-      return `${this.userData.first_name} ${this.userData.last_name}`;
-    } else if (this.userData.first_name) {
-      return this.userData.first_name;
-    } else if (this.userData.email) {
-      return this.userData.email.split('@')[0];
-    }
-    return 'Usuario';
+    return `${this.userData.first_name} ${this.userData.last_name}`.trim();
   }
 }

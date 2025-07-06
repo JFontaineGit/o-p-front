@@ -1,11 +1,37 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subject, takeUntil, finalize, catchError, of, forkJoin } from 'rxjs';
-import { CartItemComponent } from './cart-item/cart-item';
-import { CartSummaryComponent } from './cart-summary/cart-summary';
+import { CartItemComponent } from '../../shared/cart-item/cart-item';
+import { CartSummaryComponent } from '../../shared/cart-summary/cart-summary';
 import { CartService } from '../../services/carts/cart.service';
+import { NotificationService } from '../../core/notification/services/notification.service';
 import { CartResponse, CartItemResponse, CartItemQtyPatch } from '../../services/interfaces/cart.interfaces';
+
+interface SortOption {
+  value: 'price-asc' | 'price-desc' | 'name';
+  label: string;
+  icon: string;
+}
+
+interface Destination {
+  key: string;
+  label: string;
+  icon: string;
+}
+
+interface CartState {
+  cart: CartResponse | null;
+  items: CartItemResponse[];
+  isLoading: boolean;
+  isCheckoutLoading: boolean;
+  error: string | null;
+  showSortOptions: boolean;
+  currentSort: SortOption['value'];
+  itemCount: number;
+  hasItems: boolean;
+  isEmpty: boolean;
+}
 
 @Component({
   selector: 'app-cart',
@@ -15,17 +41,38 @@ import { CartResponse, CartItemResponse, CartItemQtyPatch } from '../../services
   styleUrls: ['./cart.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Cart implements OnInit, OnDestroy {
-  cart: CartResponse | null = null;
-  loading = false;
-  checkoutLoading = false;
-  error: string | null = null;
+export class CartComponent implements OnInit, OnDestroy {
+  #destroy$ = new Subject<void>();
+  #cartState: CartState = {
+    cart: null,
+    items: [],
+    isLoading: false,
+    isCheckoutLoading: false,
+    error: null,
+    showSortOptions: false,
+    currentSort: 'name',
+    itemCount: 0,
+    hasItems: false,
+    isEmpty: true
+  };
 
-  private destroy$ = new Subject<void>();
+  readonly sortOptions: SortOption[] = [
+    { value: 'price-asc', label: 'Precio: Menor a Mayor', icon: 'trending_up' },
+    { value: 'price-desc', label: 'Precio: Mayor a Menor', icon: 'trending_down' },
+    { value: 'name', label: 'Nombre A-Z', icon: 'sort_by_alpha' }
+  ];
+
+  readonly suggestedDestinations: Destination[] = [
+    { key: 'caribe', label: 'Caribe', icon: 'beach_access' },
+    { key: 'europa', label: 'Europa', icon: 'castle' },
+    { key: 'asia', label: 'Asia', icon: 'temple_buddhist' },
+    { key: 'aventura', label: 'Aventura', icon: 'hiking' }
+  ];
 
   constructor(
     private router: Router,
     private cartService: CartService,
+    private notificationService: NotificationService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -34,128 +81,128 @@ export class Cart implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.#destroy$.next();
+    this.#destroy$.complete();
   }
 
-  loadCart(): void {
-    this.loading = true;
-    this.error = null;
+  get cartState(): CartState {
+    return this.#cartState;
+  }
+
+  private updateCartState(newState: Partial<CartState>): void {
+    this.#cartState = {
+      ...this.#cartState,
+      ...newState,
+      itemCount: newState.cart?.items_cnt ?? this.#cartState.itemCount,
+      hasItems: (newState.cart?.items_cnt ?? this.#cartState.itemCount) > 0,
+      isEmpty: !(newState.cart?.items_cnt ?? this.#cartState.itemCount) && !newState.isLoading,
+      items: newState.cart?.items ?? this.#cartState.items
+    };
     this.cdr.markForCheck();
-    
+  }
+
+  private loadCart(): void {
+    this.updateCartState({ isLoading: true, error: null });
     this.cartService.getCart()
       .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => {
-          this.loading = false;
-          this.cdr.markForCheck();
-        }),
+        takeUntil(this.#destroy$),
+        finalize(() => this.updateCartState({ isLoading: false })),
         catchError((error) => {
-          this.error = 'Error al cargar el carrito. Por favor, intenta de nuevo.';
+          this.updateCartState({ error: 'Error al cargar el carrito. Por favor, intenta de nuevo.' });
+          this.notificationService.error('Error al cargar el carrito');
           console.error('Error loading cart:', error);
           return of(null);
         })
       )
-      .subscribe((cart) => {
+      .subscribe(cart => {
         if (cart) {
-          this.cart = cart;
+          this.updateCartState({ cart });
+          this.sortItems(this.#cartState.currentSort);
         }
       });
   }
 
-  onQuantityChange(event: { itemId: number, quantity: number }): void {
-    if (!this.cart || event.quantity < 0) return;
+  onQuantityChange(event: { itemId: number; quantity: number }): void {
+    if (!this.#cartState.cart || event.quantity < 0) return;
 
     const patch: CartItemQtyPatch = { qty: event.quantity };
-    
     this.cartService.updateCartItemQty(event.itemId, patch)
       .pipe(
-        takeUntil(this.destroy$),
+        takeUntil(this.#destroy$),
         catchError((error) => {
-          alert('Error al actualizar la cantidad. Por favor, intenta de nuevo.');
+          this.notificationService.error('Error al actualizar la cantidad');
           console.error('Error updating quantity:', error);
           return of(null);
         })
       )
-      .subscribe((updatedCart) => {
+      .subscribe(updatedCart => {
         if (updatedCart) {
-          this.cart = updatedCart;
-          this.cdr.markForCheck();
+          this.updateCartState({ cart: updatedCart });
         }
       });
   }
 
   onRemoveItem(itemId: number): void {
-    if (!this.cart) return;
+    if (!this.#cartState.cart) return;
 
     this.cartService.deleteCartItem(itemId)
       .pipe(
-        takeUntil(this.destroy$),
+        takeUntil(this.#destroy$),
         catchError((error) => {
-          alert('Error al eliminar el producto. Por favor, intenta de nuevo.');
+          this.notificationService.error('Error al eliminar el producto');
           console.error('Error removing item:', error);
           return of(null);
         })
       )
-      .subscribe((updatedCart) => {
+      .subscribe(updatedCart => {
         if (updatedCart) {
-          this.cart = updatedCart;
-          this.cdr.markForCheck();
+          this.updateCartState({ cart: updatedCart });
         }
       });
   }
 
   onClearCart(): void {
-    if (!this.cart || this.cart.items_cnt === 0) return;
+    if (!this.#cartState.cart || !this.#cartState.hasItems) return;
 
     if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
-      // Implementar lógica para vaciar carrito
-      // Por ahora, eliminamos todos los items uno por uno
-      const deleteObservables = this.cart.items.map(item => 
+      const deleteObservables = this.#cartState.items.map(item => 
         this.cartService.deleteCartItem(item.id)
       );
-
       forkJoin(deleteObservables)
         .pipe(
-          takeUntil(this.destroy$),
+          takeUntil(this.#destroy$),
           catchError((error) => {
-            alert('Error al vaciar el carrito. Por favor, intenta de nuevo.');
+            this.notificationService.error('Error al vaciar el carrito');
             console.error('Error clearing cart:', error);
             return of(null);
           })
         )
         .subscribe(() => {
-          this.loadCart(); // Recargar carrito
+          this.loadCart();
+          this.notificationService.success('Carrito vaciado');
         });
     }
   }
 
   onCheckout(): void {
-    if (!this.cart || this.cart.items_cnt === 0) return;
+    if (!this.#cartState.cart || !this.#cartState.hasItems) return;
 
-    this.checkoutLoading = true;
-    this.error = null;
-    this.cdr.markForCheck();
-
+    this.updateCartState({ isCheckoutLoading: true, error: null });
     this.cartService.checkoutCart()
       .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => {
-          this.checkoutLoading = false;
-          this.cdr.markForCheck();
-        }),
+        takeUntil(this.#destroy$),
+        finalize(() => this.updateCartState({ isCheckoutLoading: false })),
         catchError((error) => {
-          this.error = 'Error al procesar el pedido. Por favor, intenta de nuevo.';
+          this.updateCartState({ error: 'Error al procesar el pedido. Por favor, intenta de nuevo.' });
+          this.notificationService.error('Error al procesar el pedido');
           console.error('Error during checkout:', error);
           return of(null);
         })
       )
-      .subscribe((result) => {
+      .subscribe(result => {
         if (result) {
-          alert('¡Pedido procesado con éxito!');
-          this.router.navigate(['/user_panel'], { 
-            queryParams: { tab: 'bookings' } 
-          });
+          this.notificationService.success('¡Pedido procesado con éxito!');
+          this.router.navigate(['/user_panel'], { queryParams: { tab: 'bookings' } });
         }
       });
   }
@@ -168,19 +215,37 @@ export class Cart implements OnInit, OnDestroy {
     this.loadCart();
   }
 
-  trackByItemId(index: number, item: CartItemResponse): number {
+  clearError(): void {
+    this.updateCartState({ error: null });
+  }
+
+  toggleSortOptions(): void {
+    this.updateCartState({ showSortOptions: !this.#cartState.showSortOptions });
+  }
+
+  sortItems(sortBy: SortOption['value']): void {
+    if (!this.#cartState.cart) return;
+
+    const items = [...this.#cartState.items];
+    switch (sortBy) {
+      case 'price-asc':
+        items.sort((a, b) => a.unit_price - b.unit_price);
+        break;
+      case 'price-desc':
+        items.sort((a, b) => b.unit_price - a.unit_price);
+        break;
+      case 'name':
+        items.sort((a, b) => (a.config?.title || '').localeCompare(b.config?.title || ''));
+        break;
+    }
+    this.updateCartState({ currentSort: sortBy, items });
+  }
+
+  exploreDestination(destination: string): void {
+    this.router.navigate(['/destinos'], { queryParams: { filter: destination } });
+  }
+
+  trackByItemId(_: number, item: CartItemResponse): number {
     return item.id;
-  }
-
-  get hasItems(): boolean {
-    return (this.cart?.items_cnt ?? 0) > 0;
-  }
-
-  get isEmpty(): boolean {
-    return !this.hasItems && !this.loading;
-  }
-
-  get showError(): boolean {
-    return !!this.error;
   }
 }

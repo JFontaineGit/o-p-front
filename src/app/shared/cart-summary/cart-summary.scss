@@ -1,0 +1,557 @@
+@use '../_variables.scss' as *;
+@use '../_mixins.scss' as *;
+@use '../_media-queries.scss' as *;
+@use 'sass:color';
+
+// =============================================================================
+// TRAVEL CART SUMMARY COMPONENT
+// =============================================================================
+
+.travel-cart-summary {
+  @include travel-card($travel-space-0);
+  height: fit-content;
+  position: sticky;
+  top: $travel-space-6;
+  background: linear-gradient(135deg, $travel-bg-primary 0%, $travel-gray-50 100%);
+  border: 2px solid $travel-border-light;
+  overflow: hidden;
+
+  &--loading {
+    opacity: $travel-opacity-loading;
+    pointer-events: none;
+  }
+
+  @include travel-md-down {
+    position: static;
+    margin-top: $travel-space-6;
+  }
+}
+
+// =============================================================================
+// HEADER SECTION
+// =============================================================================
+
+.travel-cart-summary__header {
+  background: linear-gradient(135deg, $travel-primary 0%, $travel-primary-dark 100%);
+  color: $travel-text-inverse;
+  padding: $travel-space-6;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 100px;
+    height: 100px;
+    background: rgba($travel-text-inverse, 0.1);
+    border-radius: 50%;
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 80px;
+    height: 80px;
+    background: rgba($travel-text-inverse, 0.05);
+    border-radius: 50%;
+  }
+}
+
+.summary-title-section {
+  position: relative;
+  z-index: 1;
+}
+
+.travel-cart-summary__title {
+  @include travel-flex(row, flex-start, center, $travel-space-3);
+  @include travel-heading(4);
+  color: $travel-text-inverse;
+  margin-bottom: $travel-space-3;
+
+  .material-symbols-outlined {
+    font-size: 28px;
+  }
+}
+
+.travel-cart-summary__items-count {
+  @include travel-flex(row, flex-start, center, $travel-space-2);
+  @include travel-text(sm, medium);
+  background-color: rgba($travel-text-inverse, 0.2);
+  padding: $travel-space-2 $travel-space-3;
+  border-radius: $travel-radius-full;
+  backdrop-filter: blur(10px);
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}
+
+// =============================================================================
+// CONTENT SECTION
+// =============================================================================
+
+.travel-cart-summary__content {
+  padding: $travel-space-6;
+}
+
+// =============================================================================
+// EMPTY STATE
+// =============================================================================
+
+.travel-cart-summary__empty {
+  text-align: center;
+  padding: $travel-space-8 $travel-space-4;
+}
+
+.empty-illustration {
+  @include travel-flex(row, center, center, $travel-space-2);
+  margin-bottom: $travel-space-6;
+  font-size: 48px;
+  color: $travel-primary;
+  
+  .material-symbols-outlined {
+    font-size: inherit;
+    
+    &:first-child {
+      animation: travel-bounce 2s infinite;
+    }
+    
+    &:last-child {
+      animation: travel-bounce 2s infinite 0.5s;
+    }
+  }
+}
+
+.empty-title {
+  @include travel-heading(5);
+  color: $travel-text-primary;
+  margin-bottom: $travel-space-3;
+}
+
+.empty-description {
+  @include travel-text(sm, normal, secondary);
+  margin-bottom: $travel-space-6;
+  line-height: 1.6;
+}
+
+// =============================================================================
+// SUMMARY DETAILS
+// =============================================================================
+
+.travel-cart-summary__details {
+  @include travel-flex(column, flex-start, stretch, $travel-space-4);
+}
+
+.summary-breakdown {
+  @include travel-flex(column, flex-start, stretch, $travel-space-3);
+}
+
+.summary-row {
+  @include travel-flex(row, space-between, center, $travel-space-2);
+  padding: $travel-space-3 0;
+
+  &--discount {
+    background-color: $travel-success-light;
+    margin: 0 (-$travel-space-3);
+    padding: $travel-space-3;
+    border-radius: $travel-radius-md;
+  }
+
+  &--total {
+    border-top: 2px solid $travel-primary;
+    padding-top: $travel-space-4;
+    margin-top: $travel-space-4;
+    background: linear-gradient(135deg, $travel-primary-light 0%, rgba($travel-primary, 0.05) 100%);
+    margin: $travel-space-4 (-$travel-space-3) 0;
+    padding: $travel-space-4 $travel-space-3;
+    border-radius: $travel-radius-md;
+  }
+}
+
+.summary-label {
+  @include travel-flex(row, flex-start, center, $travel-space-2);
+  @include travel-text(sm, medium, secondary);
+
+  .material-symbols-outlined {
+    font-size: 18px;
+    color: $travel-primary;
+  }
+
+  .summary-row--total & {
+    @include travel-text(base, semibold, primary);
+  }
+}
+
+.summary-value {
+  @include travel-text(sm, semibold, primary);
+
+  &--discount {
+    color: $travel-success;
+  }
+
+  &--total {
+    @include travel-text(xl, bold, primary);
+    color: $travel-primary;
+  }
+}
+
+.summary-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, $travel-border-medium 50%, transparent 100%);
+  margin: $travel-space-4 0;
+}
+
+// =============================================================================
+// SAVINGS HIGHLIGHT
+// =============================================================================
+
+.savings-highlight {
+  background: linear-gradient(135deg, $travel-success-light 0%, rgba($travel-success, 0.1) 100%);
+  border: 1px solid $travel-success;
+  border-radius: $travel-radius-lg;
+  padding: $travel-space-4;
+  margin: $travel-space-4 0;
+}
+
+.savings-content {
+  @include travel-flex(row, flex-start, center, $travel-space-3);
+
+  .material-symbols-outlined {
+    font-size: 24px;
+    color: $travel-success;
+  }
+}
+
+.savings-text {
+  @include travel-flex(column, flex-start, flex-start, $travel-space-1);
+}
+
+.savings-label {
+  @include travel-text(sm, medium, secondary);
+  color: $travel-success;
+}
+
+.savings-amount {
+  @include travel-text(lg, bold, primary);
+  color: $travel-success;
+}
+
+// =============================================================================
+// PROMO CODE SECTION
+// =============================================================================
+
+.promo-code-section {
+  margin: $travel-space-4 0;
+}
+
+.promo-toggle {
+  @include travel-button-ghost;
+  width: 100%;
+  justify-content: space-between;
+  padding: $travel-space-3 $travel-space-4;
+  border: 1px dashed $travel-border-medium;
+  border-radius: $travel-radius-md;
+
+  &:hover {
+    border-color: $travel-primary;
+    background-color: $travel-primary-light;
+  }
+
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
+}
+
+.promo-input-container {
+  margin-top: $travel-space-3;
+  animation: travel-fade-in-up 0.3s ease-out;
+}
+
+.promo-input-group {
+  @include travel-flex(row, flex-start, stretch, $travel-space-2);
+}
+
+.promo-input {
+  @include travel-input-base;
+  flex: 1;
+}
+
+.applied-promo {
+  background-color: $travel-success-light;
+  border: 1px solid $travel-success;
+  border-radius: $travel-radius-md;
+  padding: $travel-space-3;
+  margin: $travel-space-4 0;
+}
+
+.promo-info {
+  @include travel-flex(row, space-between, center, $travel-space-3);
+
+  .material-symbols-outlined {
+    color: $travel-success;
+    font-size: 20px;
+  }
+}
+
+.promo-details {
+  @include travel-flex(column, flex-start, flex-start, $travel-space-1);
+  flex: 1;
+}
+
+.promo-code {
+  @include travel-text(sm, bold, primary);
+  color: $travel-success;
+}
+
+.promo-description {
+  @include travel-text(xs, normal, secondary);
+}
+
+.promo-remove {
+  @include travel-button-base;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background-color: transparent;
+  color: $travel-text-tertiary;
+  border: none;
+
+  &:hover {
+    background-color: rgba($travel-danger, 0.1);
+    color: $travel-danger;
+  }
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}
+
+// =============================================================================
+// LOADING STATES
+// =============================================================================
+
+.travel-cart-summary__loading {
+  @include travel-flex(column, flex-start, stretch, $travel-space-4);
+}
+
+.loading-skeleton {
+  @include travel-skeleton;
+  height: 20px;
+
+  &--title {
+    height: 24px;
+    width: 60%;
+  }
+
+  &--row {
+    height: 16px;
+  }
+
+  &--divider {
+    height: 1px;
+    width: 100%;
+  }
+
+  &--total {
+    height: 28px;
+    width: 40%;
+    align-self: flex-end;
+  }
+}
+
+// =============================================================================
+// ACTION BUTTONS
+// =============================================================================
+
+.travel-cart-summary__actions {
+  padding: $travel-space-6;
+  border-top: 1px solid $travel-border-light;
+  background-color: $travel-bg-secondary;
+}
+
+.btn {
+  @include travel-button-base;
+  font-weight: $travel-font-semibold;
+
+  &--primary {
+    @include travel-button-primary;
+  }
+
+  &--secondary {
+    @include travel-button-secondary;
+  }
+
+  &--ghost {
+    @include travel-button-ghost;
+  }
+
+  &--full {
+    width: 100%;
+    padding: $travel-space-4 $travel-space-6;
+  }
+
+  &--half {
+    flex: 1;
+  }
+
+  &--checkout {
+    background: linear-gradient(135deg, $travel-primary 0%, $travel-primary-dark 100%);
+    border: none;
+    box-shadow: $travel-shadow-lg;
+    margin-bottom: $travel-space-4;
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, $travel-primary-dark 0%, color.adjust($travel-primary-dark, $lightness: 10%) 100%);
+      transform: translateY(-2px);
+      box-shadow: $travel-shadow-xl;
+    }
+
+    .material-symbols-outlined {
+      font-size: 20px;
+    }
+  }
+
+  .loading-spinner {
+    @include travel-loading-spinner(18px, currentColor);
+  }
+}
+
+.btn-text {
+  font-weight: $travel-font-bold;
+}
+
+.secondary-actions {
+  @include travel-flex(row, space-between, stretch, $travel-space-3);
+}
+
+// =============================================================================
+// TRUST SIGNALS
+// =============================================================================
+
+.travel-cart-summary__trust-signals {
+  padding: $travel-space-6;
+  background-color: $travel-bg-primary;
+  border-top: 1px solid $travel-border-light;
+}
+
+.trust-item {
+  @include travel-flex(row, flex-start, center, $travel-space-3);
+  padding: $travel-space-3 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $travel-border-light;
+  }
+
+  .material-symbols-outlined {
+    font-size: 24px;
+    color: $travel-secondary;
+    flex-shrink: 0;
+  }
+}
+
+.trust-content {
+  @include travel-flex(column, flex-start, flex-start, $travel-space-1);
+}
+
+.trust-title {
+  @include travel-text(sm, semibold, primary);
+}
+
+.trust-description {
+  @include travel-text(xs, normal, tertiary);
+}
+
+// =============================================================================
+// POLICIES
+// =============================================================================
+
+.travel-cart-summary__policies {
+  padding: $travel-space-4 $travel-space-6;
+  background-color: $travel-bg-tertiary;
+  border-top: 1px solid $travel-border-light;
+}
+
+.policy-text {
+  @include travel-text(xs, normal, tertiary);
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.policy-link {
+  color: $travel-primary;
+  text-decoration: none;
+  font-weight: $travel-font-medium;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+@include travel-md-down {
+  .travel-cart-summary {
+    border-radius: $travel-radius-lg;
+  }
+
+  .travel-cart-summary__header {
+    padding: $travel-space-4;
+  }
+
+  .travel-cart-summary__content {
+    padding: $travel-space-4;
+  }
+
+  .travel-cart-summary__actions {
+    padding: $travel-space-4;
+  }
+
+  .secondary-actions {
+    flex-direction: column;
+    gap: $travel-space-2;
+  }
+
+  .trust-item {
+    padding: $travel-space-2 0;
+  }
+}
+
+@include travel-lg-up {
+  .travel-cart-summary {
+    width: $travel-cart-summary-width;
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY
+// =============================================================================
+
+@include travel-reduced-motion {
+  .empty-illustration .material-symbols-outlined {
+    animation: none;
+  }
+
+  .promo-input-container {
+    animation: none;
+  }
+
+  .btn--checkout:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+.btn:focus-visible,
+.promo-toggle:focus-visible,
+.promo-input:focus-visible,
+.promo-remove:focus-visible,
+.policy-link:focus-visible {
+  @include travel-focus-ring;
+}

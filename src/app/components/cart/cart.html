@@ -1,91 +1,185 @@
-<section class="cart-page" role="main" aria-label="Carrito de compras">
-  <div class="cart-container">
-    
+<main class="travel-cart-page" role="main" aria-label="Carrito de paquetes turísticos">
+  <div class="travel-cart-container">
     <!-- Loading Overlay -->
-    <div class="loading-overlay" *ngIf="loading">
-      <div class="loading-spinner">
-        <span class="material-icons">shopping_cart</span>
-        <span>Cargando carrito...</span>
+    <div class="travel-cart-page__loading-overlay" *ngIf="cartState.isLoading" aria-live="polite">
+      <div class="loading-content">
+        <div class="loading-animation">
+          <span class="material-symbols-outlined">flight_takeoff</span>
+          <span class="material-symbols-outlined">luggage</span>
+          <span class="material-symbols-outlined">map</span>
+        </div>
+        <h2 class="loading-title">Preparando tu viaje...</h2>
+        <p class="loading-description">Estamos organizando los mejores paquetes para ti</p>
       </div>
     </div>
-    
+
     <!-- Error Banner -->
-    <div class="error-banner" *ngIf="showError">
+    <div class="travel-cart-page__error-banner" *ngIf="cartState.error" role="alert">
       <div class="error-content">
-        <span class="material-icons">error_outline</span>
-        <span>{{ error }}</span>
+        <div class="error-icon">
+          <span class="material-symbols-outlined">error</span>
+        </div>
+        <div class="error-message">
+          <h3 class="error-title">¡Ups! Algo salió mal</h3>
+          <p class="error-description">{{ cartState.error }}</p>
+        </div>
         <div class="error-actions">
-          <button class="btn btn--secondary" (click)="onRetry()">
-            <span class="material-icons">refresh</span>
-            Reintentar
+          <button type="button" class="btn btn--secondary" (click)="onRetry()" aria-label="Reintentar operación">
+            <span class="material-symbols-outlined">refresh</span>
+            <span>Reintentar</span>
           </button>
-          <button class="error-close" (click)="error = null">
-            <span class="material-icons">close</span>
+          <button type="button" class="error-close" (click)="clearError()" aria-label="Cerrar mensaje de error">
+            <span class="material-symbols-outlined">close</span>
           </button>
         </div>
       </div>
     </div>
-    
-    <!-- Header del carrito -->
-    <div class="cart-header">
-      <h1 class="cart-title">Mi Carrito</h1>
-      <p class="cart-subtitle" *ngIf="hasItems">
-        {{ cart?.items_cnt }} {{ cart?.items_cnt === 1 ? 'producto' : 'productos' }} en tu carrito
-      </p>
-    </div>
-    
-    <!-- Layout principal -->
-    <div class="cart-layout" *ngIf="!loading">
-      
-      <!-- Lista de productos -->
-      <div class="cart-items">
-        <div class="cart-items__header" *ngIf="hasItems">
-          <h2 class="items-title">Productos</h2>
-          <span class="items-count">{{ cart?.items_cnt }} {{ cart?.items_cnt === 1 ? 'artículo' : 'artículos' }}</span>
-        </div>
-        
-        <!-- Estado vacío -->
-        <div class="cart-empty" *ngIf="isEmpty">
-          <div class="empty-icon">
-            <span class="material-icons">shopping_cart_outlined</span>
-          </div>
-          <h2 class="empty-title">Tu carrito está vacío</h2>
-          <p class="empty-description">
-            Parece que aún no has agregado ningún producto a tu carrito.
+
+    <!-- Breadcrumb Navigation -->
+    <nav class="travel-cart-page__breadcrumb" aria-label="Navegación">
+      <ol class="breadcrumb-list">
+        <li class="breadcrumb-item">
+          <a href="/" class="breadcrumb-link">
+            <span class="material-symbols-outlined">home</span>
+            <span>Inicio</span>
+          </a>
+        </li>
+        <li class="breadcrumb-separator">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="/destinos" class="breadcrumb-link">
+            <span class="material-symbols-outlined">explore</span>
+            <span>Destinos</span>
+          </a>
+        </li>
+        <li class="breadcrumb-separator">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </li>
+        <li class="breadcrumb-item breadcrumb-item--current" aria-current="page">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          <span>Mi Carrito</span>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Header -->
+    <header class="travel-cart-page__header">
+      <div class="header-content">
+        <div class="header-main">
+          <h1 class="travel-cart-page__title">
+            <span class="material-symbols-outlined">luggage</span>
+            Mi Carrito de Viajes
+          </h1>
+          <p class="travel-cart-page__subtitle" *ngIf="cartState.hasItems">
+            {{ cartState.itemCount }} {{ cartState.itemCount === 1 ? 'paquete seleccionado' : 'paquetes seleccionados' }}
+            para tu próxima aventura
           </p>
-          <button 
-            class="btn btn--primary"
-            (click)="onContinueShopping()">
-            <span class="material-icons">add_shopping_cart</span>
-            Explorar Productos
-          </button>
         </div>
-        
-        <!-- Lista de items -->
-        <div class="cart-items__list" *ngIf="hasItems">
-          <app-cart-item
-            *ngFor="let item of cart?.items; trackBy: trackByItemId"
-            [item]="item"
-            [loading]="loading"
-            (quantityChange)="onQuantityChange($event)"
+        <div class="booking-progress" *ngIf="cartState.hasItems">
+          <div class="progress-step progress-step--active">
+            <div class="step-icon">
+              <span class="material-symbols-outlined">shopping_cart</span>
+            </div>
+            <span class="step-label">Selección</span>
+          </div>
+          <div class="progress-connector"></div>
+          <div class="progress-step">
+            <div class="step-icon">
+              <span class="material-symbols-outlined">payment</span>
+            </div>
+            <span class="step-label">Pago</span>
+          </div>
+          <div class="progress-connector"></div>
+          <div class="progress-step">
+            <div class="step-icon">
+              <span class="material-symbols-outlined">confirmation_number</span>
+            </div>
+            <span class="step-label">Confirmación</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="travel-cart-page__layout" *ngIf="!cartState.isLoading">
+      <section class="travel-cart-page__items-section" aria-label="Paquetes en el carrito">
+        <div class="items-section-header" *ngIf="cartState.hasItems">
+          <div class="section-title-group">
+            <h2 class="items-section-title">
+              <span class="material-symbols-outlined">inventory</span>
+              Tus Paquetes Seleccionados
+            </h2>
+            <span class="items-count-badge">
+              {{ cartState.itemCount }} {{ cartState.itemCount === 1 ? 'paquete' : 'paquetes' }}
+            </span>
+          </div>
+          <div class="items-controls">
+            <button type="button" class="control-btn" (click)="toggleSortOptions()" [attr.aria-expanded]="cartState.showSortOptions">
+              <span class="material-symbols-outlined">sort</span>
+              <span>Ordenar</span>
+            </button>
+            <div class="sort-dropdown" *ngIf="cartState.showSortOptions">
+              <button *ngFor="let option of sortOptions" type="button" class="sort-option"
+                (click)="sortItems(option.value)" [class.sort-option--active]="cartState.currentSort === option.value">
+                <span class="material-symbols-outlined">{{ option.icon }}</span>
+                <span>{{ option.label }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="travel-cart-page__empty-state" *ngIf="cartState.isEmpty">
+          <div class="empty-illustration">
+            <div class="empty-icons">
+              <span class="material-symbols-outlined">flight_takeoff</span>
+              <span class="material-symbols-outlined">beach_access</span>
+              <span class="material-symbols-outlined">landscape</span>
+            </div>
+            <div class="empty-plane">
+              <span class="material-symbols-outlined">connecting_airports</span>
+            </div>
+          </div>
+          <div class="empty-content">
+            <h2 class="empty-title">¡Tu próxima aventura te espera!</h2>
+            <p class="empty-description">
+              Descubre destinos increíbles, experiencias únicas y crea recuerdos inolvidables.
+              Explora nuestros paquetes turísticos y comienza a planificar tu viaje soñado.
+            </p>
+            <div class="empty-suggestions">
+              <h3 class="suggestions-title">Destinos populares:</h3>
+              <div class="suggestion-tags">
+                <button *ngFor="let destination of suggestedDestinations" class="suggestion-tag"
+                  (click)="exploreDestination(destination.key)">
+                  <span class="material-symbols-outlined">{{ destination.icon }}</span>
+                  <span>{{ destination.label }}</span>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn btn--primary btn--large" (click)="onContinueShopping()">
+              <span class="material-symbols-outlined">explore</span>
+              <span>Explorar Destinos</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Items List -->
+        <div class="travel-cart-page__items-list" *ngIf="cartState.hasItems">
+          <app-cart-item *ngFor="let item of cartState.items; trackBy: trackByItemId; let i = index" [item]="item"
+            [loading]="cartState.isLoading" [style.--item-index]="i" (quantityChange)="onQuantityChange($event)"
             (remove)="onRemoveItem($event)">
           </app-cart-item>
         </div>
-      </div>
-      
-      <!-- Sidebar con resumen -->
-      <div class="cart-sidebar">
-        <app-cart-summary
-          [cart]="cart"
-          [loading]="loading"
-          [checkoutLoading]="checkoutLoading"
-          (checkout)="onCheckout()"
-          (clear)="onClearCart()"
+      </section>
+
+      <!-- Summary Sidebar -->
+      <aside class="travel-cart-page__summary-section" aria-label="Resumen del carrito">
+        <app-cart-summary [cart]="cartState.cart" [loading]="cartState.isLoading"
+          [checkoutLoading]="cartState.isCheckoutLoading" (checkout)="onCheckout()" (clear)="onClearCart()"
           (continueShopping)="onContinueShopping()">
         </app-cart-summary>
-      </div>
-      
+      </aside>
     </div>
-    
   </div>
-</section>
+</main>

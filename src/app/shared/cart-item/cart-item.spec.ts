@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CartItemComponent } from './cart-item';
-import { CartItemResponse } from '../../../services/interfaces/cart.interfaces';
+import { CartItemResponse } from '../../services/interfaces/cart.interfaces';
 
 describe('CartItemComponent', () => {
   let component: CartItemComponent;

@@ -1,0 +1,479 @@
+@use '../_variables.scss' as *;
+@use '../_mixins.scss' as *;
+@use '../_media-queries.scss' as *;
+@use 'sass:color';
+
+// =============================================================================
+// TRAVEL CART ITEM COMPONENT
+// =============================================================================
+
+.travel-cart-item {
+  @include travel-card($travel-space-6);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  grid-template-areas: 
+    "image content quantity subtotal actions";
+  gap: $travel-space-6;
+  align-items: start;
+  min-height: $travel-cart-item-height;
+  transition: all $travel-transition-base;
+  container-type: inline-size;
+
+  &:hover {
+    @include travel-card-hover;
+    
+    .travel-cart-item__image {
+      transform: scale(1.02);
+    }
+  }
+
+  &--loading {
+    opacity: $travel-opacity-loading;
+    pointer-events: none;
+  }
+
+  // Responsive grid
+  @include travel-md-down {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "image"
+      "content" 
+      "quantity"
+      "subtotal"
+      "actions";
+    gap: $travel-space-4;
+    text-align: center;
+  }
+
+  @include travel-lg-only {
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: 
+      "image content quantity actions"
+      "image content subtotal actions";
+    gap: $travel-space-4;
+  }
+}
+
+// =============================================================================
+// IMAGE SECTION
+// =============================================================================
+
+.travel-cart-item__image-container {
+  grid-area: image;
+  position: relative;
+  width: $travel-cart-item-image-size;
+  height: $travel-cart-item-image-size;
+  border-radius: $travel-radius-lg;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  @include travel-md-down {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+  }
+}
+
+.travel-cart-item__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform $travel-transition-base;
+}
+
+.travel-cart-item__badge {
+  position: absolute;
+  top: $travel-space-2;
+  right: $travel-space-2;
+  @include travel-flex(row, center, center, $travel-space-1);
+  background: linear-gradient(135deg, $travel-accent, $travel-accent-dark);
+  color: $travel-text-inverse;
+  padding: $travel-space-1 $travel-space-2;
+  border-radius: $travel-radius-full;
+  font-size: $travel-text-xs;
+  font-weight: $travel-font-bold;
+  box-shadow: $travel-shadow-sm;
+
+  .material-symbols-outlined {
+    font-size: 12px;
+  }
+}
+
+// =============================================================================
+// CONTENT SECTION
+// =============================================================================
+
+.travel-cart-item__content {
+  grid-area: content;
+  @include travel-flex(column, flex-start, stretch, $travel-space-3);
+  min-width: 0;
+}
+
+.travel-cart-item__header {
+  @include travel-flex(row, space-between, flex-start, $travel-space-3);
+  
+  @include travel-md-down {
+    flex-direction: column;
+    align-items: center;
+    gap: $travel-space-2;
+  }
+}
+
+.travel-cart-item__title {
+  @include travel-text(lg, semibold, primary);
+  margin: 0;
+  @include travel-text-clamp(2);
+}
+
+.travel-cart-item__category {
+  @include travel-flex(row, center, center, $travel-space-1);
+  @include travel-text(xs, medium, tertiary);
+  background-color: $travel-primary-light;
+  color: $travel-primary-dark;
+  padding: $travel-space-1 $travel-space-2;
+  border-radius: $travel-radius-full;
+  white-space: nowrap;
+
+  .material-symbols-outlined {
+    font-size: 14px;
+  }
+}
+
+.travel-cart-item__description {
+  @include travel-text(sm, normal, secondary);
+  margin: 0;
+  @include travel-text-clamp(2);
+}
+
+.travel-cart-item__details {
+  @include travel-flex(row, flex-start, center, $travel-space-4);
+  flex-wrap: wrap;
+
+  @include travel-md-down {
+    justify-content: center;
+  }
+}
+
+.travel-detail {
+  @include travel-flex(row, center, center, $travel-space-1);
+  @include travel-text(xs, normal, tertiary);
+
+  .material-symbols-outlined {
+    font-size: 16px;
+    color: $travel-secondary;
+  }
+}
+
+.travel-cart-item__pricing {
+  @include travel-flex(column, flex-start, flex-start, $travel-space-1);
+
+  @include travel-md-down {
+    align-items: center;
+  }
+}
+
+.price-container {
+  @include travel-flex(row, flex-start, baseline, $travel-space-2);
+}
+
+.price-currency {
+  @include travel-text(sm, normal, tertiary);
+}
+
+.price-amount {
+  @include travel-text(xl, bold, primary);
+  color: $travel-primary;
+}
+
+.price-original {
+  @include travel-text(sm, normal, tertiary);
+  text-decoration: line-through;
+}
+
+.price-per-unit {
+  @include travel-text(xs, normal, tertiary);
+}
+
+// =============================================================================
+// QUANTITY SECTION
+// =============================================================================
+
+.travel-cart-item__quantity-section {
+  grid-area: quantity;
+  @include travel-flex(column, center, center, $travel-space-2);
+}
+
+.quantity-label {
+  @include travel-text(xs, medium, secondary);
+  @include travel-sr-only;
+}
+
+.travel-cart-item__quantity-controls {
+  @include travel-flex(row, center, center, $travel-space-1);
+  background-color: $travel-bg-secondary;
+  border-radius: $travel-radius-lg;
+  padding: $travel-space-1;
+}
+
+.quantity-btn {
+  @include travel-button-base;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: $travel-radius-md;
+  background-color: $travel-bg-primary;
+  color: $travel-text-secondary;
+  border: 1px solid $travel-border-light;
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: $travel-primary;
+    color: $travel-text-inverse;
+    border-color: $travel-primary;
+    transform: scale(1.05);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  &--decrease:disabled {
+    background-color: $travel-bg-tertiary;
+    color: $travel-text-disabled;
+  }
+}
+
+.quantity-input {
+  @include travel-input-number;
+  width: 60px;
+  height: 36px;
+  padding: $travel-space-2;
+  border: 1px solid $travel-border-light;
+  background-color: $travel-bg-primary;
+  text-align: center;
+  font-weight: $travel-font-medium;
+
+  &:focus {
+    border-color: $travel-primary;
+    box-shadow: 0 0 0 2px rgba($travel-primary, 0.2);
+  }
+}
+
+.stock-info {
+  margin-top: $travel-space-2;
+}
+
+.stock-status {
+  @include travel-flex(row, center, center, $travel-space-1);
+  @include travel-text(xs, medium);
+  padding: $travel-space-1 $travel-space-2;
+  border-radius: $travel-radius-sm;
+
+  .material-symbols-outlined {
+    font-size: 14px;
+  }
+
+  &--low {
+    background-color: $travel-warning-light;
+    color: $travel-warning;
+  }
+
+  &--out {
+    background-color: $travel-danger-light;
+    color: $travel-danger;
+  }
+
+  &--available {
+    background-color: $travel-success-light;
+    color: $travel-success;
+  }
+}
+
+// =============================================================================
+// SUBTOTAL SECTION
+// =============================================================================
+
+.travel-cart-item__subtotal-section {
+  grid-area: subtotal;
+  @include travel-flex(column, center, flex-end, $travel-space-2);
+  min-width: 120px;
+
+  @include travel-md-down {
+    align-items: center;
+    min-width: auto;
+  }
+}
+
+.subtotal-container {
+  @include travel-flex(column, center, flex-end, $travel-space-1);
+
+  @include travel-md-down {
+    align-items: center;
+  }
+}
+
+.subtotal-label {
+  @include travel-text(xs, medium, secondary);
+}
+
+.subtotal-amount {
+  @include travel-flex(row, center, baseline, $travel-space-1);
+}
+
+.subtotal-currency {
+  @include travel-text(sm, normal, tertiary);
+}
+
+.subtotal-value {
+  @include travel-text(xl, bold, primary);
+}
+
+.subtotal-savings {
+  @include travel-flex(row, center, center, $travel-space-1);
+  @include travel-text(xs, medium, secondary);
+  color: $travel-success;
+  background-color: $travel-success-light;
+  padding: $travel-space-1 $travel-space-2;
+  border-radius: $travel-radius-sm;
+
+  .material-symbols-outlined {
+    font-size: 14px;
+  }
+}
+
+// =============================================================================
+// ACTIONS SECTION
+// =============================================================================
+
+.travel-cart-item__actions {
+  grid-area: actions;
+  @include travel-flex(column, center, center, $travel-space-2);
+
+  @include travel-md-down {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.action-btn {
+  @include travel-button-base;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: $travel-radius-md;
+  background-color: $travel-bg-secondary;
+  color: $travel-text-secondary;
+  border: 1px solid $travel-border-light;
+
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
+
+  &:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: $travel-shadow-md;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  &--favorite {
+    &.action-btn--active {
+      background-color: $travel-danger-light;
+      color: $travel-danger;
+      border-color: $travel-danger;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: $travel-danger-light;
+      color: $travel-danger;
+      border-color: $travel-danger;
+    }
+  }
+
+  &--remove {
+    &:hover:not(:disabled) {
+      background-color: $travel-danger;
+      color: $travel-text-inverse;
+      border-color: $travel-danger;
+    }
+  }
+}
+
+// =============================================================================
+// LOADING OVERLAY
+// =============================================================================
+
+.travel-cart-item__loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($travel-bg-primary, 0.8);
+  @include travel-flex-center;
+  border-radius: $travel-radius-lg;
+  backdrop-filter: blur(2px);
+}
+
+.loading-spinner {
+  @include travel-loading-spinner(24px, $travel-primary);
+  
+  .material-symbols-outlined {
+    font-size: 24px;
+    color: $travel-primary;
+    animation: travel-spin 1s linear infinite;
+  }
+}
+
+// =============================================================================
+// ANIMATIONS
+// =============================================================================
+
+.travel-cart-item {
+  @include travel-fade-in(0.3s);
+  
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.3s; }
+  &:nth-child(4) { animation-delay: 0.4s; }
+  &:nth-child(5) { animation-delay: 0.5s; }
+}
+
+// =============================================================================
+// ACCESSIBILITY
+// =============================================================================
+
+@include travel-reduced-motion {
+  .travel-cart-item {
+    animation: none;
+    
+    &:hover .travel-cart-item__image {
+      transform: none;
+    }
+  }
+  
+  .quantity-btn,
+  .action-btn {
+    &:hover:not(:disabled),
+    &:active:not(:disabled) {
+      transform: none;
+    }
+  }
+  
+  .loading-spinner .material-symbols-outlined {
+    animation: none;
+  }
+}
+
+// Focus styles
+.quantity-btn:focus-visible,
+.quantity-input:focus-visible,
+.action-btn:focus-visible {
+  @include travel-focus-ring;
+}

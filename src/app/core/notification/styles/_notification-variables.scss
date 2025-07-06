@@ -1,0 +1,65 @@
+// Colores base
+$success-color: #10b981;
+$error-color: #ef4444;
+$warning-color: #f59e0b;
+$info-color: #3b82f6;
+$notification-accent: #3b82f6; // Fallback para color.adjust
+
+// Colores de fondo
+$bg-light: #ffffff;
+$bg-dark: #1f2937;
+
+// Colores de texto
+$text-primary-light: #111827;
+$text-secondary-light: #6b7280;
+$text-primary-dark: #f9fafb;
+$text-secondary-dark: #d1d5db;
+
+// Espaciado
+$spacing-xs: 0.25rem;   // 4px
+$spacing-sm: 0.5rem;    // 8px
+$spacing-md: 0.75rem;   // 12px
+$spacing-lg: 1rem;      // 16px
+$spacing-xl: 1.5rem;    // 24px
+
+// Tipografía
+$font-size-xs: 0.75rem;   // 12px
+$font-size-sm: 0.875rem;  // 14px
+$font-size-base: 1rem;    // 16px
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.625;
+
+// Bordes
+$border-radius: 0.5rem;     // 8px
+$border-radius-sm: 0.25rem; // 4px
+
+// Sombras
+$shadow-elevated: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-elevated-dark: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+
+// Transiciones
+$transition-fast: 150ms ease-in-out;
+$transition-normal: 250ms ease-in-out;
+
+// Animaciones
+$animation-duration-fast: 200ms;
+$animation-duration-normal: 300ms;
+$animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+
+// Definir propiedades CSS para uso en tiempo de ejecución
+:root {
+  --notification-accent: #{$notification-accent};
+  --notification-bg: #{$bg-light};
+  --notification-text: #{$text-primary-light};
+  --notification-text-secondary: #{$text-secondary-light};
+}

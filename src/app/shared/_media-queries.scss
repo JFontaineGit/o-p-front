@@ -1,14 +1,9 @@
-@use '../styles/_mixins.scss' as *;
+@use './_mixins.scss' as mixins;
+@use './_variables.scss' as vars;
 
 // =============================================================================
-// MIXINS DE MEDIA QUERIES
+// GENERAL MEDIA QUERIES
 // =============================================================================
-
-@mixin mobile-only {
-  @media (max-width: 768px) {
-    @content;
-  }
-}
 
 @mixin tablet-only {
   @media (min-width: 769px) and (max-width: 1024px) {
@@ -40,7 +35,7 @@
   }
 }
 
-// Responsive Design para products-section
+// Responsive Design for products-section
 @media (max-width: 1024px) {
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -49,16 +44,16 @@
 
 @media (max-width: 768px) {
   .products-section {
-    padding: var(--spacing-2xl) 0;
+    padding: vars.$spacing-2xl 0;
   }
   
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: var(--spacing-md);
+    gap: vars.$spacing-md;
   }
   
   .container {
-    padding: 0 var(--spacing-sm);
+    padding: 0 vars.$spacing-sm;
   }
 }
 
@@ -70,32 +65,32 @@
 
 @media (max-width: 480px) {
   .products-section {
-    padding: var(--spacing-xl) 0;
+    padding: vars.$spacing-xl 0;
   }
   
   .products-grid {
     grid-template-columns: 1fr;
-    gap: var(--spacing-md);
+    gap: vars.$spacing-md;
   }
   
   .container {
-    padding: 0 var(--spacing-sm);
+    padding: 0 vars.$spacing-sm;
   }
   
   .section-title {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: vars.$spacing-md;
   }
 }
 
-// Responsive Design para product-card
+// Responsive Design for product-card
 @media (max-width: 768px) {
   .product-card__content {
-    padding: var(--spacing-sm);
+    padding: vars.$spacing-sm;
   }
   .product-footer {
     flex-direction: column;
     align-items: stretch;
-    gap: var(--spacing-xs);
+    gap: vars.$spacing-xs;
   }
   .add-to-cart-btn {
     justify-content: center;
@@ -103,7 +98,7 @@
   }
   .product-price {
     text-align: center;
-    font-size: var(--font-size-md);
+    font-size: vars.$font-size-md;
   }
 }
 
@@ -111,27 +106,27 @@
   .favorite-btn {
     width: 36px;
     height: 36px;
-    top: var(--spacing-xs);
-    right: var(--spacing-xs);
+    top: vars.$spacing-xs;
+    right: vars.$spacing-xs;
   }
   .add-to-cart-btn {
     span {
       display: none;
     }
     
-    padding: var(--spacing-sm);
+    padding: vars.$spacing-sm;
     
     &::after {
       content: "Agregar";
-      margin-left: var(--spacing-xs);
+      margin-left: vars.$spacing-xs;
     }
   }
 }
 
-// NUEVAS media queries para contact-card 
+// Responsive Design for contact-card
 @media (max-width: 768px) {
   .contact-card__content {
-    padding: var(--spacing-sm);
+    padding: vars.$spacing-sm;
   }
   .contact-card__button {
     justify-content: center;
@@ -139,13 +134,13 @@
   }
   .info-item__label {
     text-align: center;
-    font-size: var(--font-size-md);
+    font-size: vars.$font-size-md;
   }
 }
 
 @media (max-width: 480px) {
   .contact-card__button {
-    padding: var(--spacing-sm);
+    padding: vars.$spacing-sm;
 
     .button-text {
       display: none;
@@ -153,12 +148,12 @@
     
     &::after {
       content: "Contactar";
-      margin-left: var(--spacing-xs);
+      margin-left: vars.$spacing-xs;
     }
   }
 }
 
-// Animaciones y accesibilidad 
+// Animations and accessibility
 @media (prefers-reduced-motion: no-preference) {
   .products-grid > :nth-child(1) { animation-delay: 0.1s; }
   .products-grid > :nth-child(2) { animation-delay: 0.2s; }
@@ -169,7 +164,7 @@
   .products-grid > :nth-child(7) { animation-delay: 0.7s; }
   .products-grid > :nth-child(8) { animation-delay: 0.8s; }
   .product-card {
-    @include animation-fade-in-up();
+    @include mixins.animation-fade-in-up();
   }
 
   .methods-grid > :nth-child(1) { animation-delay: 0.1s; }
@@ -179,7 +174,7 @@
   .methods-grid > :nth-child(5) { animation-delay: 0.5s; }
   .methods-grid > :nth-child(6) { animation-delay: 0.6s; }
   .contact-card {
-    @include animation-fade-in-up();
+    @include mixins.animation-fade-in-up();
   }
 }
 
@@ -199,8 +194,7 @@
   .product-card:hover .product-image {
     transform: none;
   }
-
-  // NUEVAS reglas para contact-card (agregando a tu archivo)
+  
   .methods-grid > * {
     animation-delay: 0s !important;
   }
@@ -218,14 +212,226 @@
   .products-grid:hover > :not(:hover) {
     opacity: 1;
   }
-
-  // NUEVA regla para contact-card (agregando a tu archivo)
+  
   .methods-grid:hover > :not(:hover) {
     opacity: 1;
   }
 }
 
-// Animación de carga (mantengo exactamente como las tienes)
+// =============================================================================
+// TRAVEL CART - BREAKPOINT MIXINS
+// =============================================================================
+
+@mixin travel-xs-up {
+  @media (min-width: vars.$travel-bp-xs) {
+    @content;
+  }
+}
+
+@mixin travel-sm-up {
+  @media (min-width: vars.$travel-bp-sm) {
+    @content;
+  }
+}
+
+@mixin travel-md-up {
+  @media (min-width: vars.$travel-bp-md) {
+    @content;
+  }
+}
+
+@mixin travel-lg-up {
+  @media (min-width: vars.$travel-bp-lg) {
+    @content;
+  }
+}
+
+@mixin travel-xl-up {
+  @media (min-width: vars.$travel-bp-xl) {
+    @content;
+  }
+}
+
+@mixin travel-2xl-up {
+  @media (min-width: vars.$travel-bp-2xl) {
+    @content;
+  }
+}
+
+@mixin travel-xs-down {
+  @media (max-width: #{vars.$travel-bp-xs - 1px}) {
+    @content;
+  }
+}
+
+@mixin travel-sm-down {
+  @media (max-width: #{vars.$travel-bp-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin travel-md-down {
+  @media (max-width: #{vars.$travel-bp-md - 1px}) {
+    @content;
+  }
+}
+
+@mixin travel-lg-down {
+  @media (max-width: #{vars.$travel-bp-lg - 1px}) {
+    @content;
+  }
+}
+
+@mixin travel-xl-down {
+  @media (max-width: #{vars.$travel-bp-xl - 1px}) {
+    @content;
+  }
+}
+
+@mixin travel-xs-only {
+  @media (max-width: #{vars.$travel-bp-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin travel-sm-only {
+  @media (min-width: vars.$travel-bp-sm) and (max-width: #{vars.$travel-bp-md - 1px}) {
+    @content;
+  }
+}
+
+@mixin travel-md-only {
+  @media (min-width: vars.$travel-bp-md) and (max-width: #{vars.$travel-bp-lg - 1px}) {
+    @content;
+  }
+}
+
+@mixin travel-lg-only {
+  @media (min-width: vars.$travel-bp-lg) and (max-width: #{vars.$travel-bp-xl - 1px}) {
+    @content;
+  }
+}
+
+@mixin travel-xl-only {
+  @media (min-width: vars.$travel-bp-xl) and (max-width: #{vars.$travel-bp-2xl - 1px}) {
+    @content;
+  }
+}
+
+@mixin travel-mobile-only {
+  @include travel-md-down {
+    @content;
+  }
+}
+
+@mixin travel-tablet-only {
+  @include travel-md-only {
+    @content;
+  }
+}
+
+@mixin travel-desktop-up {
+  @include travel-lg-up {
+    @content;
+  }
+}
+
+@mixin travel-large-desktop-up {
+  @include travel-xl-up {
+    @content;
+  }
+}
+
+// =============================================================================
+// TRAVEL CART - ORIENTATION MIXINS
+// =============================================================================
+
+@mixin travel-landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin travel-portrait {
+  @media (orientation: portrait) {
+    @content;
+  }
+}
+
+// =============================================================================
+// TRAVEL CART - HIGH DPI MIXINS
+// =============================================================================
+
+@mixin travel-retina {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    @content;
+  }
+}
+
+// =============================================================================
+// TRAVEL CART - PRINT MIXINS
+// =============================================================================
+
+@mixin travel-print {
+  @media print {
+    @content;
+  }
+}
+
+// =============================================================================
+// TRAVEL CART - ACCESSIBILITY MIXINS
+// =============================================================================
+
+@mixin travel-reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin travel-high-contrast {
+  @media (prefers-contrast: high) {
+    @content;
+  }
+}
+
+@mixin travel-dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+// =============================================================================
+// TRAVEL CART - CONTAINER QUERIES (EXPERIMENTAL)
+// =============================================================================
+
+@mixin travel-container-sm {
+  @container (min-width: #{vars.$travel-container-sm}) {
+    @content;
+  }
+}
+
+@mixin travel-container-md {
+  @container (min-width: #{vars.$travel-container-md}) {
+    @content;
+  }
+}
+
+@mixin travel-container-lg {
+  @container (min-width: #{vars.$travel-container-lg}) {
+    @content;
+  }
+}
+
+@mixin travel-container-xl {
+  @container (min-width: #{vars.$travel-container-xl}) {
+    @content;
+  }
+}
+
+// =============================================================================
+// ANIMATIONS
+// =============================================================================
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -243,5 +449,37 @@
   }
   100% {
     background-position: -200% 0;
+  }
+}
+
+@keyframes travel-skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes travel-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes travel-fade-in-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes travel-bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -30px, 0);
+  }
+  70% {
+    transform: translate3d(0, -15px, 0);
+  }
+  90% {
+    transform: translate3d(0, -4px, 0);
   }
 }

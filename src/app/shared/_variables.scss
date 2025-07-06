@@ -1,3 +1,10 @@
+// =============================================================================
+// DESIGN SYSTEM VARIABLES - OLYMPICS PROJECT
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// GENERAL COLORS
+// -----------------------------------------------------------------------------
 $color-text-dark: #1f2937;
 $color-text-light: #6b7280;
 $color-primary: #3b82f6;
@@ -9,7 +16,7 @@ $color-bg-white: #ffffff;
 $color-shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 $color-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
-// Colores específicos para variantes de contacto
+// Contact-specific colors
 $whatsapp-color: #25d366;
 $whatsapp-hover: #128c7e;
 $orange-color: #ff9800;
@@ -19,18 +26,76 @@ $purple-hover: #7b1fa2;
 $green-color: #4caf50;
 $green-hover: #388e3c;
 
-// Colores de estado
+// Status colors
 $status-online-color: #34a853;
 $status-offline-color: #ea4335;
 $status-busy-color: #fbbc04;
 
-// Colores modo oscuro
+// Dark mode colors
 $bg-white-dark: #1f1f1f;
 $text-dark-dark: #e8eaed;
 $text-light-dark: #9aa0a6;
 $border-color-dark: #3c4043;
 
-// Tipografía
+// -----------------------------------------------------------------------------
+// TRAVEL CART - THEME COLORS
+// -----------------------------------------------------------------------------
+$travel-primary: #0ea5e9;           // Sky blue - represents skies and oceans
+$travel-primary-light: #e0f2fe;
+$travel-primary-dark: #0284c7;
+
+$travel-secondary: #10b981;         // Emerald - represents nature
+$travel-secondary-light: #d1fae5;
+$travel-secondary-dark: #059669;
+
+$travel-accent: #f59e0b;            // Amber - represents sun and adventure
+$travel-accent-light: #fef3c7;
+$travel-accent-dark: #d97706;
+
+// Travel status colors
+$travel-success: #22c55e;
+$travel-success-light: #dcfce7;
+$travel-warning: #eab308;
+$travel-warning-light: #fefce8;
+$travel-danger: #ef4444;
+$travel-danger-light: #fef2f2;
+$travel-info: #3b82f6;
+$travel-info-light: #eff6ff;
+
+// Travel neutral colors
+$travel-white: #ffffff;
+$travel-gray-50: #f8fafc;
+$travel-gray-100: #f1f5f9;
+$travel-gray-200: #e2e8f0;
+$travel-gray-300: #cbd5e1;
+$travel-gray-400: #94a3b8;
+$travel-gray-500: #64748b;
+$travel-gray-600: #475569;
+$travel-gray-700: #334155;
+$travel-gray-800: #1e293b;
+$travel-gray-900: #0f172a;
+
+// Travel text colors
+$travel-text-primary: $travel-gray-900;
+$travel-text-secondary: $travel-gray-700;
+$travel-text-tertiary: $travel-gray-500;
+$travel-text-disabled: $travel-gray-400;
+$travel-text-inverse: $travel-white;
+
+// Travel background colors
+$travel-bg-primary: $travel-white;
+$travel-bg-secondary: $travel-gray-50;
+$travel-bg-tertiary: $travel-gray-100;
+$travel-bg-overlay: rgba($travel-gray-900, 0.5);
+
+// Travel border colors
+$travel-border-light: $travel-gray-200;
+$travel-border-medium: $travel-gray-300;
+$travel-border-dark: $travel-gray-400;
+
+// -----------------------------------------------------------------------------
+// TYPOGRAPHY
+// -----------------------------------------------------------------------------
 $font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 $font-size-xs: 0.75rem; // 12px
 $font-size-sm: 0.875rem; // 14px
@@ -44,7 +109,29 @@ $font-weight-bold: 600;
 $line-height-base: 1.6;
 $letter-spacing: -0.02em;
 
-// Espaciado y dimensiones
+// Travel typography
+$travel-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$travel-font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+$travel-text-xs: 0.75rem;      // 12px
+$travel-text-sm: 0.875rem;     // 14px
+$travel-text-base: 1rem;       // 16px
+$travel-text-lg: 1.125rem;     // 18px
+$travel-text-xl: 1.25rem;      // 20px
+$travel-text-2xl: 1.5rem;      // 24px
+$travel-text-3xl: 1.875rem;    // 30px
+$travel-text-4xl: 2.25rem;     // 36px
+
+$travel-font-light: 300;
+$travel-font-normal: 400;
+$travel-font-medium: 500;
+$travel-font-semibold: 600;
+$travel-font-bold: 700;
+$travel-font-extrabold: 800;
+
+// -----------------------------------------------------------------------------
+// SPACING AND DIMENSIONS
+// -----------------------------------------------------------------------------
 $spacing-xs: 0.5rem;
 $spacing-sm: 0.75rem;
 $spacing-md: 1rem;
@@ -55,10 +142,78 @@ $spacing-3xl: 3.75rem;
 $border-radius: 12px;
 $border-radius-small: 4px;
 
-// Transiciones
-$transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$travel-space-0: 0;
+$travel-space-1: 0.25rem;      // 4px
+$travel-space-2: 0.5rem;       // 8px
+$travel-space-3: 0.75rem;      // 12px
+$travel-space-4: 1rem;         // 16px
+$travel-space-5: 1.25rem;      // 20px
+$travel-space-6: 1.5rem;       // 24px
+$travel-space-8: 2rem;         // 32px
+$travel-space-10: 2.5rem;      // 40px
+$travel-space-12: 3rem;        // 48px
+$travel-space-16: 4rem;        // 64px
+$travel-space-20: 5rem;        // 80px
 
-// Tamaños específicos del componente contact-card
+$travel-radius-none: 0;
+$travel-radius-sm: 0.25rem;     // 4px
+$travel-radius-base: 0.375rem;  // 6px
+$travel-radius-md: 0.5rem;      // 8px
+$travel-radius-lg: 0.75rem;     // 12px
+$travel-radius-xl: 1rem;        // 16px
+$travel-radius-2xl: 1.5rem;     // 24px
+$travel-radius-full: 9999px;
+
+// -----------------------------------------------------------------------------
+// SHADOWS
+// -----------------------------------------------------------------------------
+$travel-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$travel-shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+$travel-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$travel-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$travel-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+// -----------------------------------------------------------------------------
+// TRANSITIONS
+// -----------------------------------------------------------------------------
+$transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$travel-transition-fast: 150ms ease-in-out;
+$travel-transition-base: 200ms ease-in-out;
+$travel-transition-slow: 300ms ease-in-out;
+
+// -----------------------------------------------------------------------------
+// Z-INDEX
+// -----------------------------------------------------------------------------
+$travel-z-dropdown: 1000;
+$travel-z-sticky: 1020;
+$travel-z-fixed: 1030;
+$travel-z-modal-backdrop: 1040;
+$travel-z-modal: 1050;
+$travel-z-popover: 1060;
+$travel-z-tooltip: 1070;
+
+// -----------------------------------------------------------------------------
+// BREAKPOINTS
+// -----------------------------------------------------------------------------
+$travel-bp-xs: 475px;
+$travel-bp-sm: 640px;
+$travel-bp-md: 768px;
+$travel-bp-lg: 1024px;
+$travel-bp-xl: 1280px;
+$travel-bp-2xl: 1536px;
+
+// -----------------------------------------------------------------------------
+// CONTAINERS
+// -----------------------------------------------------------------------------
+$travel-container-sm: 640px;
+$travel-container-md: 768px;
+$travel-container-lg: 1024px;
+$travel-container-xl: 1280px;
+$travel-container-2xl: 1536px;
+
+// -----------------------------------------------------------------------------
+// CONTACT CARD SPECIFIC
+// -----------------------------------------------------------------------------
 $card-padding: $spacing-2xl $spacing-xl;
 $card-padding-tablet: $spacing-xl $spacing-lg;
 $card-padding-mobile: $spacing-lg $spacing-md;
@@ -72,3 +227,25 @@ $button-padding-mobile: $spacing-xs $spacing-md;
 $hover-lift: -8px;
 $button-hover-lift: -2px;
 $status-icon-size: 8px;
+
+// -----------------------------------------------------------------------------
+// TRAVEL CART SPECIFIC
+// -----------------------------------------------------------------------------
+$travel-cart-item-height: 120px;
+$travel-cart-item-image-size: 80px;
+$travel-cart-summary-width: 380px;
+$travel-cart-summary-width-mobile: 100%;
+
+// -----------------------------------------------------------------------------
+// STATES
+// -----------------------------------------------------------------------------
+$travel-opacity-disabled: 0.5;
+$travel-opacity-loading: 0.6;
+$travel-opacity-hover: 0.8;
+
+// -----------------------------------------------------------------------------
+// FOCUS RING
+// -----------------------------------------------------------------------------
+$travel-focus-ring-width: 2px;
+$travel-focus-ring-offset: 2px;
+$travel-focus-ring-color: $travel-primary;
