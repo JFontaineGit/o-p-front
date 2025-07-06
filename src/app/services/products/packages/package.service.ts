@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, map } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
 import { ApiService } from '../../core/api.service';
 import { LoggerService } from '../../core/logger.service';
-import { PackageCreate, PackageUpdate, PackageResponse, PackageDetailResponse, ComponentPackageCreate, ComponentPackageUpdate, ComponentPackageResponse, PackageSearchParams } from '../../interfaces/package.interfaces';
+import { PackageCreate, PackageUpdate, PackageResponse, PackageDetailResponse, ComponentPackageCreate, ComponentPackageUpdate, ComponentPackageResponse, PackageSearchParams, PackageListResponse } from '../../interfaces/package.interfaces';
 import { PACKAGE_ENDPOINTS } from './package-endpoints';
 
 @Injectable({
@@ -20,9 +20,14 @@ export class PackageService {
    * Retrieves the list of all packages.
    * @returns Observable with the list of packages.
    */
-  public listPackages(): Observable<PackageResponse[]> {
-    return this.apiService.get<PackageResponse[]>(PACKAGE_ENDPOINTS.LIST).pipe(
-      tap(response => this.logger.debug('Lista de paquetes obtenida', response)),
+  listPackages(params?: HttpParams): Observable<PackageResponse[]> {
+    return this.apiService.get<PackageListResponse>(PACKAGE_ENDPOINTS.LIST, { params }).pipe(
+      map((response:any) => {
+        const packages = Array.isArray(response.items) ? response.items : [];
+        this.logger.debug('Paquetes obtenidos del backend', { count: packages.length });
+        return packages;
+      }),
+      tap((packages:any) => this.logger.debug('Paquetes procesados', { count: packages.length })),
       catchError(this.handleError<PackageResponse[]>('listPackages'))
     );
   }

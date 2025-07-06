@@ -1,248 +1,241 @@
-import { Component, Input } from "@angular/core"
-import { CommonModule } from "@angular/common"
-import { ProductCard } from "../product-card"
-import { CartService } from "../../../services/carts/cart.service"
-import { CartItemAdd } from "../../../services/interfaces/cart.interfaces"
-import type { Product, TravelPackage } from "../../../interfaces/product.interface"
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ProductCard } from '../product-card';
+import { CartService } from '../../../services/carts/cart.service';
+import { PackageService } from '../../../services/products/packages/package.service';
+import { ProductService } from '../../../services/products/product.service';
+import { LoggerService } from '../../../services/core/logger.service';
+import { CartItemAdd } from '../../../services/interfaces/cart.interfaces';
+import { PackageResponse } from '../../../services/interfaces/package.interfaces';
+import { ProductMetadataResponse, ProductType } from '../../../services/interfaces/product.interfaces';
+import { HttpParams } from '@angular/common/http';
+
+// Interfaz genérica para cubrir Product y TravelPackage en ProductCard
+interface CardItem {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  rating?: number;
+  reviewsCount?: number;
+  originalPrice?: number;
+  discount?: number;
+  features?: string[];
+  badge?: string;
+  destination?: string;
+  duration?: string;
+  maxPeople?: number;
+}
+
+// Interfaz para paquetes, extendiendo PackageResponse
+interface TravelPackage extends PackageResponse {
+  title: string;
+  price: number;
+  rating: number;
+  reviewsCount: number;
+  imageUrl: string;
+  originalPrice?: number;
+  discount?: number;
+  features?: string[];
+  badge?: string;
+  destination?: string;
+  duration?: string;
+  maxPeople?: number;
+}
+
+// Interfaz para productos, extendiendo ProductMetadataResponse
+interface Product extends ProductMetadataResponse {
+  title: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+}
 
 @Component({
-  selector: "app-product-list",
+  selector: 'app-product-list',
   standalone: true,
   imports: [CommonModule, ProductCard],
-  templateUrl: "./product-list.html",
-  styleUrls: ["./product-list.scss"],
+  templateUrl: './product-list.html',
+  styleUrls: ['./product-list.scss'],
 })
-export class ProductList {
-  @Input() mode: 'products' | 'packages' | 'all' = 'all'
-  favoriteIds = new Set<number>()
-  addingToCart = new Set<number>() // Para tracking de loading por producto
-  
-  constructor(private cartService: CartService) {}
-  
-  // Productos
-  products: Product[] = [
-    {
-      id: 1,
-      title: "Habitación completa en París",
-      description: "2-4 huéspedes • 1 dormitorio • 1 cama",
-      price: 1299,
-      imageUrl:
-        "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    },
-    {
-      id: 2,
-      title: "Departamento en París",
-      description: "1-2 huéspedes • Estudio • 1 cama",
-      price: 899,
-      imageUrl:
-        "https://images.unsplash.com/photo-1586611292717-f828b167408c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    },
-    {
-      id: 3,
-      title: "Apartamento en París",
-      description: "2-3 huéspedes • 1 dormitorio • 1 cama",
-      price: 1099,
-      imageUrl:
-        "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    },
-    {
-      id: 4,
-      title: "Loft en Barcelona",
-      description: "2-5 huéspedes • 2 dormitorios • 3 camas",
-      price: 1499,
-      imageUrl:
-        "https://hips.hearstapps.com/hmg-prod/images/loft-industrial-en-el-born-barcelona-salon-6555dcfcd95e0.jpg",
-    },
-    {
-      id: 5,
-      title: "Estudio en Amsterdam",
-      description: "1-2 huéspedes • Estudio • 1 cama",
-      price: 799,
-      imageUrl:
-        "https://studentexperience.com/uploads/images/location/original/2-student-experience-ndsm-studio-2.jpg",
-    },
-    {
-      id: 6,
-      title: "Casa rural en Toscana",
-      description: "4-6 huéspedes • 3 dormitorios • 4 camas",
-      price: 1799,
-      imageUrl:
-        "https://images.unsplash.com/photo-1528495612343-9ca9f4a4de28?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    },
-  ]
+export class ProductList implements OnInit {
+  @Input() mode: 'products' | 'packages' | 'all' = 'all';
+  favoriteIds = new Set<number>();
+  addingToCart = new Set<number>();
+  products: Product[] = [];
+  packages: TravelPackage[] = [];
+  noProductsMessage: string | null = null;
+  noPackagesMessage: string | null = null;
 
-  // Paquetes
-  packages: TravelPackage[] = [
-    {
-      id: 101,
-      title: "París Romántico - 5 días",
-      description: "Escapada perfecta para parejas con todo incluido",
-      price: 1299,
-      originalPrice: 1599,
-      discount: 18.8,
-      imageUrl:
-        "https://dam.melia.com/melia/file/sBmHxZdXewt3CN5jAfAD.jpg?im=RegionOfInterestCrop=(1600,1116),regionOfInterest=(2061.0,1436.5)",
-      rating: 4.8,
-      reviewsCount: 127,
-      features: ["Vuelos", "Hoteles 4*", "Desayuno", "Guía español"],
-      badge: "Más vendido",
-      destination: "París, Francia",
-      duration: "5 días / 4 noches",
-      maxPeople: 2,
-    },
-    {
-      id: 102,
-      title: "Londres Completo",
-      description: "Descubre la capital británica con este paquete completo",
-      price: 899,
-      imageUrl:
-        "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      rating: 4.5,
-      reviewsCount: 89,
-      features: ["Vuelos", "Hotel", "Traslados"],
-      destination: "Londres, Reino Unido",
-      duration: "4 días / 3 noches",
-      maxPeople: 4,
-    },
-    {
-      id: 103,
-      title: "Roma Imperial",
-      description: "Vive la historia de Roma con guías especializados",
-      price: 1199,
-      originalPrice: 1399,
-      discount: 14.3,
-      imageUrl:
-        "https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      rating: 4.9,
-      reviewsCount: 203,
-      features: ["Vuelos", "Hoteles 5*", "Comidas", "Guía", "Seguro"],
-      badge: "Premium",
-      destination: "Roma, Italia",
-      duration: "6 días / 5 noches",
-      maxPeople: 6,
-    },
-    {
-      id: 104,
-      title: "Aventura en Barcelona",
-      description: "Explora la vibrante ciudad con actividades únicas",
-      price: 999,
-      originalPrice: 1199,
-      discount: 16.7,
-      imageUrl:
-        "https://images.unsplash.com/photo-1583422409516-2895a77efded?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      rating: 4.6,
-      reviewsCount: 95,
-      features: ["Vuelos", "Hotel 3*", "Tours guiados", "Desayuno"],
-      badge: "Oferta especial",
-      destination: "Barcelona, España",
-      duration: "4 días / 3 noches",
-      maxPeople: 3,
-    },
-    {
-      id: 105,
-      title: "Amsterdam Cultural",
-      description: "Sumérgete en la cultura y los canales de Amsterdam",
-      price: 1099,
-      imageUrl:
-        "https://dynamic-media.tacdn.com/media/photo-o/2e/b4/19/64/caption.jpg?w=700&h=500&s=1",
-      rating: 4.7,
-      reviewsCount: 112,
-      features: ["Vuelos", "Hotel", "Paseo en barco", "Entradas a museos"],
-      destination: "Amsterdam, Países Bajos",
-      duration: "5 días / 4 noches",
-      maxPeople: 4,
-    },
-    {
-      id: 106,
-      title: "Toscana Clásica",
-      description: "Disfruta del encanto rural y la gastronomía italiana",
-      price: 1499,
-      originalPrice: 1699,
-      discount: 11.8,
-      imageUrl:
-        "https://images.unsplash.com/photo-1516100882582-96c3a05fe590?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      rating: 4.9,
-      reviewsCount: 150,
-      features: ["Vuelos", "Hoteles boutique", "Cata de vinos", "Guía"],
-      badge: "Exclusivo",
-      destination: "Toscana, Italia",
-      duration: "7 días / 6 noches",
-      maxPeople: 5,
-    },
-  ]
+  constructor(
+    private cartService: CartService,
+    private packageService: PackageService,
+    private productService: ProductService,
+    private logger: LoggerService
+  ) {}
+
+  ngOnInit(): void {
+    if (this.mode === 'products' || this.mode === 'all') {
+      this.loadProducts();
+    }
+    if (this.mode === 'packages' || this.mode === 'all') {
+      this.loadPackages();
+    }
+  }
+
+  private loadProducts(): void {
+    const params = new HttpParams(); // Ajusta según parámetros requeridos
+    this.productService.listProducts(params).subscribe({
+      next: (products: ProductMetadataResponse[]) => {
+        this.products = products.map((prod) => {
+          let title: string;
+          let description: string;
+          let imageUrl: string;
+
+          switch (prod.product_type) {
+            case 'activity':
+              title = prod.product['name'] ?? 'Actividad sin nombre';
+              description = prod.product['description'] ?? 'Sin descripción disponible';
+              imageUrl = prod.product['image'] ?? 'https://via.placeholder.com/400x300?text=Actividad';
+              break;
+            case 'lodgment':
+              title = prod.product['name'] ?? 'Alojamiento sin nombre';
+              description = prod.product['description'] ?? 'Sin descripción disponible';
+              imageUrl = prod.product['image'] ?? 'https://via.placeholder.com/400x300?text=Alojamiento';
+              break;
+            case 'transportation':
+              title = prod.product['type']
+                ? `${prod.product['type']} de ${prod.product['origin_id'] ?? 'Origen desconocido'} a ${prod.product['destination_id'] ?? 'Destino desconocido'}`
+                : 'Transporte sin nombre';
+              description = prod.product['description'] ?? 'Sin descripción disponible';
+              imageUrl = prod.product['image'] ?? 'https://via.placeholder.com/400x300?text=Transporte';
+              break;
+            case 'flight':
+              title = `Vuelo de ${prod.product['origin_id'] ?? 'Origen desconocido'} a ${prod.product['destination_id'] ?? 'Destino desconocido'}` || 'Vuelo sin nombre';
+              description = prod.product['description'] ?? 'Sin descripción disponible';
+              imageUrl = prod.product['image'] ?? 'https://via.placeholder.com/400x300?text=Vuelo';
+              break;
+            default:
+              title = 'Producto sin nombre';
+              description = 'Sin descripción disponible';
+              imageUrl = 'https://via.placeholder.com/400x300?text=Producto';
+          }
+
+          return {
+            ...prod,
+            title,
+            description,
+            price: prod.unit_price ?? 0,
+            imageUrl,
+          };
+        });
+        this.noProductsMessage = this.products.length === 0 ? 'No hay productos disponibles en este momento.' : null;
+      },
+      error: (error: unknown) => {
+        this.logger.error('Error al cargar los productos', error);
+        this.noProductsMessage = 'Error al cargar los productos. Por favor, intenta de nuevo.';
+      },
+    });
+  }
+
+  private loadPackages(): void {
+    this.packageService.listPackages().subscribe({
+      next: (packages: PackageResponse[]) => {
+        this.packages = packages.map((pkg) => ({
+          ...pkg,
+          title: pkg.name ?? 'Paquete sin nombre',
+          price: pkg.final_price ?? 0,
+          rating: pkg.rating_average ?? 0,
+          reviewsCount: pkg.total_reviews ?? 0,
+          imageUrl: pkg.cover_image ? `https://api.example.com/images/${pkg.cover_image}` : 'https://via.placeholder.com/400x300?text=Paquete+Turístico',
+          originalPrice: pkg.base_price && pkg.taxes ? pkg.base_price + pkg.taxes : undefined,
+          discount: pkg.base_price && pkg.final_price && pkg.final_price < pkg.base_price ? ((pkg.base_price - pkg.final_price) / pkg.base_price) * 100 : undefined,
+          features: [],
+          badge: pkg.rating_average && pkg.rating_average >= 4.8 ? 'Más vendido' : undefined,
+          destination: undefined,
+          duration: pkg.duration_days ? `${pkg.duration_days} días` : undefined,
+          maxPeople: undefined,
+        }));
+        this.noPackagesMessage = this.packages.length === 0 ? 'No hay paquetes disponibles en este momento.' : null;
+      },
+      error: (error: unknown) => {
+        this.logger.error('Error al cargar los paquetes', error);
+        this.noPackagesMessage = 'Error al cargar los paquetes. Por favor, intenta de nuevo.';
+      },
+    });
+  }
 
   trackByProductId(index: number, product: Product): number {
-    return product.id
+    return product.id;
   }
 
   trackByPackageId(index: number, packageItem: TravelPackage): number {
-    return packageItem.id
+    return packageItem.id;
   }
 
-  onAddToCart(product: Product) {
-    if (this.addingToCart.has(product.id)) return; // Evitar múltiples clicks
-    
-    this.addingToCart.add(product.id);
-    
+  onAddToCart(item: CardItem) {
+    if (this.addingToCart.has(item.id)) return;
+
+    this.addingToCart.add(item.id);
+
     const cartItem: CartItemAdd = {
-      availability_id: product.id, // Usar el ID del producto como availability_id
-      product_metadata_id: product.id, // Usar el ID del producto como product_metadata_id
+      availability_id: item.id,
+      product_metadata_id: item.id,
       qty: 1,
-      unit_price: product.price,
+      unit_price: item.price,
       config: {
-        title: product.title,
-        description: product.description,
-        imageUrl: product.imageUrl
-      }
+        title: item.title,
+        description: item.description,
+        imageUrl: item.imageUrl,
+      },
     };
 
-    this.cartService.addCartItem(cartItem)
-      .subscribe({
-        next: (response) => {
-          alert(`¡${product.title} agregado al carrito!`);
-          this.addingToCart.delete(product.id);
-        },
-        error: (error) => {
-          console.error('Error adding to cart:', error);
-          alert('Error al agregar al carrito. Por favor, intenta de nuevo.');
-          this.addingToCart.delete(product.id);
-        }
-      });
+    this.cartService.addCartItem(cartItem).subscribe({
+      next: () => {
+        alert(`¡${item.title} agregado al carrito!`);
+        this.addingToCart.delete(item.id);
+      },
+      error: (error: unknown) => {
+        this.logger.error('Error adding to cart', error);
+        alert('Error al agregar al carrito. Por favor, intenta de nuevo.');
+        this.addingToCart.delete(item.id);
+      },
+    });
   }
 
-  onAddPackageToCart(packageItem: TravelPackage) {
-    if (this.addingToCart.has(packageItem.id)) return; // Evitar múltiples clicks
-    
-    this.addingToCart.add(packageItem.id);
-    
+  onAddPackageToCart(item: CardItem) {
+    if (this.addingToCart.has(item.id)) return;
+
+    this.addingToCart.add(item.id);
+
     const cartItem: CartItemAdd = {
-      availability_id: packageItem.id, // Usar el ID del paquete como availability_id
-      product_metadata_id: packageItem.id, // Usar el ID del paquete como product_metadata_id
+      availability_id: item.id,
+      product_metadata_id: item.id,
       qty: 1,
-      unit_price: packageItem.price,
+      unit_price: item.price,
       config: {
-        title: packageItem.title,
-        description: packageItem.description,
-        imageUrl: packageItem.imageUrl,
-        destination: packageItem.destination,
-        duration: packageItem.duration,
-        maxPeople: packageItem.maxPeople,
-        features: packageItem.features
-      }
+        title: item.title,
+        description: item.description,
+        imageUrl: item.imageUrl,
+        destination: item.destination,
+        duration: item.duration,
+        maxPeople: item.maxPeople,
+        features: item.features,
+      },
     };
 
-    this.cartService.addCartItem(cartItem)
-      .subscribe({
-        next: (response) => {
-          alert(`¡${packageItem.title} agregado al carrito!`);
-          this.addingToCart.delete(packageItem.id);
-        },
-        error: (error) => {
-          console.error('Error adding package to cart:', error);
-          alert('Error al agregar al carrito. Por favor, intenta de nuevo.');
-          this.addingToCart.delete(packageItem.id);
-        }
-      });
+    this.cartService.addCartItem(cartItem).subscribe({
+      next: () => {
+        alert(`¡${item.title} agregado al carrito!`);
+        this.addingToCart.delete(item.id);
+      },
+      error: (error: unknown) => {
+        this.logger.error('Error adding package to cart', error);
+        alert('Error al agregar al carrito. Por favor, intenta de nuevo.');
+        this.addingToCart.delete(item.id);
+      },
+    });
   }
 
   isAddingToCart(id: number): boolean {
@@ -251,10 +244,10 @@ export class ProductList {
 
   onToggleFavorite(event: { id: number; isFavorite: boolean }) {
     if (event.isFavorite) {
-      this.favoriteIds.add(event.id)
+      this.favoriteIds.add(event.id);
     } else {
-      this.favoriteIds.delete(event.id)
+      this.favoriteIds.delete(event.id);
     }
-    console.log("Favoritos actualizados:", Array.from(this.favoriteIds))
+    this.logger.debug('Favoritos actualizados', Array.from(this.favoriteIds));
   }
 }

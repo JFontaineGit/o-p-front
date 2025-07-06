@@ -84,3 +84,8 @@ export interface PackageSearchParams {
   is_active?: boolean;
   product_type?: string;
 }
+
+export interface PackageListResponse {
+  items: PackageResponse[];
+  count: number;
+}

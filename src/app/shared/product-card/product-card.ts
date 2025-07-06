@@ -13,7 +13,6 @@ export type CardMode = "product" | "package"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCard {
-  // Inputs existentes (mantenemos compatibilidad)
   @Input() title = ""
   @Input() description = ""
   @Input() price = 0
@@ -22,7 +21,6 @@ export class ProductCard {
   @Input() isFavorite = false
   @Input() isAddingToCart = false
 
-  // Nuevos inputs
   @Input() mode: CardMode = "product"
   @Input() originalPrice?: number
   @Input() discount?: number

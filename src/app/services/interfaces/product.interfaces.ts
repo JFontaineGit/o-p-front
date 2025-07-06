@@ -179,3 +179,8 @@ export interface CheckResponse {
   available: boolean;
   [key: string]: any;
 }
+
+export interface ProductListResponse {
+  items: ProductMetadataResponse[];
+  count: number;
+}

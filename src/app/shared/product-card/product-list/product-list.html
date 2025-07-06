@@ -4,59 +4,67 @@
     <ng-container *ngIf="mode === 'products' || mode === 'all'">
       <h3 class="section-title">
         <a href="#" class="section-link">
-          Disponibles en París el mes que viene 
+          Disponibles en París el mes que viene
           <span class="material-icons">chevron_right</span>
         </a>
       </h3>
-      
-      <div class="products-grid">
-        <app-product-card
-          *ngFor="let product of products; trackBy: trackByProductId"
-          mode="product"
-          [id]="product.id"
-          [title]="product.title"
-          [description]="product.description"
-          [price]="product.price"
-          [imageUrl]="product.imageUrl"
-          [isFavorite]="favoriteIds.has(product.id)"
-          [isAddingToCart]="isAddingToCart(product.id)"
-          (addToCart)="onAddToCart($event)"
-          (toggleFavorite)="onToggleFavorite($event)">
-        </app-product-card>
-      </div>
+      <ng-container *ngIf="noProductsMessage && products.length === 0; else productsContent">
+        <p class="no-items-message">{{ noProductsMessage }}</p>
+      </ng-container>
+      <ng-template #productsContent>
+        <div class="products-grid">
+          <app-product-card
+            *ngFor="let product of products; trackBy: trackByProductId"
+            mode="product"
+            [id]="product.id"
+            [title]="product.title"
+            [description]="product.description"
+            [price]="product.price"
+            [imageUrl]="product.imageUrl"
+            [isFavorite]="favoriteIds.has(product.id)"
+            [isAddingToCart]="isAddingToCart(product.id)"
+            (addToCart)="onAddToCart($event)"
+            (toggleFavorite)="onToggleFavorite($event)"
+          ></app-product-card>
+        </div>
+      </ng-template>
     </ng-container>
 
     <!-- Sección de paquetes -->
     <ng-container *ngIf="mode === 'packages' || mode === 'all'">
       <h3 class="section-title">
-          Paquetes turísticos destacados
-          <span class="material-icons">chevron_right</span>
+        Paquetes turísticos destacados
+        <span class="material-icons">chevron_right</span>
       </h3>
-      
-      <div class="products-grid">
-        <app-product-card
-          *ngFor="let package of packages; trackBy: trackByPackageId"
-          mode="package"
-          [id]="package.id"
-          [title]="package.title"
-          [description]="package.description"
-          [price]="package.price"
-          [originalPrice]="package.originalPrice"
-          [discount]="package.discount"
-          [imageUrl]="package.imageUrl"
-          [rating]="package.rating"
-          [reviewsCount]="package.reviewsCount"
-          [features]="package.features"
-          [badge]="package.badge"
-          [destination]="package.destination"
-          [duration]="package.duration"
-          [maxPeople]="package.maxPeople"
-          [isFavorite]="favoriteIds.has(package.id)"
-          [isAddingToCart]="isAddingToCart(package.id)"
-          (addToCart)="onAddPackageToCart($event)"
-          (toggleFavorite)="onToggleFavorite($event)">
-        </app-product-card>
-      </div>
+      <ng-container *ngIf="noPackagesMessage && packages.length === 0; else packagesContent">
+        <p class="no-items-message">{{ noPackagesMessage }}</p>
+      </ng-container>
+      <ng-template #packagesContent>
+        <div class="products-grid">
+          <app-product-card
+            *ngFor="let package of packages; trackBy: trackByPackageId"
+            mode="package"
+            [id]="package.id"
+            [title]="package.title"
+            [description]="package.description"
+            [price]="package.price"
+            [originalPrice]="package.originalPrice"
+            [discount]="package.discount"
+            [imageUrl]="package.imageUrl"
+            [rating]="package.rating"
+            [reviewsCount]="package.reviewsCount"
+            [features]="package.features"
+            [badge]="package.badge"
+            [destination]="package.destination"
+            [duration]="package.duration"
+            [maxPeople]="package.maxPeople"
+            [isFavorite]="favoriteIds.has(package.id)"
+            [isAddingToCart]="isAddingToCart(package.id)"
+            (addToCart)="onAddPackageToCart($event)"
+            (toggleFavorite)="onToggleFavorite($event)"
+          ></app-product-card>
+        </div>
+      </ng-template>
     </ng-container>
   </div>
 </section>

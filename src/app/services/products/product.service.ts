@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, map } from 'rxjs';
 import { catchError, retry, tap, timeout } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
 import { ApiService } from '../core/api.service';
@@ -19,6 +19,7 @@ import {
   TransportationAvailabilityCreate,
   QuoteResponse,
   CheckResponse,
+  ProductListResponse
 } from '../interfaces/product.interfaces';
 import { environment } from '../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -136,10 +137,15 @@ export class ProductService {
    * @returns Observable con un array de productos.
    */
   listProducts(params?: HttpParams): Observable<ProductMetadataResponse[]> {
-    return this.apiService.get<ProductMetadataResponse[]>(PRODUCT_ENDPOINTS.LIST, { params }).pipe(
+    return this.apiService.get<ProductListResponse>(PRODUCT_ENDPOINTS.LIST, { params }).pipe(
       timeout(this.apiTimeout),
       retry({ count: this.retryAttempts, delay: this.retryDelay }),
-      tap((response) => this.logger.debug('Productos listados', { count: response.length })),
+      map((response: any) => {
+        const products = Array.isArray(response.items) ? response.items : [];
+        this.logger.debug('Productos obtenidos del backend', { count: products.length });
+        return products;
+      }),
+      tap((products: any) => this.logger.debug('Productos procesados', { count: products.length })),
       catchError(this.handleError<ProductMetadataResponse[]>('listProducts'))
     );
   }

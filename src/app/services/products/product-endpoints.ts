@@ -14,7 +14,7 @@ export const PRODUCT_ENDPOINTS = {
   GET_AVAILABILITY: 'products/products/{id}/availability/',
   UPDATE_AVAILABILITY: 'products/products/availability/{id}/',
   DELETE_AVAILABILITY: 'products/products/availability/{id}/',
-  LIST: 'products/products/',
+  LIST: 'products/',
   GET: 'products/products/{id}/',
   UPDATE: 'products/products/{id}/',
   DELETE: 'products/products/{id}/',
