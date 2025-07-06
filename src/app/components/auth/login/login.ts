@@ -1,11 +1,19 @@
 import { Component, inject, signal, computed, effect } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  Validators,
+  FormGroup,
+} from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth/auth.service';
 import { LoggerService } from '../../../services/core/logger.service';
 import { StorageService } from '../../../services/core/storage.service';
-import { Auth, TokenUserResponse } from '../../../services/interfaces/auth.interfaces';
+import {
+  Auth,
+  TokenUserResponse,
+} from '../../../services/interfaces/auth.interfaces';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +43,11 @@ export class Login {
     remember: [false],
   });
 
-  readonly returnUrl = computed(() => this.route.snapshot.queryParams['returnUrl'] || '/user_panel');
+  readonly returnUrl = computed(() => {
+    const raw = this.route.snapshot.queryParams['returnUrl'];
+    // Solo permitir rutas relativas internas
+    return raw?.startsWith('/') ? raw : '/user_panel';
+  });
 
   constructor() {
     effect(() => {
@@ -47,7 +59,7 @@ export class Login {
   }
 
   togglePassword(): void {
-    this.showPassword.update(show => !show);
+    this.showPassword.update((show) => !show);
   }
 
   closeFeedback(): void {
@@ -88,7 +100,8 @@ export class Login {
       },
       error: (err: any) => {
         this.isSubmitting.set(false);
-        const msg = err?.message || 'Credenciales inválidas o error inesperado.';
+        const msg =
+          err?.message || 'Credenciales inválidas o error inesperado.';
         this.feedback.set({
           message: `Error al iniciar sesión: ${msg}`,
           type: 'error',
