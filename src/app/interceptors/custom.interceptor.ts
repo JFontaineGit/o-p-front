@@ -34,6 +34,7 @@ export const customInterceptor: HttpInterceptorFn = (req, next) => {
   const clonedReq = req.clone({
     setHeaders: {
       Authorization: `Bearer ${token}`,
+      'Idempotency-Key': crypto.randomUUID()
     },
   });
 

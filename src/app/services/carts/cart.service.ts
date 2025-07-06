@@ -9,6 +9,11 @@ import { CartResponse, CartItemAdd, CartItemQtyPatch } from '../interfaces/cart.
 import { environment } from '../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { HttpHeaders } from '@angular/common/http';
+
+// TODO: luego hacer refactor
+//  esta echo para solucionar el problema por el momento pero no tiene ninguna practica
+
 /**
  * Servicio para gestionar operaciones del carrito de compras.
  * Interactúa con la API a través de ApiService y maneja errores de forma centralizada.
@@ -46,8 +51,11 @@ export class CartService {
    * @returns Observable con la respuesta del carrito actualizado.
    */
   addCartItem(item: CartItemAdd): Observable<CartResponse> {
+    const headers = new HttpHeaders({
+      'Idempotency-Key': this.apiService.generateUUIDv4()
+    })
     return this.apiService
-      .post<CartResponse, CartItemAdd>(CART_ENDPOINTS.ADD_ITEM, item)
+      .post<CartResponse, CartItemAdd>(CART_ENDPOINTS.ADD_ITEM, item, { headers: headers })
       .pipe(
         timeout(this.apiTimeout),
         retry({ count: this.retryAttempts, delay: this.retryDelay }),

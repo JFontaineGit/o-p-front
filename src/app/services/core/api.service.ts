@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable, ReplaySubject, throwError } from 'rxjs';
 import { catchError, map, retry, switchMap, tap, shareReplay, timeout } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -70,7 +70,7 @@ export class ApiService {
   private buildUrl(endpoint: string): Observable<string> {
     return this.uuidLoaded$.pipe(
       map((uuid) => {
-        const cleanEndpoint = endpoint.replace(/^\/+|\/+$/g, '');
+        const cleanEndpoint = endpoint.replace(/^\/+/, '');
         return `${this.baseUrl}/${uuid}/${cleanEndpoint}`;
       }),
       catchError((err) => {
@@ -100,6 +100,10 @@ export class ApiService {
     );
   }
 
+  generateUUIDv4() {
+    return crypto.randomUUID();
+  }
+
   /**
    * Performs a GET request to the specified endpoint.
    * 
@@ -108,7 +112,7 @@ export class ApiService {
    * @returns Observable of the response data.
    * @throws Error if the request fails.
    */
-  get<T>(endpoint: string, options?: { params?: HttpParams }): Observable<T> {
+  get<T>(endpoint: string, options?: { params?: HttpParams, headers?: HttpHeaders }): Observable<T> {
     return this.buildUrl(endpoint).pipe(
       switchMap((url) => this.http.get<T>(url, options).pipe(
         timeout(environment.apiTimeout),
@@ -130,7 +134,7 @@ export class ApiService {
    * @returns Observable of the response data.
    * @throws Error if the request fails.
    */
-  post<T, P = unknown>(endpoint: string, payload: P, options?: { params?: HttpParams }): Observable<T> {
+  post<T, P = unknown>(endpoint: string, payload: P, options?: { params?: HttpParams, headers?: HttpHeaders }): Observable<T> {
     return this.buildUrl(endpoint).pipe(
       switchMap((url) => this.http.post<T>(url, payload, options).pipe(
         timeout(environment.apiTimeout),

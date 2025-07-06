@@ -13,6 +13,7 @@ import {
   ErrorResponse,
 } from '../interfaces/auth.interfaces';
 import { UserRead } from '../interfaces/user.interfaces';
+import {HttpHeaders} from "@angular/common/http";
 /**
  * Servicio para manejar operaciones relacionadas con autenticación.
  */
@@ -86,9 +87,13 @@ export class AuthService {
       this.logger.error('No hay refresh token disponible');
       return throwError(() => new Error('No hay refresh token disponible'));
     }
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + refreshToken,
+    })
     return this.apiService
-      .post<RefreshTokenResponse>(AUTH_ENDPOINTS.REFRESH, {
-        refresh_token: refreshToken,
+      .get<RefreshTokenResponse>(AUTH_ENDPOINTS.REFRESH, {
+        headers: headers,
       })
       .pipe(
         timeout(this.TIMEOUT_MS),
