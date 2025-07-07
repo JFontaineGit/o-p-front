@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CartItemResponse } from '../../services/interfaces/cart.interfaces';
+import { CartItemResponse, CartItemConfig } from '../../services/interfaces/cart.interfaces';
 
 interface ItemState {
   id: number;
@@ -37,15 +37,15 @@ export class CartItemComponent {
 
   #itemState: ItemState = {
     id: 0,
-    title: 'Producto',
+    title: '',
     description: '',
-    image: '/assets/images/placeholder.jpg',
+    image: '',
     unitPrice: 0,
     currency: 'USD',
     quantity: 1,
     isLoading: false,
-    formattedPrice: '$0.00',
-    formattedSubtotal: '$0.00'
+    formattedPrice: '',
+    formattedSubtotal: ''
   };
 
   get itemState(): ItemState {
@@ -53,48 +53,56 @@ export class CartItemComponent {
   }
 
   private updateItemState(newState: Partial<ItemState> | CartItemResponse | null): void {
-    if (!newState || !('id' in newState)) {
-      this.#itemState = { ...this.#itemState, ...newState };
+    // Si viene un CartItemResponse, extraemos sus campos
+    if (newState && 'unit_price' in newState) {
+      const item = newState as CartItemResponse;
+      const config = item.config as CartItemConfig | undefined;
+      const id = (item as any).id ?? item.product_metadata_id;
+
+      this.#itemState = {
+        id,
+        title: config?.title ?? 'Producto sin título',
+        description: config?.description ?? '',
+        image: config?.imageUrl ?? '/assets/images/placeholder.jpg',
+        unitPrice: item.unit_price ?? 0,
+        currency: item.currency ?? 'USD',
+        quantity: item.qty ?? 1,
+        isLoading: this.#itemState.isLoading,
+        formattedPrice: this.formatCurrency(item.unit_price ?? 0, item.currency),
+        formattedSubtotal: this.formatCurrency(
+          (item.unit_price ?? 0) * (item.qty ?? 1),
+          item.currency
+        )
+      };
       return;
     }
 
-    const item = newState as CartItemResponse;
+    // Sino mezclamos estados parciales
     this.#itemState = {
-      id: item.id,
-      title: item.config?.title || 'Producto',
-      description: item.config?.description || '',
-      image: item.config?.imageUrl || '/assets/images/placeholder.jpg',
-      unitPrice: item.unit_price,
-      currency: item.currency || 'USD',
-      quantity: item.qty,
-      isLoading: this.#itemState.isLoading,
-      formattedPrice: this.formatCurrency(item.unit_price, item.currency),
-      formattedSubtotal: this.formatCurrency(item.unit_price * item.qty, item.currency),
-      ...newState
+      ...this.#itemState,
+      ...(newState as Partial<ItemState>)
     };
   }
 
   formatCurrency(value: number, currency: string = 'USD'): string {
     return value.toLocaleString('es-ES', {
       style: 'currency',
-      currency: currency || 'USD',
+      currency,
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
   }
 
   changeQuantity(newQuantity: number): void {
-    if (newQuantity >= 1) {
+    if (newQuantity >= 1 && newQuantity <= 99) {
       this.quantityChange.emit({ itemId: this.#itemState.id, quantity: newQuantity });
     }
   }
 
   onQuantityInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const newQuantity = parseInt(input.value, 10);
-    if (!isNaN(newQuantity)) {
-      this.changeQuantity(newQuantity);
-    }
+    const qty = parseInt(input.value, 10) || 1;
+    this.changeQuantity(Math.min(Math.max(qty, 1), 99));
   }
 
   removeItem(): void {

@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Subject, takeUntil, finalize, catchError, of, forkJoin } from 'rxjs';
+import { Subject, of, forkJoin } from 'rxjs';
+import { takeUntil, finalize, catchError } from 'rxjs/operators';
 import { CartItemComponent } from '../../shared/cart-item/cart-item';
 import { CartSummaryComponent } from '../../shared/cart-summary/cart-summary';
 import { CartService } from '../../services/carts/cart.service';
@@ -95,9 +96,9 @@ export class CartComponent implements OnInit, OnDestroy {
     this.#cartState = {
       ...this.#cartState,
       ...newState,
-      itemCount: newState.cart?.items_cnt ?? this.#cartState.itemCount,
-      hasItems: (newState.cart?.items_cnt ?? this.#cartState.itemCount) > 0,
-      isEmpty: !(newState.cart?.items_cnt ?? this.#cartState.itemCount) && !newState.isLoading,
+      itemCount: newState.cart?.items_cnt ?? this.#cartState.items.length,
+      hasItems: (newState.cart?.items_cnt ?? this.#cartState.items.length) > 0,
+      isEmpty: !(newState.cart?.items_cnt ?? this.#cartState.items.length) && !newState.isLoading,
       items: newState.cart?.items ?? this.#cartState.items
     };
     this.cdr.markForCheck();
@@ -115,22 +116,24 @@ export class CartComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.#destroy$),
         finalize(() => this.updateCartState({ isLoading: false })),
-        catchError((error) => {
-          if (error instanceof Error && error.message.includes('401')) {
-            this.authService.logout();
-            this.router.navigate(['/login'], { queryParams: { returnUrl: '/cart' } });
-            this.notificationService.error('Sesión expirada. Por favor, inicia sesión nuevamente.');
-          } else {
-            this.updateCartState({ error: 'Error al cargar el carrito. Por favor, intenta de nuevo.' });
-            this.notificationService.error('Error al cargar el carrito');
-          }
-          console.error('Error loading cart:', error);
+        catchError(error => {
+          this.updateCartState({ error: 'Error al cargar el carrito. Por favor, intenta de nuevo.' });
+          this.notificationService.error('Error al cargar el carrito');
           return of(null);
         })
       )
       .subscribe(cart => {
         if (cart) {
-          this.updateCartState({ cart });
+          // Normalizamos los items inyectando un id
+          const normalizedItems: CartItemResponse[] = cart.items.map(item => ({
+            ...item,
+            id: (item as any).id ?? item.product_metadata_id
+          }));
+          const normalizedCart: CartResponse = {
+            ...cart,
+            items: normalizedItems
+          };
+          this.updateCartState({ cart: normalizedCart });
           this.sortItems(this.#cartState.currentSort);
         }
       });
@@ -143,15 +146,19 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartService.updateCartItemQty(event.itemId, patch)
       .pipe(
         takeUntil(this.#destroy$),
-        catchError((error) => {
+        catchError(error => {
           this.notificationService.error('Error al actualizar la cantidad');
-          console.error('Error updating quantity:', error);
           return of(null);
         })
       )
       .subscribe(updatedCart => {
         if (updatedCart) {
-          this.updateCartState({ cart: updatedCart });
+          // Re-normalizar items aquí también
+          const normalizedItems = updatedCart.items.map(item => ({
+            ...item,
+            id: (item as any).id ?? item.product_metadata_id
+          }));
+          this.updateCartState({ cart: { ...updatedCart, items: normalizedItems } });
         }
       });
   }
@@ -162,15 +169,18 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartService.deleteCartItem(itemId)
       .pipe(
         takeUntil(this.#destroy$),
-        catchError((error) => {
+        catchError(error => {
           this.notificationService.error('Error al eliminar el producto');
-          console.error('Error removing item:', error);
           return of(null);
         })
       )
       .subscribe(updatedCart => {
         if (updatedCart) {
-          this.updateCartState({ cart: updatedCart });
+          const normalizedItems = updatedCart.items.map(item => ({
+            ...item,
+            id: (item as any).id ?? item.product_metadata_id
+          }));
+          this.updateCartState({ cart: { ...updatedCart, items: normalizedItems } });
         }
       });
   }
@@ -179,15 +189,14 @@ export class CartComponent implements OnInit, OnDestroy {
     if (!this.#cartState.cart || !this.#cartState.hasItems) return;
 
     if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
-      const deleteObservables = this.#cartState.items.map(item => 
+      const deleteObservables = this.#cartState.items.map(item =>
         this.cartService.deleteCartItem(item.id)
       );
       forkJoin(deleteObservables)
         .pipe(
           takeUntil(this.#destroy$),
-          catchError((error) => {
+          catchError(error => {
             this.notificationService.error('Error al vaciar el carrito');
-            console.error('Error clearing cart:', error);
             return of(null);
           })
         )
@@ -206,10 +215,9 @@ export class CartComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.#destroy$),
         finalize(() => this.updateCartState({ isCheckoutLoading: false })),
-        catchError((error) => {
+        catchError(error => {
           this.updateCartState({ error: 'Error al procesar el pedido. Por favor, intenta de nuevo.' });
           this.notificationService.error('Error al procesar el pedido');
-          console.error('Error during checkout:', error);
           return of(null);
         })
       )

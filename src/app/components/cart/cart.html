@@ -129,8 +129,19 @@
           </div>
         </div>
 
+        <!-- Items List -->
+        <div class="travel-cart-page__items-list">
+          <app-cart-item *ngFor="let item of cartState.items; trackBy: trackByItemId; let i = index" [item]="item"
+            [loading]="cartState.isLoading" [style.--item-index]="i" (quantityChange)="onQuantityChange($event)"
+            (remove)="onRemoveItem($event)">
+          </app-cart-item>
+          <div *ngIf="cartState.items.length === 0 && !cartState.isLoading" class="no-items-message">
+            No hay ítems en el carrito.
+          </div>
+        </div>
+
         <!-- Empty State -->
-        <div class="travel-cart-page__empty-state" *ngIf="cartState.isEmpty">
+        <div class="travel-cart-page__empty-state" *ngIf="cartState.isEmpty && !cartState.hasItems && !cartState.isLoading">
           <div class="empty-illustration">
             <div class="empty-icons">
               <span class="material-symbols-outlined">flight_takeoff</span>
@@ -162,14 +173,6 @@
               <span>Explorar Destinos</span>
             </button>
           </div>
-        </div>
-
-        <!-- Items List -->
-        <div class="travel-cart-page__items-list" *ngIf="cartState.hasItems">
-          <app-cart-item *ngFor="let item of cartState.items; trackBy: trackByItemId; let i = index" [item]="item"
-            [loading]="cartState.isLoading" [style.--item-index]="i" (quantityChange)="onQuantityChange($event)"
-            (remove)="onRemoveItem($event)">
-          </app-cart-item>
         </div>
       </section>
 

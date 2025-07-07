@@ -28,10 +28,10 @@
   }
 
   /* Compensar la altura de la navbar sticky */
-  margin-top: 4rem; /* Igual a la altura de la navbar (4rem) */
+  //margin-top: 4rem; /* Igual a la altura de la navbar (4rem) */
 
   @media (max-width: 768px) {
     padding: 0; /* Mantén padding en 0 para móviles */
-    margin-top: 4rem; /* Mantiene el ajuste para móviles */
+    //margin-top: 4rem; /* Mantiene el ajuste para móviles */
   }
 }
