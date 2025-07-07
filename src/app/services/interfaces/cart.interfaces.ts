@@ -1,4 +1,17 @@
 /**
+ * Interfaz para la configuración de un ítem del carrito.
+ */
+export interface CartItemConfig {
+  title: string;
+  description: string;
+  imageUrl: string;
+  destination?: string;
+  duration?: string;
+  maxPeople?: number;
+  features?: string[];
+}
+
+/**
  * Interfaz para un ítem del carrito en la respuesta de la API.
  */
 export interface CartItemResponse {
@@ -8,7 +21,7 @@ export interface CartItemResponse {
   qty: number;
   unit_price: number;
   currency: string;
-  config: any;
+  config: CartItemConfig | { [key: string]: any };
 }
 
 /**
@@ -32,7 +45,8 @@ export interface CartItemAdd {
   product_metadata_id: number;
   qty: number;
   unit_price: number;
-  config: { [key: string]: any };
+  currency: string;
+  config: CartItemConfig;
 }
 
 /**

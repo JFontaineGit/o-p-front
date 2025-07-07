@@ -14,11 +14,12 @@ import { HttpParams } from '@angular/common/http';
 // Interfaz genérica para cubrir Product y TravelPackage en ProductCard
 interface CardItem {
   id: number;
-  availability_id: number;
+  availability_id?: number;
   title: string;
   description: string;
   price: number;
   imageUrl: string;
+  currency: string;
   rating?: number;
   reviewsCount?: number;
   originalPrice?: number;
@@ -35,6 +36,7 @@ interface TravelPackage extends PackageResponse {
   availability_id: number;
   title: string;
   price: number;
+  currency: string;
   rating: number;
   reviewsCount: number;
   imageUrl: string;
@@ -49,11 +51,12 @@ interface TravelPackage extends PackageResponse {
 
 // Interfaz para productos, extendiendo ProductMetadataResponse
 interface Product extends ProductMetadataResponse {
-  availability_id: number;
+  availability_id?: number;
   title: string;
   description: string;
   price: number;
   imageUrl: string;
+  currency: string;
 }
 
 @Component({
@@ -77,7 +80,7 @@ export class ProductList implements OnInit {
     private packageService: PackageService,
     private productService: ProductService,
     private logger: LoggerService,
-    private notificationService: NotificationService // Inyecta el servicio
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -97,43 +100,58 @@ export class ProductList implements OnInit {
           let title: string;
           let description: string;
           let imageUrl: string;
+          let availability_id: number | undefined;
+          let currency: string;
 
           switch (prod.product_type) {
             case 'activity':
-              title = prod.product['name'] ?? 'Actividad sin nombre';
-              description = prod.product['description'] ?? 'Sin descripción disponible';
-              imageUrl = prod.product['image'] ?? 'https://via.placeholder.com/400x300?text=Actividad';
+              title = (prod.product as any).name ?? 'Actividad sin nombre';
+              description = (prod.product as any).description ?? 'Sin descripción disponible';
+              imageUrl = (prod.product as any).image ?? 'https://via.placeholder.com/400x300?text=Actividad';
+              availability_id = (prod.product as any).availability_id?.[0]?.id;
+              currency = prod.currency ?? 'USD';
               break;
             case 'lodgment':
-              title = prod.product['name'] ?? 'Alojamiento sin nombre';
-              description = prod.product['description'] ?? 'Sin descripción disponible';
-              imageUrl = prod.product['image'] ?? 'https://via.placeholder.com/400x300?text=Alojamiento';
+              title = (prod.product as any).name ?? 'Alojamiento sin nombre';
+              description = (prod.product as any).description ?? 'Sin descripción disponible';
+              imageUrl = (prod.product as any).image ?? 'https://via.placeholder.com/400x300?text=Alojamiento';
+              availability_id = undefined;
+              currency = prod.currency ?? 'USD';
               break;
             case 'transportation':
-              title = prod.product['type']
-                ? `${prod.product['type']} de ${prod.product['origin_id'] ?? 'Origen desconocido'} a ${prod.product['destination_id'] ?? 'Destino desconocido'}`
+              title = (prod.product as any).type
+                ? `${(prod.product as any).type} de ${(prod.product as any).origin?.city ?? 'Origen desconocido'} a ${(prod.product as any).destination?.city ?? 'Destino desconocido'}`
                 : 'Transporte sin nombre';
-              description = prod.product['description'] ?? 'Sin descripción disponible';
-              imageUrl = prod.product['image'] ?? 'https://via.placeholder.com/400x300?text=Transporte';
+              description = (prod.product as any).description ?? 'Sin descripción disponible';
+              imageUrl = (prod.product as any).image ?? 'https://via.placeholder.com/400x300?text=Transporte';
+              availability_id = (prod.product as any).availability_id?.[0]?.id;
+              currency = prod.currency ?? 'USD';
               break;
             case 'flight':
-              title = `Vuelo de ${prod.product['origin_id'] ?? 'Origen desconocido'} a ${prod.product['destination_id'] ?? 'Destino desconocido'}` || 'Vuelo sin nombre';
-              description = prod.product['description'] ?? 'Sin descripción disponible';
-              imageUrl = prod.product['image'] ?? 'https://via.placeholder.com/400x300?text=Vuelo';
+              title =
+                `Vuelo de ${(prod.product as any).origin?.city ?? 'Origen desconocido'} a ${(prod.product as any).destination?.city ?? 'Destino desconocido'}` ||
+                'Vuelo sin nombre';
+              description = (prod.product as any).description ?? 'Sin descripción disponible';
+              imageUrl = (prod.product as any).image ?? 'https://via.placeholder.com/400x300?text=Vuelo';
+              availability_id = (prod.product as any).availability_id;
+              currency = prod.currency ?? 'USD';
               break;
             default:
               title = 'Producto sin nombre';
               description = 'Sin descripción disponible';
               imageUrl = 'https://via.placeholder.com/400x300?text=Producto';
+              availability_id = undefined;
+              currency = 'USD';
           }
 
           return {
             ...prod,
-            availability_id: (prod as any).availability_id || prod.id,
+            availability_id,
             title,
             description,
             price: prod.unit_price ?? 0,
             imageUrl,
+            currency,
           };
         });
         this.noProductsMessage = this.products.length === 0 ? 'No hay productos disponibles en este momento.' : null;
@@ -149,22 +167,30 @@ export class ProductList implements OnInit {
   private loadPackages(): void {
     this.packageService.listPackages().subscribe({
       next: (packages: PackageResponse[]) => {
-        this.packages = packages.map((pkg) => ({
-          ...pkg,
-          availability_id: (pkg as any).availability_id || pkg.id,
-          title: pkg.name ?? 'Paquete sin nombre',
-          price: pkg.final_price ?? 0,
-          rating: pkg.rating_average ?? 0,
-          reviewsCount: pkg.total_reviews ?? 0,
-          imageUrl: pkg.cover_image ? `https://api.example.com/images/${pkg.cover_image}` : 'https://via.placeholder.com/400x300?text=Paquete+Turístico',
-          originalPrice: pkg.base_price && pkg.taxes ? pkg.base_price + pkg.taxes : undefined,
-          discount: pkg.base_price && pkg.final_price && pkg.final_price < pkg.base_price ? ((pkg.base_price - pkg.final_price) / pkg.base_price) * 100 : undefined,
-          features: [],
-          badge: pkg.rating_average && pkg.rating_average >= 4.8 ? 'Más vendido' : undefined,
-          destination: undefined,
-          duration: pkg.duration_days ? `${pkg.duration_days} días` : undefined,
-          maxPeople: undefined,
-        }));
+        this.packages = packages.map((pkg) => {
+          const basePrice = pkg.base_price ?? 0;
+          const taxes = pkg.taxes ?? 0;
+          const finalPrice = pkg.final_price ?? 0;
+
+          return {
+            ...pkg,
+            availability_id: (pkg as any).availability_id || pkg.id,
+            title: pkg.name ?? 'Paquete sin nombre',
+            price: finalPrice,
+            currency: pkg.currency ?? 'USD',
+            rating: pkg.rating_average ?? 0,
+            reviewsCount: pkg.total_reviews ?? 0,
+            imageUrl: 'https://via.placeholder.com/400x300?text=Paquete+Turístico', // Eliminada referencia a main_image
+            originalPrice: basePrice && taxes ? basePrice + taxes : undefined,
+            discount:
+              basePrice && finalPrice && finalPrice < basePrice ? ((basePrice - finalPrice) / basePrice) * 100 : undefined,
+            features: [],
+            badge: pkg.rating_average && pkg.rating_average >= 4.8 ? 'Más vendido' : undefined,
+            destination: undefined,
+            duration: pkg.duration_days ? `${pkg.duration_days} días` : undefined,
+            maxPeople: undefined,
+          };
+        });
         this.noPackagesMessage = this.packages.length === 0 ? 'No hay paquetes disponibles en este momento.' : null;
       },
       error: (error: unknown) => {
@@ -186,6 +212,15 @@ export class ProductList implements OnInit {
   onAddToCart(item: CardItem) {
     if (this.addingToCart.has(item.id)) return;
 
+    if (item.availability_id === undefined) {
+      this.notificationService.error('No hay disponibilidad para este producto.', {
+        duration: 5000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
     this.addingToCart.add(item.id);
 
     const cartItem: CartItemAdd = {
@@ -193,6 +228,7 @@ export class ProductList implements OnInit {
       product_metadata_id: item.id,
       qty: 1,
       unit_price: item.price,
+      currency: item.currency,
       config: {
         title: item.title,
         description: item.description,
@@ -209,13 +245,8 @@ export class ProductList implements OnInit {
         });
         this.addingToCart.delete(item.id);
       },
-      error: (error: unknown) => {
-        this.logger.error('Error adding to cart', error);
-        this.notificationService.error('Error al agregar al carrito. Por favor, intenta de nuevo.', {
-          duration: 5000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
+      error: (error: Error) => {
+        this.logger.error('Error al agregar al carrito', error);
         this.addingToCart.delete(item.id);
       },
     });
@@ -227,10 +258,11 @@ export class ProductList implements OnInit {
     this.addingToCart.add(item.id);
 
     const cartItem: CartItemAdd = {
-      availability_id: item.availability_id,
+      availability_id: item.availability_id!,
       product_metadata_id: item.id,
       qty: 1,
       unit_price: item.price,
+      currency: item.currency,
       config: {
         title: item.title,
         description: item.description,
@@ -251,13 +283,8 @@ export class ProductList implements OnInit {
         });
         this.addingToCart.delete(item.id);
       },
-      error: (error: unknown) => {
-        this.logger.error('Error adding package to cart', error);
-        this.notificationService.error('Error al agregar al carrito. Por favor, intenta de nuevo.', {
-          duration: 5000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
+      error: (error: Error) => {
+        this.logger.error('Error al agregar al carrito', error);
         this.addingToCart.delete(item.id);
       },
     });

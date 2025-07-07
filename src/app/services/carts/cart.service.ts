@@ -4,15 +4,11 @@ import { catchError, retry, tap, timeout } from 'rxjs/operators';
 import { ApiService } from '../core/api.service';
 import { LoggerService } from '../core/logger.service';
 import { StorageService } from '../core/storage.service';
+import { NotificationService } from '../../core/notification/services/notification.service';
 import { CART_ENDPOINTS } from './cart-endpoints';
 import { CartResponse, CartItemAdd, CartItemQtyPatch } from '../interfaces/cart.interfaces';
 import { environment } from '../../environments/environment';
-import { HttpErrorResponse } from '@angular/common/http';
-
-import { HttpHeaders } from '@angular/common/http';
-
-// TODO: luego hacer refactor
-//  esta echo para solucionar el problema por el momento pero no tiene ninguna practica
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 /**
  * Servicio para gestionar operaciones del carrito de compras.
@@ -29,7 +25,8 @@ export class CartService {
   constructor(
     private apiService: ApiService,
     private logger: LoggerService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private notificationService: NotificationService
   ) {}
 
   /**
@@ -52,14 +49,19 @@ export class CartService {
    */
   addCartItem(item: CartItemAdd): Observable<CartResponse> {
     const headers = new HttpHeaders({
-      'Idempotency-Key': this.apiService.generateUUIDv4()
-    })
+      'Idempotency-Key': this.apiService.generateUUIDv4(),
+    });
     return this.apiService
-      .post<CartResponse, CartItemAdd>(CART_ENDPOINTS.ADD_ITEM, item, { headers: headers })
+      .post<CartResponse, CartItemAdd>(CART_ENDPOINTS.ADD_ITEM, item, { headers })
       .pipe(
         timeout(this.apiTimeout),
         retry({ count: this.retryAttempts, delay: this.retryDelay }),
-        tap((response) => this.logger.debug('Ítem agregado al carrito', { cartId: response.id })),
+        tap((response) =>
+          this.logger.debug('Ítem agregado al carrito', {
+            cartId: response.id,
+            itemId: response.items[response.items.length - 1]?.id,
+          })
+        ),
         catchError(this.handleError<CartResponse>('addCartItem'))
       );
   }
@@ -121,11 +123,48 @@ export class CartService {
   private handleError<T>(operation: string): (error: any) => Observable<T> {
     return (error: any): Observable<T> => {
       this.logger.error(`${operation} falló`, error);
-      if (error instanceof HttpErrorResponse && error.status === 401) {
-        this.storageService.clearStorage();
-        this.logger.debug('Sesión limpiada debido a error 401');
+
+      let errorMessage = 'Error desconocido al procesar la solicitud.';
+      if (error instanceof HttpErrorResponse) {
+        switch (error.status) {
+          case 401:
+            this.storageService.clearStorage();
+            this.logger.debug('Sesión limpiada debido a error 401');
+            errorMessage = 'Sesión expirada. Por favor, inicia sesión nuevamente.';
+            this.notificationService.error(errorMessage, {
+              duration: 5000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+            // TODO: Redirigir al login (puedes inyectar Router y usar router.navigate(['/login']))
+            break;
+          case 409:
+            errorMessage = 'No se pudo agregar el ítem: stock insuficiente o carrito cerrado.';
+            this.notificationService.error(errorMessage, {
+              duration: 5000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+            break;
+          case 422:
+            errorMessage = 'Conflicto de moneda. Por favor, verifica los productos en el carrito.';
+            this.notificationService.error(errorMessage, {
+              duration: 5000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+            break;
+          default:
+            errorMessage = `Error en ${operation}: ${error.message || 'Error desconocido'}`;
+            this.notificationService.error(errorMessage, {
+              duration: 5000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+        }
       }
-      return throwError(() => new Error(`Error en ${operation}: ${error.message || 'Error desconocido'}`));
+
+      return throwError(() => new Error(errorMessage));
     };
   }
 }
