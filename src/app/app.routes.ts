@@ -33,10 +33,12 @@ export const routes: Routes = [
             },
             {
                 path: 'user_panel',
+                canActivate: [() => import('./guards/auth.guard').then(m => m.authGuard)],
                 loadComponent: () => import('./components/user-panel/user-panel').then(m => m.UserPanel)
             },
             {
                 path: 'cart',
+                canActivate: [() => import('./guards/auth.guard').then(m => m.authGuard)],
                 loadComponent: () => import('./components/cart/cart').then(m => m.CartComponent)
             },
         ] // Aquí van las demás rutas hijas

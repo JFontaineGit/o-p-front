@@ -7,12 +7,14 @@ import {
   signal,
   computed,
   inject,
+  PLATFORM_ID,
 } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { MatButtonModule } from "@angular/material/button"
 import { MatIconModule } from "@angular/material/icon"
 import { MatProgressBarModule } from "@angular/material/progress-bar"
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef, MatSnackBarModule } from "@angular/material/snack-bar"
+import { isPlatformBrowser } from "@angular/common" // Importado para detectar el entorno
 import type { NotificationData } from "../interfaces/notification.interface"
 
 @Component({
@@ -79,6 +81,7 @@ import type { NotificationData } from "../interfaces/notification.interface"
 })
 export class NotificationToastComponent implements OnInit, OnDestroy {
   private readonly snackBarRef = inject(MatSnackBarRef<NotificationToastComponent>)
+  private readonly platformId = inject(PLATFORM_ID) // Inyectado para detectar el entorno
 
   protected readonly progressValue = signal(100)
   private progressInterval?: number
@@ -112,7 +115,7 @@ export class NotificationToastComponent implements OnInit, OnDestroy {
       default:
         return "Notificación"
     }
-  });
+  })
 
   constructor(
     @Inject(MAT_SNACK_BAR_DATA) public data: NotificationData
@@ -144,6 +147,10 @@ export class NotificationToastComponent implements OnInit, OnDestroy {
   }
 
   private startProgressAnimation(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return; // No hacer nada en el servidor
+    }
+
     this.startTime = Date.now()
     this.progressInterval = window.setInterval(() => {
       const elapsed = Date.now() - this.startTime
@@ -158,7 +165,7 @@ export class NotificationToastComponent implements OnInit, OnDestroy {
   }
 
   private clearProgressInterval(): void {
-    if (this.progressInterval) {
+    if (this.progressInterval && isPlatformBrowser(this.platformId)) {
       clearInterval(this.progressInterval)
       this.progressInterval = undefined
     }
