@@ -179,10 +179,10 @@
       <!-- Summary Sidebar -->
       <aside class="travel-cart-page__summary-section" aria-label="Resumen del carrito">
         <app-cart-summary [cart]="cartState.cart" [loading]="cartState.isLoading"
-          [checkoutLoading]="cartState.isCheckoutLoading" (checkout)="onCheckout()" (clear)="onClearCart()"
+          [checkoutLoading]="cartState.isCheckoutLoading" (checkout)="onReserveNow()" (clear)="onClearCart()"
           (continueShopping)="onContinueShopping()">
         </app-cart-summary>
       </aside>
-    </div>
+    </div>  
   </div>
 </main>

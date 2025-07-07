@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subject, of, forkJoin } from 'rxjs';
@@ -8,7 +8,10 @@ import { CartSummaryComponent } from '../../shared/cart-summary/cart-summary';
 import { CartService } from '../../services/carts/cart.service';
 import { NotificationService } from '../../core/notification/services/notification.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { OrderPaymentService } from '../../services/orders/order.service';
+import { LoggerService } from '../../services/core/logger.service';
 import { CartResponse, CartItemResponse, CartItemQtyPatch } from '../../services/interfaces/cart.interfaces';
+import { StripeResponse, PaymentMethodIn } from '../../services/interfaces/order-payment.interfaces';
 
 interface SortOption {
   value: 'price-asc' | 'price-desc' | 'name';
@@ -71,13 +74,13 @@ export class CartComponent implements OnInit, OnDestroy {
     { key: 'aventura', label: 'Aventura', icon: 'hiking' }
   ];
 
-  constructor(
-    private router: Router,
-    private cartService: CartService,
-    private notificationService: NotificationService,
-    private authService: AuthService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  #orderPaymentService = inject(OrderPaymentService);
+  #loggerService = inject(LoggerService);
+  #router = inject(Router);
+  #cartService = inject(CartService);
+  #notificationService = inject(NotificationService);
+  #authService = inject(AuthService);
+  #cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
     this.loadCart();
@@ -101,30 +104,29 @@ export class CartComponent implements OnInit, OnDestroy {
       isEmpty: !(newState.cart?.items_cnt ?? this.#cartState.items.length) && !newState.isLoading,
       items: newState.cart?.items ?? this.#cartState.items
     };
-    this.cdr.markForCheck();
+    this.#cdr.markForCheck();
   }
 
   private loadCart(): void {
-    if (!this.authService.isLoggedIn()) {
+    if (!this.#authService.isLoggedIn()) {
       this.updateCartState({ error: 'Debes iniciar sesión para ver el carrito.' });
-      this.router.navigate(['/login']);
+      this.#router.navigate(['/login']);
       return;
     }
 
     this.updateCartState({ isLoading: true, error: null });
-    this.cartService.getCart()
+    this.#cartService.getCart()
       .pipe(
         takeUntil(this.#destroy$),
         finalize(() => this.updateCartState({ isLoading: false })),
         catchError(error => {
           this.updateCartState({ error: 'Error al cargar el carrito. Por favor, intenta de nuevo.' });
-          this.notificationService.error('Error al cargar el carrito');
+          this.#notificationService.error('Error al cargar el carrito');
           return of(null);
         })
       )
       .subscribe(cart => {
         if (cart) {
-          // Normalizamos los items inyectando un id
           const normalizedItems: CartItemResponse[] = cart.items.map(item => ({
             ...item,
             id: (item as any).id ?? item.product_metadata_id
@@ -143,17 +145,16 @@ export class CartComponent implements OnInit, OnDestroy {
     if (!this.#cartState.cart || event.quantity < 0) return;
 
     const patch: CartItemQtyPatch = { qty: event.quantity };
-    this.cartService.updateCartItemQty(event.itemId, patch)
+    this.#cartService.updateCartItemQty(event.itemId, patch)
       .pipe(
         takeUntil(this.#destroy$),
         catchError(error => {
-          this.notificationService.error('Error al actualizar la cantidad');
+          this.#notificationService.error('Error al actualizar la cantidad');
           return of(null);
         })
       )
       .subscribe(updatedCart => {
         if (updatedCart) {
-          // Re-normalizar items aquí también
           const normalizedItems = updatedCart.items.map(item => ({
             ...item,
             id: (item as any).id ?? item.product_metadata_id
@@ -166,11 +167,11 @@ export class CartComponent implements OnInit, OnDestroy {
   onRemoveItem(itemId: number): void {
     if (!this.#cartState.cart) return;
 
-    this.cartService.deleteCartItem(itemId)
+    this.#cartService.deleteCartItem(itemId)
       .pipe(
         takeUntil(this.#destroy$),
         catchError(error => {
-          this.notificationService.error('Error al eliminar el producto');
+          this.#notificationService.error('Error al eliminar el producto');
           return of(null);
         })
       )
@@ -190,47 +191,57 @@ export class CartComponent implements OnInit, OnDestroy {
 
     if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
       const deleteObservables = this.#cartState.items.map(item =>
-        this.cartService.deleteCartItem(item.id)
+        this.#cartService.deleteCartItem(item.id)
       );
       forkJoin(deleteObservables)
         .pipe(
           takeUntil(this.#destroy$),
           catchError(error => {
-            this.notificationService.error('Error al vaciar el carrito');
+            this.#notificationService.error('Error al vaciar el carrito');
             return of(null);
           })
         )
         .subscribe(() => {
           this.loadCart();
-          this.notificationService.success('Carrito vaciado');
+          this.#notificationService.success('Carrito vaciado');
         });
     }
   }
 
-  onCheckout(): void {
-    if (!this.#cartState.cart || !this.#cartState.hasItems) return;
+  onReserveNow(): void {
+    const orderId = this.#cartState.cart?.id;
+    if (!orderId) {
+      this.#loggerService.error('Intento de pago sin orderId válido');
+      this.#notificationService.error('No se puede procesar el pago. Orden no encontrada.');
+      return;
+    }
 
+    this.#loggerService.info('Iniciando proceso de pago para orderId:', { orderId });
     this.updateCartState({ isCheckoutLoading: true, error: null });
-    this.cartService.checkoutCart()
-      .pipe(
-        takeUntil(this.#destroy$),
-        finalize(() => this.updateCartState({ isCheckoutLoading: false })),
-        catchError(error => {
-          this.updateCartState({ error: 'Error al procesar el pedido. Por favor, intenta de nuevo.' });
-          this.notificationService.error('Error al procesar el pedido');
-          return of(null);
-        })
-      )
-      .subscribe(result => {
-        if (result) {
-          this.notificationService.success('¡Pedido procesado con éxito!');
-          this.router.navigate(['/user_panel'], { queryParams: { tab: 'bookings' } });
-        }
-      });
+
+    const paymentMethod: PaymentMethodIn = { payment_method: 'card' };
+    const idempotencyKey = crypto.randomUUID();
+
+    this.#orderPaymentService.payOrder(orderId, paymentMethod, idempotencyKey).subscribe({
+      next: (response: StripeResponse) => {
+        this.#loggerService.info('Pago iniciado con éxito, redirigiendo a Stripe', { sessionUrl: response.session_url });
+        window.location.href = response.session_url;
+      },
+      error: (err) => {
+        this.#loggerService.error('Error al procesar el pago', err);
+        this.updateCartState({
+          error: 'Error al procesar el pago. Por favor, intenta de nuevo.',
+        });
+        this.#notificationService.error('Error al procesar el pago. Por favor, intenta de nuevo.');
+      },
+      complete: () => {
+        this.updateCartState({ isCheckoutLoading: false });
+      },
+    });
   }
 
   onContinueShopping(): void {
-    this.router.navigate(['/packets']);
+    this.#router.navigate(['/packets']);
   }
 
   onRetry(): void {
@@ -264,7 +275,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   exploreDestination(destination: string): void {
-    this.router.navigate(['/destinos'], { queryParams: { filter: destination } });
+    this.#router.navigate(['/destinos'], { queryParams: { filter: destination } });
   }
 
   trackByItemId(_: number, item: CartItemResponse): number {
