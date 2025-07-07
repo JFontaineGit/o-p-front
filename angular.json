@@ -20,9 +20,7 @@
             "outputPath": "dist/olimpiadas-programacion",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -31,9 +29,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": [],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -56,37 +52,22 @@
                 }
               ],
               "outputHashing": "all",
-              "extraEnv": {
-                "API_BASE_URL": "https://api.tusitio.com",
-                "WS_BASE_URL": "wss://api.tusitio.com",
-                "API_TIMEOUT": "10000",
-                "RETRY_ATTEMPTS": "3",
-                "RETRY_DELAY": "1000"
-              }
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "extraEnv": {
-                "API_BASE_URL": "http://127.0.0.1:8080",
-                "WS_BASE_URL": "ws://127.0.0.1:8080",
-                "API_TIMEOUT": "10000",
-                "RETRY_ATTEMPTS": "3",
-                "RETRY_DELAY": "1000"
-              }
+              "sourceMap": true
             },
             "local": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "extraEnv": {
-                "API_BASE_URL": "http://127.0.0.1:8080",
-                "WS_BASE_URL": "ws://127.0.0.1:8080",
-                "API_TIMEOUT": "10000",
-                "RETRY_ATTEMPTS": "3",
-                "RETRY_DELAY": "1000"
-              }
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -112,10 +93,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -124,9 +102,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         }
