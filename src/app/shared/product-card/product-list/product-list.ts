@@ -5,14 +5,16 @@ import { CartService } from '../../../services/carts/cart.service';
 import { PackageService } from '../../../services/products/packages/package.service';
 import { ProductService } from '../../../services/products/product.service';
 import { LoggerService } from '../../../services/core/logger.service';
+import { NotificationService } from '../../../core/notification/services/notification.service'; // Importa el servicio
 import { CartItemAdd } from '../../../services/interfaces/cart.interfaces';
 import { PackageResponse } from '../../../services/interfaces/package.interfaces';
-import { ProductMetadataResponse, ProductType } from '../../../services/interfaces/product.interfaces';
+import { ProductMetadataResponse } from '../../../services/interfaces/product.interfaces';
 import { HttpParams } from '@angular/common/http';
 
 // Interfaz genérica para cubrir Product y TravelPackage en ProductCard
 interface CardItem {
   id: number;
+  availability_id: number;
   title: string;
   description: string;
   price: number;
@@ -30,6 +32,7 @@ interface CardItem {
 
 // Interfaz para paquetes, extendiendo PackageResponse
 interface TravelPackage extends PackageResponse {
+  availability_id: number;
   title: string;
   price: number;
   rating: number;
@@ -46,6 +49,7 @@ interface TravelPackage extends PackageResponse {
 
 // Interfaz para productos, extendiendo ProductMetadataResponse
 interface Product extends ProductMetadataResponse {
+  availability_id: number;
   title: string;
   description: string;
   price: number;
@@ -72,7 +76,8 @@ export class ProductList implements OnInit {
     private cartService: CartService,
     private packageService: PackageService,
     private productService: ProductService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private notificationService: NotificationService // Inyecta el servicio
   ) {}
 
   ngOnInit(): void {
@@ -85,7 +90,7 @@ export class ProductList implements OnInit {
   }
 
   private loadProducts(): void {
-    const params = new HttpParams(); // Ajusta según parámetros requeridos
+    const params = new HttpParams();
     this.productService.listProducts(params).subscribe({
       next: (products: ProductMetadataResponse[]) => {
         this.products = products.map((prod) => {
@@ -124,6 +129,7 @@ export class ProductList implements OnInit {
 
           return {
             ...prod,
+            availability_id: (prod as any).availability_id || prod.id,
             title,
             description,
             price: prod.unit_price ?? 0,
@@ -135,6 +141,7 @@ export class ProductList implements OnInit {
       error: (error: unknown) => {
         this.logger.error('Error al cargar los productos', error);
         this.noProductsMessage = 'Error al cargar los productos. Por favor, intenta de nuevo.';
+        this.notificationService.error('Error al cargar los productos', { duration: 5000 });
       },
     });
   }
@@ -144,6 +151,7 @@ export class ProductList implements OnInit {
       next: (packages: PackageResponse[]) => {
         this.packages = packages.map((pkg) => ({
           ...pkg,
+          availability_id: (pkg as any).availability_id || pkg.id,
           title: pkg.name ?? 'Paquete sin nombre',
           price: pkg.final_price ?? 0,
           rating: pkg.rating_average ?? 0,
@@ -162,6 +170,7 @@ export class ProductList implements OnInit {
       error: (error: unknown) => {
         this.logger.error('Error al cargar los paquetes', error);
         this.noPackagesMessage = 'Error al cargar los paquetes. Por favor, intenta de nuevo.';
+        this.notificationService.error('Error al cargar los paquetes', { duration: 5000 });
       },
     });
   }
@@ -180,7 +189,7 @@ export class ProductList implements OnInit {
     this.addingToCart.add(item.id);
 
     const cartItem: CartItemAdd = {
-      availability_id: item.id,
+      availability_id: item.availability_id,
       product_metadata_id: item.id,
       qty: 1,
       unit_price: item.price,
@@ -193,12 +202,20 @@ export class ProductList implements OnInit {
 
     this.cartService.addCartItem(cartItem).subscribe({
       next: () => {
-        alert(`¡${item.title} agregado al carrito!`);
+        this.notificationService.success(`¡${item.title} agregado al carrito!`, {
+          duration: 4000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
         this.addingToCart.delete(item.id);
       },
       error: (error: unknown) => {
         this.logger.error('Error adding to cart', error);
-        alert('Error al agregar al carrito. Por favor, intenta de nuevo.');
+        this.notificationService.error('Error al agregar al carrito. Por favor, intenta de nuevo.', {
+          duration: 5000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
         this.addingToCart.delete(item.id);
       },
     });
@@ -210,7 +227,7 @@ export class ProductList implements OnInit {
     this.addingToCart.add(item.id);
 
     const cartItem: CartItemAdd = {
-      availability_id: item.id,
+      availability_id: item.availability_id,
       product_metadata_id: item.id,
       qty: 1,
       unit_price: item.price,
@@ -227,12 +244,20 @@ export class ProductList implements OnInit {
 
     this.cartService.addCartItem(cartItem).subscribe({
       next: () => {
-        alert(`¡${item.title} agregado al carrito!`);
+        this.notificationService.success(`¡${item.title} agregado al carrito!`, {
+          duration: 4000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
         this.addingToCart.delete(item.id);
       },
       error: (error: unknown) => {
         this.logger.error('Error adding package to cart', error);
-        alert('Error al agregar al carrito. Por favor, intenta de nuevo.');
+        this.notificationService.error('Error al agregar al carrito. Por favor, intenta de nuevo.', {
+          duration: 5000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
         this.addingToCart.delete(item.id);
       },
     });
@@ -245,8 +270,10 @@ export class ProductList implements OnInit {
   onToggleFavorite(event: { id: number; isFavorite: boolean }) {
     if (event.isFavorite) {
       this.favoriteIds.add(event.id);
+      this.notificationService.success('Añadido a favoritos', { duration: 3000 });
     } else {
       this.favoriteIds.delete(event.id);
+      this.notificationService.info('Eliminado de favoritos', { duration: 3000 });
     }
     this.logger.debug('Favoritos actualizados', Array.from(this.favoriteIds));
   }

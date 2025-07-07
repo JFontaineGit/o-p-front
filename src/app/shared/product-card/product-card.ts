@@ -18,6 +18,7 @@ export class ProductCard {
   @Input() price = 0
   @Input() imageUrl = ""
   @Input() id = 0
+  @Input() availability_id = 0 
   @Input() isFavorite = false
   @Input() isAddingToCart = false
 
@@ -31,9 +32,7 @@ export class ProductCard {
   @Input() destination?: string
   @Input() duration?: string
   @Input() maxPeople?: number
-
-  // Outputs existentes (mantenemos la interfaz Product original)
-  @Output() addToCart = new EventEmitter<Product>()
+  @Output() addToCart = new EventEmitter<{ id: number; availability_id: number; title: string; description: string; price: number; imageUrl: string; destination?: string; duration?: string; maxPeople?: number; features?: string[] }>()
   @Output() toggleFavorite = new EventEmitter<{ id: number; isFavorite: boolean }>()
 
   @HostBinding("class") get hostClasses(): string {
@@ -43,15 +42,20 @@ export class ProductCard {
   constructor() {}
 
   onAddToCart() {
-    // Mantenemos la interfaz Product original para compatibilidad
-    const product: Product = {
+    this.addToCart.emit({
       id: this.id,
+      availability_id: this.availability_id,
       title: this.title,
       description: this.description,
       price: this.price,
       imageUrl: this.imageUrl,
-    }
-    this.addToCart.emit(product)
+      ...(this.mode === 'package' && {
+        destination: this.destination,
+        duration: this.duration,
+        maxPeople: this.maxPeople,
+        features: this.features,
+      }),
+    })
   }
 
   onToggleFavorite() {
@@ -62,7 +66,6 @@ export class ProductCard {
     })
   }
 
-  // Getters para lógica derivada (resto del código igual...)
   get formattedPrice(): string {
     return new Intl.NumberFormat("es-ES", {
       style: "currency",
@@ -149,11 +152,9 @@ export class ProductCard {
   }
 
   getFeatureIcon(feature: string): string {
-    // Buscar coincidencia exacta o parcial
     const exactMatch = this.featureIcons[feature]
     if (exactMatch) return exactMatch
 
-    // Buscar coincidencia parcial
     const partialMatch = Object.keys(this.featureIcons).find(
       (key) => feature.toLowerCase().includes(key.toLowerCase()) || key.toLowerCase().includes(feature.toLowerCase()),
     )
