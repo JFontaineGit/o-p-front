@@ -55,12 +55,38 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "extraEnv": {
+                "API_BASE_URL": "https://api.tusitio.com",
+                "WS_BASE_URL": "wss://api.tusitio.com",
+                "API_TIMEOUT": "10000",
+                "RETRY_ATTEMPTS": "3",
+                "RETRY_DELAY": "1000"
+              }
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "extraEnv": {
+                "API_BASE_URL": "http://127.0.0.1:8080",
+                "WS_BASE_URL": "ws://127.0.0.1:8080",
+                "API_TIMEOUT": "10000",
+                "RETRY_ATTEMPTS": "3",
+                "RETRY_DELAY": "1000"
+              }
+            },
+            "local": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "extraEnv": {
+                "API_BASE_URL": "http://127.0.0.1:8080",
+                "WS_BASE_URL": "ws://127.0.0.1:8080",
+                "API_TIMEOUT": "10000",
+                "RETRY_ATTEMPTS": "3",
+                "RETRY_DELAY": "1000"
+              }
             }
           },
           "defaultConfiguration": "production"
@@ -73,6 +99,9 @@
             },
             "development": {
               "buildTarget": "olimpiadas-programacion:build:development"
+            },
+            "local": {
+              "buildTarget": "olimpiadas-programacion:build:local"
             }
           },
           "defaultConfiguration": "development"
