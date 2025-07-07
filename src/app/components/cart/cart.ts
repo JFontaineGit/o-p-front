@@ -6,6 +6,7 @@ import { CartItemComponent } from '../../shared/cart-item/cart-item';
 import { CartSummaryComponent } from '../../shared/cart-summary/cart-summary';
 import { CartService } from '../../services/carts/cart.service';
 import { NotificationService } from '../../core/notification/services/notification.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { CartResponse, CartItemResponse, CartItemQtyPatch } from '../../services/interfaces/cart.interfaces';
 
 interface SortOption {
@@ -73,6 +74,7 @@ export class CartComponent implements OnInit, OnDestroy {
     private router: Router,
     private cartService: CartService,
     private notificationService: NotificationService,
+    private authService: AuthService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -102,14 +104,26 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private loadCart(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.updateCartState({ error: 'Debes iniciar sesión para ver el carrito.' });
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.updateCartState({ isLoading: true, error: null });
     this.cartService.getCart()
       .pipe(
         takeUntil(this.#destroy$),
         finalize(() => this.updateCartState({ isLoading: false })),
         catchError((error) => {
-          this.updateCartState({ error: 'Error al cargar el carrito. Por favor, intenta de nuevo.' });
-          this.notificationService.error('Error al cargar el carrito');
+          if (error instanceof Error && error.message.includes('401')) {
+            this.authService.logout();
+            this.router.navigate(['/login'], { queryParams: { returnUrl: '/cart' } });
+            this.notificationService.error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+          } else {
+            this.updateCartState({ error: 'Error al cargar el carrito. Por favor, intenta de nuevo.' });
+            this.notificationService.error('Error al cargar el carrito');
+          }
           console.error('Error loading cart:', error);
           return of(null);
         })

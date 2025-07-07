@@ -148,13 +148,13 @@
           </mat-menu>
         </div>
 
-        <!-- Cart Menu -->
-        <div class="cart-menu" *ngIf="isLoggedIn">
-          <button
+        <!-- Cart Button (No Menu) -->
+        <div class="cart-btn-container" *ngIf="isLoggedIn">
+          <a
             mat-icon-button
-            [matMenuTriggerFor]="cartMenu"
+            routerLink="/cart"
             class="cart-btn"
-            aria-label="Carrito de compras"
+            aria-label="Ir al carrito"
           >
             <mat-icon
               [matBadge]="cartItemCount"
@@ -164,50 +164,7 @@
             >
               shopping_cart
             </mat-icon>
-          </button>
-
-          <mat-menu
-            #cartMenu="matMenu"
-            class="cart-dropdown"
-            xPosition="before"
-            yPosition="below"
-          >
-            <div class="cart-dropdown-header">
-              <h4>Carrito de Compras</h4>
-            </div>
-
-            <div class="cart-dropdown-content">
-              <div class="empty-cart" *ngIf="cartItemCount === 0">
-                <mat-icon>shopping_cart</mat-icon>
-                <p>Tu carrito está vacío</p>
-                <a
-                  routerLink="/packets"
-                  mat-button
-                  color="primary"
-                  class="btn-small"
-                >
-                  Explorar Paquetes
-                </a>
-              </div>
-
-              <div class="cart-items" *ngIf="cartItemCount > 0">
-                <p>Tienes {{ cartItemCount }} productos en tu carrito</p>
-              </div>
-            </div>
-
-            <mat-divider *ngIf="cartItemCount > 0"></mat-divider>
-
-            <div class="cart-dropdown-footer" *ngIf="cartItemCount > 0">
-              <a
-                routerLink="/carrito"
-                mat-button
-                color="primary"
-                class="btn-full"
-              >
-                Ver Carrito Completo
-              </a>
-            </div>
-          </mat-menu>
+          </a>
         </div>
 
         <!-- Guest Actions -->
@@ -315,7 +272,7 @@
         <mat-divider></mat-divider>
 
         <a
-          routerLink="/carrito"
+          routerLink="/cart"
           mat-button
           class="mobile-link"
           (click)="closeMobileMenu()"
@@ -327,7 +284,7 @@
           >
             shopping_cart
           </mat-icon>
-          <span>Carrito</span>
+          <span>Carrito ({{ cartItemCount }})</span>
         </a>
         <a
           routerLink="/user_panel"
