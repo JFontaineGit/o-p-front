@@ -41,6 +41,14 @@ export const routes: Routes = [
                 canActivate: [() => import('./guards/auth.guard').then(m => m.authGuard)],
                 loadComponent: () => import('./components/cart/cart').then(m => m.CartComponent)
             },
+            {
+                path: 'checkout/success',
+                loadComponent: () => import('./components/checkout/checkout-success').then(m => m.CheckoutSuccess)
+            },
+            {
+                path: 'checkout/cancel',
+                loadComponent: () => import('./components/checkout/checkout-cancel').then(m => m.CheckoutCancel)
+            }
         ] // Aquí van las demás rutas hijas
 
     }

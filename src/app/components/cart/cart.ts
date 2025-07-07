@@ -208,35 +208,62 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Inicia el proceso de checkout y pago con Stripe.
+   * 1. Realiza el checkout del carrito para obtener el orderId.
+   * 2. Inicia el pago con el orderId y redirige a Stripe.
+   */
   onReserveNow(): void {
-    const orderId = this.#cartState.cart?.id;
-    if (!orderId) {
-      this.#loggerService.error('Intento de pago sin orderId válido');
-      this.#notificationService.error('No se puede procesar el pago. Orden no encontrada.');
+    if (!this.#cartState.cart || !this.#cartState.hasItems) {
+      this.#loggerService.error('Intento de pago con carrito vacío');
+      this.#notificationService.error('El carrito está vacío. Agrega productos primero.');
       return;
     }
 
-    this.#loggerService.info('Iniciando proceso de pago para orderId:', { orderId });
+    this.#loggerService.info('Iniciando proceso de checkout y pago');
     this.updateCartState({ isCheckoutLoading: true, error: null });
 
-    const paymentMethod: PaymentMethodIn = { payment_method: 'card' };
-    const idempotencyKey = crypto.randomUUID();
-
-    this.#orderPaymentService.payOrder(orderId, paymentMethod, idempotencyKey).subscribe({
-      next: (response: StripeResponse) => {
-        this.#loggerService.info('Pago iniciado con éxito, redirigiendo a Stripe', { sessionUrl: response.session_url });
-        window.location.href = response.session_url;
-      },
-      error: (err) => {
-        this.#loggerService.error('Error al procesar el pago', err);
+    // Paso 1: Realizar el checkout del carrito
+    this.#cartService.checkoutCart().pipe(
+      takeUntil(this.#destroy$),
+      catchError(err => {
+        this.#loggerService.error('Error al realizar el checkout', err);
         this.updateCartState({
-          error: 'Error al procesar el pago. Por favor, intenta de nuevo.',
+          error: 'Error al procesar el checkout. Por favor, intenta de nuevo.',
         });
-        this.#notificationService.error('Error al procesar el pago. Por favor, intenta de nuevo.');
-      },
-      complete: () => {
+        this.#notificationService.error('Error al procesar el checkout. Por favor, intenta de nuevo.');
+        return of(null);
+      })
+    ).subscribe(checkoutResponse => {
+      if (!checkoutResponse || !checkoutResponse.id) {
         this.updateCartState({ isCheckoutLoading: false });
-      },
+        return;
+      }
+
+      const orderId = checkoutResponse.id;
+      this.#loggerService.info('Checkout exitoso, orderId obtenido', { orderId });
+      this.#notificationService.success('Orden creada con éxito. Redirigiendo al pago...');
+
+      // Paso 2: Iniciar el pago con el orderId
+      const paymentMethod: PaymentMethodIn = { payment_method: 'card' };
+      const idempotencyKey = crypto.randomUUID();
+
+      this.#orderPaymentService.payOrder(orderId, paymentMethod, idempotencyKey).subscribe({
+        next: (response: StripeResponse) => {
+          this.#loggerService.info('Pago iniciado con éxito, redirigiendo a Stripe', { sessionUrl: response.session_url });
+          window.location.href = response.session_url;
+        },
+        error: (err) => {
+          this.#loggerService.error('Error al procesar el pago', err);
+          this.updateCartState({
+            error: 'Error al procesar el pago. Por favor, intenta de nuevo.',
+          });
+          this.#notificationService.error('Error al procesar el pago. Por favor, intenta de nuevo.');
+        },
+        complete: () => {
+          this.updateCartState({ isCheckoutLoading: false });
+        },
+      });
     });
   }
 
