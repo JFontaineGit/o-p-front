@@ -5,7 +5,7 @@ import { CartService } from '../../../services/carts/cart.service';
 import { PackageService } from '../../../services/products/packages/package.service';
 import { ProductService } from '../../../services/products/product.service';
 import { LoggerService } from '../../../services/core/logger.service';
-import { NotificationService } from '../../../core/notification/services/notification.service'; // Importa el servicio
+import { NotificationService } from '../../../core/notification/services/notification.service';
 import { CartItemAdd } from '../../../services/interfaces/cart.interfaces';
 import { PackageResponse } from '../../../services/interfaces/package.interfaces';
 import { ProductMetadataResponse } from '../../../services/interfaces/product.interfaces';

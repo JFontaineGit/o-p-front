@@ -12,7 +12,6 @@ const PUBLIC_ENDPOINTS = [
   AUTH_ENDPOINTS.REGISTER,
   AUTH_ENDPOINTS.LOGIN,
   AUTH_ENDPOINTS.REFRESH,
-  '/store/cart/'
 ];
 
 export const customInterceptor: HttpInterceptorFn = (req, next) => {
