@@ -241,12 +241,12 @@ export class CartComponent implements OnInit, OnDestroy {
         return of(null);
       })
     ).subscribe(checkoutResponse => {
-      if (!checkoutResponse || !checkoutResponse.id) {
+      if (!checkoutResponse || !checkoutResponse.order_id) {
         this.updateCartState({ isCheckoutLoading: false });
         return;
       }
 
-      const orderId = checkoutResponse.id;
+      const orderId = checkoutResponse.order_id;
       this.#loggerService.info('Checkout exitoso, orderId obtenido', { orderId });
       this.#notificationService.success('Orden creada con éxito. Redirigiendo al pago...');
 

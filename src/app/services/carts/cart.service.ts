@@ -6,7 +6,7 @@ import { LoggerService } from '../core/logger.service';
 import { StorageService } from '../core/storage.service';
 import { NotificationService } from '../../core/notification/services/notification.service';
 import { CART_ENDPOINTS } from './cart-endpoints';
-import { CartResponse, CartItemAdd, CartItemQtyPatch } from '../interfaces/cart.interfaces';
+import {CartResponse, CartItemAdd, CartItemQtyPatch, OrderCreatedResponse} from '../interfaces/cart.interfaces';
 import { environment } from '../../environments/environment';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
@@ -148,16 +148,16 @@ export class CartService {
    * Realiza el checkout del carrito.
    * @returns Observable con la respuesta del carrito procesado o null si no está autenticado.
    */
-  checkoutCart(): Observable<CartResponse | null> {
+  checkoutCart(): Observable<OrderCreatedResponse | null> {
     if (!this.isLoggedIn()) {
       this.logger.debug('Usuario no autenticado, retornando null');
       return of(null);
     }
-    return this.apiService.post<CartResponse>(CART_ENDPOINTS.CHECKOUT, {}).pipe(
+    return this.apiService.post<OrderCreatedResponse>(CART_ENDPOINTS.CHECKOUT, {}).pipe(
       timeout(this.apiTimeout),
       retry({ count: this.retryAttempts, delay: this.retryDelay }),
-      tap((response) => this.logger.debug('Checkout de carrito realizado', { cartId: response.id })),
-      catchError(this.handleError<CartResponse | null>('checkoutCart'))
+      tap((response) => this.logger.debug('Checkout de carrito realizado', { orderId: response.order_id })),
+      catchError(this.handleError<OrderCreatedResponse | null>('checkoutCart'))
     );
   }
 
