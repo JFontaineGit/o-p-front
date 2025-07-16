@@ -15,6 +15,7 @@ interface ItemState {
   isLoading: boolean;
   formattedPrice: string;
   formattedSubtotal: string;
+  product_metadata_id: number;
 }
 
 @Component({
@@ -30,6 +31,7 @@ export class CartItemComponent {
 
   @Input() set item(value: CartItemResponse | null) {
     console.log('Valor del item recibido:', value); // <-- Revisión
+    console.trace();
     this.updateItemState(value);
   }
   @Input() set loading(value: boolean) {
@@ -49,7 +51,8 @@ export class CartItemComponent {
     quantity: 1,
     isLoading: false,
     formattedPrice: '',
-    formattedSubtotal: ''
+    formattedSubtotal: '',
+    product_metadata_id: 0
   };
 
   get itemState(): ItemState {
@@ -59,8 +62,8 @@ export class CartItemComponent {
   private updateItemState(newState: Partial<ItemState> | CartItemResponse | null): void {
     // Si viene un CartItemResponse, extraemos sus campos
     if (newState && 'unit_price' in newState) {
-      console.log("New state: " + newState.config.title, "CartItemComponent");
-      this.logger.debug("New state: " + newState, "CartItemComponent")
+      console.log('[CartItemComponent] antes de updateItemState:', this.#itemState, 'nuevo value:', newState.id);
+      this.logger.debug('[CartItemComponent] antes de updateItemState:'+ this.#itemState + 'nuevo value:' + newState.id)
       const item = newState as CartItemResponse;
       const config = item.config as CartItemConfig | undefined;
       const id = (item as any).id ?? item.product_metadata_id;
@@ -78,8 +81,11 @@ export class CartItemComponent {
         formattedSubtotal: this.formatCurrency(
           (item.unit_price ?? 0) * (item.qty ?? 1),
           item.currency
-        )
+        ),
+        product_metadata_id: item.product_metadata_id ?? 0
       };
+      console.log('[CartItemComponent] después de updateItemState:', this.#itemState);
+      this.logger.debug('[CartItemComponent] después de updateItemState:', this.#itemState);
       return;
     }
 
@@ -88,6 +94,8 @@ export class CartItemComponent {
       ...this.#itemState,
       ...(newState as Partial<ItemState>)
     };
+    console.log('[CartItemComponent2] después de updateItemState:', this.#itemState);
+    this.logger.debug('[CartItemComponent2] después de updateItemState:', this.#itemState);
   }
 
   formatCurrency(value: number, currency: string = 'USD'): string {

@@ -49,7 +49,25 @@ export class CartService {
     return this.apiService.get<CartResponse>(CART_ENDPOINTS.GET).pipe(
       timeout(this.apiTimeout),
       retry({ count: this.retryAttempts, delay: this.retryDelay }),
-      tap((response) => this.logger.debug('Carrito obtenido', { id: response.id, items_cnt: response.items_cnt })),
+      tap((response) => {
+        this.logger.debug(
+            'Carrito obtenido',
+            {
+              id: response.id,
+              items_cnt: response.items_cnt,
+              items: response.items.map(item => (
+                {
+                  id: item.id,
+                  availability_id: item.availability_id,
+                  product_metadata_id: item.product_metadata_id,
+                  qty: item.qty,
+                  unit_price: item.unit_price,
+                  currency: item.currency,
+                }
+              ))
+            }
+        )
+      }),
       catchError(this.handleError<CartResponse | null>('getCart'))
     );
   }

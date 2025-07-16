@@ -68,7 +68,7 @@ export class CartComponent implements OnInit, OnDestroy {
   ];
 
   readonly suggestedDestinations: Destination[] = [
-    { key: 'caribe', label: 'Caribe', icon: 'beach_access' },
+    { key: 'caribe', label: 'Caribe', icon: 'beach_updateCartStateaccess' },
     { key: 'europa', label: 'Europa', icon: 'castle' },
     { key: 'asia', label: 'Asia', icon: 'temple_buddhist' },
     { key: 'aventura', label: 'Aventura', icon: 'hiking' }
@@ -96,14 +96,17 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private updateCartState(newState: Partial<CartState>): void {
+    const mergedItems = newState.cart?.items ?? this.#cartState.items;
+
     this.#cartState = {
       ...this.#cartState,
       ...newState,
-      itemCount: newState.cart?.items_cnt ?? this.#cartState.items.length,
-      hasItems: (newState.cart?.items_cnt ?? this.#cartState.items.length) > 0,
-      isEmpty: !(newState.cart?.items_cnt ?? this.#cartState.items.length) && !newState.isLoading,
-      items: newState.cart?.items ?? this.#cartState.items
+      items: mergedItems,
+      itemCount: mergedItems.length,
+      hasItems: mergedItems.length > 0,
+      isEmpty: !mergedItems.length && !(newState.isLoading ?? this.#cartState.isLoading)
     };
+
     this.#cdr.markForCheck();
   }
 
@@ -127,10 +130,12 @@ export class CartComponent implements OnInit, OnDestroy {
       )
       .subscribe(cart => {
         if (cart) {
+          this.#loggerService.debug('[CartComponent] raw cart:', cart);
           const normalizedItems: CartItemResponse[] = cart.items.map(item => ({
             ...item,
             id: (item as any).id ?? item.product_metadata_id
           }));
+          this.#loggerService.debug('[CartComponent] normalized cart:', normalizedItems);
           const normalizedCart: CartResponse = {
             ...cart,
             items: normalizedItems
@@ -138,6 +143,7 @@ export class CartComponent implements OnInit, OnDestroy {
           this.updateCartState({ cart: normalizedCart });
           this.sortItems(this.#cartState.currentSort);
         }
+        console.trace('[CartComponent] entering loadCart subscribe');
       });
   }
 
