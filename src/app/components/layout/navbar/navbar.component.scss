@@ -10,8 +10,11 @@
 }
 
 .header {
-  background: nav.$navbar-background;
-  box-shadow: nav.$navbar-shadow;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   font-family: nav.$font-family-base;
   @include mq.nav-height-desktop;
 
@@ -55,7 +58,7 @@
 
 .planet-logo {
   @include mq.nav-logo-responsive;
-  
+
   & {
     transition: nav.$navbar-transition;
   }
@@ -112,15 +115,27 @@
 
   & {
     color: nav.$navbar-text;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
   }
 
   &:hover {
-    background-color: nav.$navbar-hover-bg;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-color: rgba(255, 255, 255, 0.3);
   }
 
   &.nav-link--active {
-    @include mixins.active-state(nav.$navbar-active-bg);
+    @include mixins.active-state(rgba(59, 130, 246, 0.15));
     font-weight: nav.$font-weight-bold;
+    background: rgba(59, 130, 246, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-color: rgba(59, 130, 246, 0.3);
 
     &::after {
       background: nav.$navbar-text;
@@ -145,10 +160,19 @@
 
 .user-btn {
   color: nav.$navbar-text !important;
-  @include mixins.hover-effect(nav.$navbar-hover-bg);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  @include mixins.hover-effect(rgba(255, 255, 255, 0.2));
 
   &.user-btn--active {
-    @include mixins.active-state(nav.$navbar-active-bg);
+    @include mixins.active-state(rgba(59, 130, 246, 0.15));
+    background: rgba(59, 130, 246, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-color: rgba(59, 130, 246, 0.3);
   }
 }
 
@@ -158,17 +182,27 @@
   .mat-menu-panel {
     padding: 0;
     min-width: nav.$navbar-dropdown-width;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
   }
 }
 
 .user-dropdown-header {
   padding: 1rem;
-  background: nav.$navbar-dropdown-gradient;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   @include mixins.flex-inline(0.75rem);
 }
 
 .user-avatar {
   @include mixins.avatar;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.2);
 
   @include mq.mobile-only {
     @include mixins.avatar(nav.$navbar-avatar-size-mobile);
@@ -195,13 +229,22 @@
 .cart-btn-container {
   .cart-btn {
     color: nav.$navbar-text !important;
-    @include mixins.hover-effect(nav.$navbar-hover-bg);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    @include mixins.hover-effect(rgba(255, 255, 255, 0.2));
 
     .mat-badge-content {
       @include mixins.badge(nav.$navbar-primary, white, nav.$navbar-badge-size);
       top: -5px;
       right: -5px;
       font-size: 0.75rem;
+      background: rgba(59, 130, 246, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
   }
 }
@@ -219,35 +262,48 @@
   transition: nav.$navbar-transition;
   border: none;
   cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   @include mixins.focus-ring-nav;
 
   &.btn--primary {
-    background: nav.$navbar-primary;
+    background: rgba(59, 130, 246, 0.9);
     color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 
     &:hover {
-      background: nav.$navbar-primary-hover;
+      background: rgba(37, 99, 235, 0.9);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
     }
   }
 
   &.btn--secondary {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.1);
     color: nav.$navbar-text !important;
-    border: 1px solid nav.$navbar-text;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 
     &:hover {
-      background: nav.$navbar-text;
-      color: nav.$navbar-background !important;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
     }
   }
 }
 
 .mobile-toggle {
   color: nav.$navbar-text !important;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
   @include mq.show-on-mobile-only;
 
   &:hover {
-    background-color: nav.$navbar-hover-bg;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
   }
 
   &.mobile-toggle--hidden {
@@ -259,11 +315,14 @@
 
 .mobile-overlay {
   @include mixins.mobile-overlay(nav.$navbar-height);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 
   & {
     z-index: nav.$navbar-overlay-z-index;
   }
-   
+
   &.mobile-overlay--visible {
     opacity: 1;
     visibility: visible;
@@ -290,9 +349,11 @@
 
 .mobile-menu.mat-sidenav {
   width: min(nav.$navbar-mobile-menu-width-max, nav.$navbar-mobile-menu-width);
-  background-color: white;
-  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.15);
-  border-left: 1px solid nav.$navbar-border;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: -4px 0 32px rgba(31, 38, 135, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .mobile-content {
@@ -304,7 +365,10 @@
 }
 
 .mobile-user-section {
-  background: nav.$navbar-mobile-header-gradient;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   padding: 1.25rem 1rem 1rem;
 }
 
@@ -315,6 +379,8 @@
 
 .mobile-user-avatar {
   @include mixins.avatar(3rem);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.2);
 }
 
 .mobile-user-details {
@@ -342,8 +408,10 @@
 
   &.mobile-section--logout {
     margin-top: auto;
-    border-top: 1px solid nav.$navbar-border;
-    background-color: rgba(220, 38, 38, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(220, 38, 38, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 }
 
@@ -352,7 +420,10 @@
   padding: 0.75rem 1rem;
   font-size: nav.$font-size-nav;
   border-radius: nav.$navbar-radius;
-  background: none;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: nav.$navbar-text-dark !important;
   text-decoration: none;
   transition: nav.$navbar-transition;
@@ -360,23 +431,33 @@
   @include mixins.focus-ring;
 
   &:hover {
-    background-color: rgba(59, 130, 246, 0.08);
+    background: rgba(59, 130, 246, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-color: rgba(59, 130, 246, 0.3);
   }
 
   &.mobile-link--primary {
-    background-color: nav.$navbar-primary !important;
+    background: rgba(59, 130, 246, 0.9) !important;
     color: white !important;
+    border-color: rgba(255, 255, 255, 0.3);
 
     &:hover {
-      background-color: nav.$navbar-primary-hover !important;
+      background: rgba(37, 99, 235, 0.9) !important;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
     }
   }
 
   &.mobile-link--logout {
     color: nav.$navbar-danger-color !important;
+    background: rgba(220, 38, 38, 0.1);
+    border-color: rgba(220, 38, 38, 0.3);
 
     &:hover {
-      background-color: rgba(220, 38, 38, 0.15);
+      background: rgba(220, 38, 38, 0.2);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
     }
 
     mat-icon {
