@@ -103,18 +103,22 @@ export class ProductList implements OnInit {
           let availability_id: number | undefined;
           let currency: string;
 
+          console.log(prod);
+
+          this.logger.debug('Producto cargado', prod);
+
           switch (prod.product_type) {
             case 'activity':
               title = (prod.product as any).name ?? 'Actividad sin nombre';
               description = (prod.product as any).description ?? 'Sin descripción disponible';
-              imageUrl = (prod.product as any).image ?? 'https://via.placeholder.com/400x300?text=Actividad';
+              imageUrl = prod.images[0].image ?? 'https://via.placeholder.com/400x300?text=Actividad';
               availability_id = (prod.product as any).availability_id?.[0]?.id;
               currency = prod.currency ?? 'USD';
               break;
             case 'lodgment':
               title = (prod.product as any).name ?? 'Alojamiento sin nombre';
               description = (prod.product as any).description ?? 'Sin descripción disponible';
-              imageUrl = (prod.product as any).image ?? 'https://via.placeholder.com/400x300?text=Alojamiento';
+              imageUrl = prod.images[0].image ?? 'https://via.placeholder.com/400x300?text=Alojamiento';
               availability_id = undefined;
               currency = prod.currency ?? 'USD';
               break;
@@ -123,7 +127,7 @@ export class ProductList implements OnInit {
                 ? `${(prod.product as any).type} de ${(prod.product as any).origin?.city ?? 'Origen desconocido'} a ${(prod.product as any).destination?.city ?? 'Destino desconocido'}`
                 : 'Transporte sin nombre';
               description = (prod.product as any).description ?? 'Sin descripción disponible';
-              imageUrl = (prod.product as any).image ?? 'https://via.placeholder.com/400x300?text=Transporte';
+              imageUrl = prod.images[0].image ?? 'https://via.placeholder.com/400x300?text=Transporte';
               availability_id = (prod.product as any).availability_id?.[0]?.id;
               currency = prod.currency ?? 'USD';
               break;
@@ -132,7 +136,7 @@ export class ProductList implements OnInit {
                 `Vuelo de ${(prod.product as any).origin?.city ?? 'Origen desconocido'} a ${(prod.product as any).destination?.city ?? 'Destino desconocido'}` ||
                 'Vuelo sin nombre';
               description = (prod.product as any).description ?? 'Sin descripción disponible';
-              imageUrl = (prod.product as any).image ?? 'https://via.placeholder.com/400x300?text=Vuelo';
+              imageUrl = prod.images[0].image ?? 'https://via.placeholder.com/400x300?text=Vuelo';
               availability_id = (prod.product as any).availability_id;
               currency = prod.currency ?? 'USD';
               break;

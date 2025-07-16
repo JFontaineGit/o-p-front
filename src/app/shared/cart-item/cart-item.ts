@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartItemResponse, CartItemConfig } from '../../services/interfaces/cart.interfaces';
+import { LoggerService } from '../../services/core/logger.service';
 
 interface ItemState {
   id: number;
@@ -25,7 +26,10 @@ interface ItemState {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartItemComponent {
+  logger = inject(LoggerService);
+
   @Input() set item(value: CartItemResponse | null) {
+    console.log('Valor del item recibido:', value); // <-- Revisión
     this.updateItemState(value);
   }
   @Input() set loading(value: boolean) {
@@ -55,6 +59,8 @@ export class CartItemComponent {
   private updateItemState(newState: Partial<ItemState> | CartItemResponse | null): void {
     // Si viene un CartItemResponse, extraemos sus campos
     if (newState && 'unit_price' in newState) {
+      console.log("New state: " + newState.config.title, "CartItemComponent");
+      this.logger.debug("New state: " + newState, "CartItemComponent")
       const item = newState as CartItemResponse;
       const config = item.config as CartItemConfig | undefined;
       const id = (item as any).id ?? item.product_metadata_id;
@@ -63,7 +69,7 @@ export class CartItemComponent {
         id,
         title: config?.title ?? 'Producto sin título',
         description: config?.description ?? '',
-        image: config?.imageUrl ?? '/assets/images/placeholder.jpg',
+        image: config?.imageUrl ?? '/media/placeholder.png',
         unitPrice: item.unit_price ?? 0,
         currency: item.currency ?? 'USD',
         quantity: item.qty ?? 1,

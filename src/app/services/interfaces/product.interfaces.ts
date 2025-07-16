@@ -275,6 +275,14 @@ export interface ProductMetadataResponse {
   currency: string;
   product_type: ProductType;
   product: Activity | Lodgment | Transportation | Flight;
+  images: ImageMetadataResponse[];
+}
+
+export interface ImageMetadataResponse {
+  id: number;
+  image: string;
+  description: number;
+  uploaded_at: string;
 }
 
 /**

@@ -131,13 +131,21 @@
 
         <!-- Items List -->
         <div class="travel-cart-page__items-list">
-          <app-cart-item *ngFor="let item of cartState.items; trackBy: trackByItemId; let i = index" [item]="item"
-            [loading]="cartState.isLoading" [style.--item-index]="i" (quantityChange)="onQuantityChange($event)"
-            (remove)="onRemoveItem($event)">
-          </app-cart-item>
-          <div *ngIf="cartState.items.length === 0 && !cartState.isLoading" class="no-items-message">
-            No hay ítems en el carrito.
-          </div>
+          @if (cartState?.items && cartState.items.length > 0) {
+            @for (item of cartState.items; track item.id) {
+              <app-cart-item
+                [item]="item"
+                [loading]="cartState.isLoading"
+                [style.--item-index]="cartState.items.indexOf(item)"
+                (quantityChange)="onQuantityChange($event)"
+                (remove)="onRemoveItem($event)">
+              </app-cart-item>
+            }
+          } @else {
+              <div class="no-items-message">
+                  No hay ítems en el carrito.
+              </div>
+          }
         </div>
 
         <!-- Empty State -->
