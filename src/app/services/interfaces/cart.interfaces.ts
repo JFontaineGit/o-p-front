@@ -37,6 +37,11 @@ export interface CartResponse {
   items: CartItemResponse[];
 }
 
+export interface OrderCreatedResponse {
+  order_id: number;
+  total: number;
+}
+
 /**
  * Interfaz para agregar un ítem al carrito.
  */

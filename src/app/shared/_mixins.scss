@@ -366,7 +366,7 @@
 }
 
 @mixin travel-fade-in($duration: 0.3s, $delay: 0s) {
-  opacity: 0;
+  //opacity: 0; NOTE: WTF Alessandro?
   transform: translateY(20px);
   animation: travel-fade-in-up $duration ease-out $delay forwards;
 }
