@@ -142,9 +142,11 @@
               </app-cart-item>
             }
           } @else {
-              <div class="no-items-message">
-                  No hay ítems en el carrito.
-              </div>
+              @if (cartState.isEmpty && !cartState.hasItems && !cartState.isLoading) {
+                  <div class="no-items-message">
+                      No hay ítems en el carrito.
+                  </div>
+              }
           }
         </div>
 
