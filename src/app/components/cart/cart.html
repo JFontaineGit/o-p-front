@@ -131,7 +131,7 @@
 
         <!-- Items List -->
         <div class="travel-cart-page__items-list">
-          @if (cartState?.items && cartState.items.length > 0) {
+          @if (cartState.items && cartState.items.length > 0) {
             @for (item of cartState.items; track trackByItemId(0, item)) {
               <app-cart-item
                 [item]="item"
