@@ -104,12 +104,15 @@
               placeholder="Tu email" 
               formControlName="email"
               [class.error]="isEmailInvalid">
-            <mat-error *ngIf="emailControl?.hasError('required')">
-              El email es requerido
-            </mat-error>
-            <mat-error *ngIf="emailControl?.hasError('email')">
-              Ingresa un email válido
-            </mat-error>
+              @if (emailControl?.hasError('required')) {
+                  <mat-error>
+                      El email es requerido
+                  </mat-error>
+              } @else if (emailControl?.hasError('email')) {
+                  <mat-error>
+                      Ingresa un email válido
+                  </mat-error>
+              }
           </mat-form-field>
           
           <button 
