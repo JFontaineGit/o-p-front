@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { OrderPaymentService } from '../../services/orders/order.service';
+//import { OrderPaymentService } from '../../services/orders/order.service';
 import { LoggerService } from '../../services/core/logger.service';
 
 @Component({
@@ -22,7 +22,7 @@ import { LoggerService } from '../../services/core/logger.service';
 })
 export class CheckoutSuccess implements OnInit {
   #route = inject(ActivatedRoute);
-  #orderPaymentService = inject(OrderPaymentService);
+  //#orderPaymentService = inject(OrderPaymentService);
   #logger = inject(LoggerService);
 
   ngOnInit(): void {
@@ -36,11 +36,12 @@ export class CheckoutSuccess implements OnInit {
       return;
     }
 
-    this.#orderPaymentService
-      .paySuccess(sessionId, orderId, paymentMethod)
-      .subscribe({
-        next: (res) => this.#logger.info('Pago confirmado', res),
-        error: (err) => this.#logger.error('Error al confirmar pago', err),
-      });
+    /*this.#orderPaymentService
+      *.paySuccess(sessionId, orderId, paymentMethod)
+      *.subscribe({
+       * next: (res) => this.#logger.info('Pago confirmado', res),
+        *error: (err) => this.#logger.error('Error al confirmar pago', err),
+      *});
+    */
   }
 }
