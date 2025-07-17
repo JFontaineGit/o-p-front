@@ -1,0 +1,55 @@
+// Variables modernas con fallback y HSL
+$primary-hue: 210;
+$primary-sat: 90%;
+$primary-light: 50%;
+
+$accent-hue: 340;
+$accent-sat: 80%;
+$accent-light: 60%;
+
+$ripple-size: 1000px;
+$ripple-size-touch: 200px;
+
+:root {
+  --primary-hue: #{$primary-hue};
+  --primary-sat: #{$primary-sat};
+  --primary-light: #{$primary-light};
+
+  --accent-hue: #{$accent-hue};
+  --accent-sat: #{$accent-sat};
+  --accent-light: #{$accent-light};
+
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.1);
+
+  --text-primary: #ffffff;
+  --text-shadow: rgba(0, 0, 0, 0.5);
+
+  --border-radius-sm: 0.5rem;
+  --border-radius-md: 1rem;
+  --border-radius-lg: 1.5rem;
+
+  --shadow-btn-primary: 0 4px 15px rgba(33, 150, 243, 0.3);
+  --shadow-btn-primary-hover: 0 6px 20px rgba(33, 150, 243, 0.4);
+  --shadow-btn-accent: 0 4px 15px rgba(233, 30, 99, 0.3);
+  --shadow-btn-accent-hover: 0 6px 20px rgba(233, 30, 99, 0.4);
+}
+
+// Fallbacks SCSS
+$primary: hsl($primary-hue, $primary-sat, $primary-light);
+$primary-dark: hsl($primary-hue, $primary-sat, 40%);
+$primary-light: hsl($primary-hue, $primary-sat, 60%);
+
+$accent: hsl($accent-hue, $accent-sat, $accent-light);
+$accent-dark: hsl($accent-hue, $accent-sat, 50%);
+
+$success: hsl(120, 60%, 50%);
+$error: hsl(0, 70%, 55%);
+$warning: hsl(45, 90%, 60%);
+
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;

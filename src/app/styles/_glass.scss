@@ -1,0 +1,25 @@
+@use './_variables-moderns.scss' as vars;
+
+@mixin glass-base($opacity: 0.15, $blur: 12px, $border-opacity: 0.18) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid rgba(255, 255, 255, $border-opacity);
+
+  @supports not (backdrop-filter: blur($blur)) {
+    background: rgba(255, 255, 255, $opacity + 0.1);
+  }
+}
+
+@mixin glass-card($radius: var(--border-radius-md)) {
+  @include glass-base();
+  border-radius: $radius;
+  box-shadow: var(--shadow-glass);
+  color: var(--text-primary);
+  text-shadow: 0 1px 2px var(--text-shadow);
+
+  &:focus-within {
+    outline: 2px solid vars.$primary;
+    outline-offset: 2px;
+  }
+}

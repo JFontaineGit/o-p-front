@@ -1,0 +1,56 @@
+@use './_variables-moderns.scss' as vars;
+
+@mixin ripple($color: rgba(255, 255, 255, 0.3), $duration: 600ms) {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: $color;
+    transform: translate(-50%, -50%);
+    transition: width $duration ease-out, height $duration ease-out;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &:active::before {
+    width: vars.$ripple-size;
+    height: vars.$ripple-size;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  @media (hover: none) {
+    &:active::before {
+      width: vars.$ripple-size-touch;
+      height: vars.$ripple-size-touch;
+    }
+  }
+}
+
+@mixin ripple-dark($opacity: 0.2) {
+  @include ripple(rgba(0, 0, 0, $opacity));
+}
+
+@mixin ripple-light($opacity: 0.3) {
+  @include ripple(rgba(255, 255, 255, $opacity));
+}
+
+@mixin ripple-primary() {
+  @include ripple(rgba(33, 150, 243, 0.3));
+}
+
+@mixin ripple-accent() {
+  @include ripple(rgba(233, 30, 99, 0.3));
+}
