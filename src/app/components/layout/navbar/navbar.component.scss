@@ -1,6 +1,9 @@
 @use '../_variables.scss' as nav;
 @use '../_mixins.scss' as mixins;
 @use '../media-queries.scss' as mq;
+@use '../../../styles/_variables-moderns.scss' as vars;
+@use '../../../styles/_glass.scss' as glass;
+@use '../../../styles/_ripple.scss' as ripple;
 
 :host {
   display: block;
@@ -10,17 +13,15 @@
 }
 
 .header {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  @include glass.glass-base(0.2, 10px, 0);
+  box-shadow: var(--shadow-glass);
   font-family: nav.$font-family-base;
-  min-height: 80px; // Increased from default height
+  min-height: 80px;
+  border-radius: var(--border-radius-md);
   @include mq.nav-height-desktop;
 
   @include mq.mobile-only {
-    min-height: 70px; // Increased mobile height
+    min-height: 70px;
     @include mq.nav-height-mobile;
   }
 }
@@ -40,6 +41,11 @@
   flex-shrink: 0;
   align-items: center;
   height: 100%;
+  padding-left: 0.5rem;
+  
+  @include mq.mobile-only {
+    padding-left: 0.25rem;
+  }
 }
 
 .logo {
@@ -60,13 +66,42 @@
 
 .planet-logo {
   @include mq.nav-logo-responsive;
-
-  & {
-    transition: nav.$navbar-transition;
+  transition: nav.$navbar-transition;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+  
+  &.mat-icon {
+    font-size: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    line-height: 40px !important;
+    
+    @include mq.mobile-only {
+      font-size: 36px !important;
+      width: 36px !important;
+      height: 36px !important;
+      line-height: 36px !important;
+    }
   }
-
+  
   &:hover {
     transform: scale(1.05);
+  }
+}
+
+.logo {
+  @include mixins.flex-inline(0.75rem);
+  align-items: center;
+  height: 100%;
+  
+  h1,
+  svg,
+  .mat-icon {
+    vertical-align: middle;
+    line-height: 1;
   }
 }
 
@@ -74,23 +109,39 @@
   text-decoration: none;
   color: inherit;
   transition: nav.$navbar-transition;
-
+  @include ripple.ripple-light();
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  
   &:hover {
     opacity: 0.9;
+    background: rgba(255, 255, 255, 0.1);
   }
-
+  
   @include mixins.focus-ring-nav;
 }
 
 .logo h1 {
-  font-size: nav.$font-size-logo;
+  font-size: clamp(1.2rem, 2.5vw, nav.$font-size-logo);
   font-weight: nav.$font-weight-bold;
-  color: nav.$navbar-text;
+  color: rgba(30, 41, 59, 0.9);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
   margin: 0;
-  line-height: 1;
-
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  
   @include mq.mobile-only {
-    font-size: calc(nav.$font-size-logo * 0.9);
+    font-size: clamp(1rem, 2vw, calc(nav.$font-size-logo * 0.9));
+  }
+  
+  a {
+    display: flex;
+    align-items: center;
+    line-height: inherit;
   }
 }
 
@@ -114,56 +165,30 @@
 
 .nav-link {
   @include mixins.nav-link;
-
-  & {
-    color: nav.$navbar-text;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 12px;
-    padding: 0.75rem 1.25rem;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s;
-    }
-  }
+  color: rgba(30, 41, 59, 0.95);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: vars.$spacing-sm vars.$spacing-md;
+  font-weight: 500;
+  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  @include ripple.ripple-light();
 
   &:hover {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-color: rgba(255, 255, 255, 0.4);
+    background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+    border-color: rgba(255, 255, 255, 0.35);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(31, 38, 135, 0.2);
-
-    &::before {
-      left: 100%;
-    }
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: rgba(30, 41, 59, 1);
   }
 
   &.nav-link--active {
-    @include mixins.active-state(rgba(59, 130, 246, 0.15));
+    background: linear-gradient(135deg, vars.$primary-light, vars.$primary-dark);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: white;
     font-weight: nav.$font-weight-bold;
-    background: rgba(59, 130, 246, 0.2);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border-color: rgba(59, 130, 246, 0.4);
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
-
-    &::after {
-      background: nav.$navbar-text;
-    }
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
   }
 }
 
@@ -183,79 +208,48 @@
 }
 
 .user-btn {
-  color: nav.$navbar-text !important;
-  background: transparent;
-  border: 1px solid transparent;
+  color: rgba(30, 41, 59, 0.95);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
   border-radius: 50%;
   width: 48px;
   height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s;
-  }
-
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  @include ripple.ripple-light();
+  
   &:hover {
     background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-color: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.35);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(31, 38, 135, 0.2);
-
-    &::before {
-      width: 100%;
-      height: 100%;
-    }
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: rgba(30, 41, 59, 1);
   }
-
+  
   &.user-btn--active {
-    @include mixins.active-state(rgba(59, 130, 246, 0.15));
     background: rgba(59, 130, 246, 0.2);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border-color: rgba(59, 130, 246, 0.4);
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: rgba(30, 41, 59, 1);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
   }
 }
 
 .user-dropdown {
-  @include mixins.dropdown-panel;
+  min-width: nav.$navbar-dropdown-width;
 
   .mat-menu-panel {
     padding: 0;
-    min-width: nav.$navbar-dropdown-width;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
-    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.25),
-    0 4px 16px rgba(0, 0, 0, 0.1);
+    background: transparent;
+    border: none;
     overflow: hidden;
   }
 }
 
 .user-dropdown-header {
   padding: 1rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--border-radius-md);
   @include mixins.flex-inline(0.75rem);
   position: relative;
 
@@ -273,7 +267,7 @@
 .user-avatar {
   @include mixins.avatar;
   border: 2px solid rgba(59, 130, 246, 0.2);
-  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+  box-shadow: var(--shadow-btn-primary);
 
   @include mq.mobile-only {
     @include mixins.avatar(nav.$navbar-avatar-size-mobile);
@@ -287,315 +281,198 @@
 }
 
 .user-name {
-  font-size: 0.875rem;
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
   font-weight: nav.$font-weight-bold;
   color: rgba(30, 41, 59, 0.9);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .user-email {
-  font-size: 0.75rem;
+  font-size: clamp(0.65rem, 1.2vw, 0.75rem);
   color: rgba(100, 116, 139, 0.8);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
-// Estilos para los items del dropdown del usuario (clases reales del HTML)
 .dropdown-item {
-  padding: 0.75rem 1rem !important;
-  color: rgba(30, 41, 59, 0.9) !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: none !important;
-  border-radius: 8px !important;
+  padding: vars.$spacing-sm vars.$spacing-md !important;
+  color: rgba(30, 41, 59, 0.95) !important;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8) !important;
   margin: 0.25rem 0.5rem !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  position: relative !important;
-  overflow: hidden !important;
   display: flex !important;
   align-items: center !important;
-  gap: 0.75rem !important;
-  text-decoration: none !important;
+  gap: vars.$spacing-sm !important;
   min-height: 48px !important;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-    transition: left 0.5s;
-  }
-
+  
   &:hover {
-    background: rgba(59, 130, 246, 0.08) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
     color: rgba(30, 41, 59, 1) !important;
-    box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.1) !important;
-
-    &::before {
-      left: 100%;
-    }
-
-    mat-icon {
-      color: rgba(59, 130, 246, 0.8) !important;
-    }
   }
-
+  
   &.dropdown-item--logout {
-    color: rgba(220, 38, 38, 1) !important;
-    background: rgba(220, 38, 38, 0.05) !important;
-    border: 1px solid rgba(220, 38, 38, 0.1) !important;
-
+    color: rgba(220, 38, 38, 0.9) !important;
+    border-color: rgba(220, 38, 38, 0.2) !important;
+    
     &:hover {
-      background: rgba(220, 38, 38, 0.12) !important;
+      border-color: rgba(220, 38, 38, 0.35) !important;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1) !important;
       color: rgba(220, 38, 38, 1) !important;
-      box-shadow: inset 0 0 20px rgba(220, 38, 38, 0.1) !important;
-      border-color: rgba(220, 38, 38, 0.3) !important;
-
-      &::before {
-        background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.1), transparent);
-      }
-
-      mat-icon {
-        color: rgba(220, 38, 38, 1) !important;
-      }
     }
   }
-
+  
   mat-icon {
     font-size: 1.25rem !important;
     width: 1.25rem !important;
     height: 1.25rem !important;
-    color: rgba(100, 116, 139, 0.8) !important;
-    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    color: rgba(100, 116, 139, 0.9) !important;
   }
-
+  
   span {
     font-weight: 600 !important;
-    font-size: 0.95rem !important;
+    font-size: clamp(0.8rem, 1.5vw, 0.95rem) !important;
     color: inherit !important;
   }
 }
 
-// Estilos adicionales para el divider
 .user-dropdown .mat-divider {
   border-top-color: rgba(255, 255, 255, 0.3) !important;
-  margin: 0.5rem 0 !important;
-}
-
-// Estilos para los items del dropdown del usuario
-.user-dropdown-item {
-  padding: 0.75rem 1rem;
-  color: rgba(30, 41, 59, 0.8) !important;
-  background: transparent;
-  border: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-    transition: left 0.5s;
-  }
-
-  &:hover {
-    background: rgba(59, 130, 246, 0.08);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    color: rgba(30, 41, 59, 1) !important;
-    box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.1);
-
-    &::before {
-      left: 100%;
-    }
-  }
-
-  &.user-dropdown-item--logout {
-    color: rgba(220, 38, 38, 0.9) !important;
-
-    &:hover {
-      background: rgba(220, 38, 38, 0.08);
-      color: rgba(220, 38, 38, 1) !important;
-      box-shadow: inset 0 0 20px rgba(220, 38, 38, 0.1);
-
-      &::before {
-        background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.1), transparent);
-      }
-    }
-  }
+  margin: vars.$spacing-sm 0 !important;
 }
 
 .cart-btn-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  
   .cart-btn {
-    color: nav.$navbar-text !important;
-    background: transparent;
-    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     width: 48px;
     height: 48px;
+    color: rgba(30, 41, 59, 0.95);
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+    @include ripple.ripple-light();
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.3s, height 0.3s;
-    }
-
+    flex-shrink: 0;
+    
     &:hover {
       background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-color: rgba(255, 255, 255, 0.4);
+      border-color: rgba(255, 255, 255, 0.35);
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(31, 38, 135, 0.2);
-
-      &::before {
-        width: 100%;
-        height: 100%;
-      }
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      color: rgba(30, 41, 59, 1);
     }
-
+    
     .mat-badge-content {
       @include mixins.badge(nav.$navbar-primary, white, nav.$navbar-badge-size);
       top: -5px;
       right: -5px;
       font-size: 0.75rem;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.95), rgba(37, 99, 235, 0.95));
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+      background: linear-gradient(135deg, vars.$primary, vars.$primary-dark);
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
   }
 }
 
 .auth-actions {
   @include mixins.flex-inline(0.5rem);
+  align-items: center;
+  height: 100%;
 }
 
 .btn {
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
+  padding: vars.$spacing-sm vars.$spacing-md;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   cursor: pointer;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  position: relative;
-  overflow: hidden;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   @include mixins.focus-ring-nav;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-  }
-
-  &:hover::before {
-    left: 100%;
-  }
-
+  white-space: nowrap;
+  
   &.btn--primary {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.95), rgba(37, 99, 235, 0.95));
+    background: linear-gradient(135deg, vars.$primary, vars.$primary-dark);
     color: white !important;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
-
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    @include ripple.ripple-light();
+    
     &:hover {
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.95), rgba(29, 78, 216, 0.95));
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: linear-gradient(135deg, vars.$primary-dark, vars.$primary-dark);
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
-      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
     }
   }
-
+  
   &.btn--secondary {
-    background: transparent;
-    color: nav.$navbar-text !important;
-    border: 1px solid transparent;
-    box-shadow: 0 4px 15px rgba(31, 38, 135, 0.1);
-
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(30, 41, 59, 0.95);
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+    @include ripple.ripple-light();
+    
     &:hover {
       background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      border-color: rgba(255, 255, 255, 0.35);
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(31, 38, 135, 0.2);
-      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      color: rgba(30, 41, 59, 1);
     }
   }
 }
 
 .mobile-toggle {
-  color: nav.$navbar-text !important;
-  background: transparent;
-  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   width: 48px;
   height: 48px;
+  color: rgba(30, 41, 59, 0.95);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+  @include ripple.ripple-light();
+  @include mq.show-on-mobile-only;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  @include mq.show-on-mobile-only;
-
+  
+  .mat-icon {
+    font-size: 24px !important;
+    width: 24px !important;
+    height: 24px !important;
+    line-height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
   &:hover {
     background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    border-color: rgba(255, 255, 255, 0.35);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(31, 38, 135, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: rgba(30, 41, 59, 1);
   }
-
+  
   &.mobile-toggle--hidden {
     display: none !important;
   }
-
-  @include mixins.focus-ring-nav;
 }
 
 .mobile-overlay {
   @include mixins.mobile-overlay(nav.$navbar-height);
-
-  & {
-    z-index: nav.$navbar-overlay-z-index;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-  }
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: nav.$navbar-overlay-z-index;
 
   &.mobile-overlay--visible {
     opacity: 1;
@@ -622,12 +499,9 @@
 }
 
 .mobile-menu.mat-sidenav {
+  @include glass.glass-card(0);
   width: min(nav.$navbar-mobile-menu-width-max, nav.$navbar-mobile-menu-width);
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  box-shadow: -4px 0 32px rgba(31, 38, 135, 0.2);
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius-md);
 }
 
 .mobile-content {
@@ -639,39 +513,46 @@
 }
 
 .mobile-user-section {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  @include glass.glass-base(0.2, 20px);
+  border-radius: var(--border-radius-md);
   padding: 1.25rem 1rem 1rem;
 }
 
 .mobile-user-info {
   @include mixins.flex-inline(0.75rem);
   margin-bottom: 1rem;
+  align-items: center;
 }
 
 .mobile-user-avatar {
   @include mixins.avatar(3rem);
   border: 2px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.2);
+  box-shadow: var(--shadow-glass);
+  flex-shrink: 0;
 }
 
 .mobile-user-details {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  justify-content: center;
 }
 
 .mobile-user-name {
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
   font-weight: nav.$font-weight-bold;
-  color: nav.$navbar-text;
+  color: rgba(30, 41, 59, 0.9);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  line-height: 1.2;
+  margin: 0;
 }
 
 .mobile-user-email {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(0.75rem, 1.2vw, 0.875rem);
+  color: rgba(100, 116, 139, 0.8);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  line-height: 1.2;
+  margin: 0;
 }
 
 .mobile-section {
@@ -682,74 +563,57 @@
 
   &.mobile-section--logout {
     margin-top: auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(220, 38, 38, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--border-radius-md);
   }
 }
 
 .mobile-link {
   @include mixins.flex-inline(0.75rem);
-  padding: 0.75rem 1rem;
-  font-size: nav.$font-size-nav;
-  border-radius: nav.$navbar-radius;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  padding: vars.$spacing-sm vars.$spacing-md;
+  font-size: clamp(0.8rem, 1.5vw, nav.$font-size-nav);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: nav.$navbar-text-dark !important;
+  color: rgba(30, 41, 59, 0.95);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  transition: nav.$navbar-transition;
   min-height: 3rem;
-  @include mixins.focus-ring;
-
+  @include ripple.ripple-light();
+  align-items: center;
+  
   &:hover {
-    background: rgba(59, 130, 246, 0.15);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-color: rgba(59, 130, 246, 0.3);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: rgba(30, 41, 59, 1);
   }
-
+  
   &.mobile-link--primary {
-    background: rgba(59, 130, 246, 0.9) !important;
-    color: white !important;
-    border-color: rgba(255, 255, 255, 0.3);
-
+    background: linear-gradient(135deg, vars.$primary, vars.$primary-dark);
+    color: white;
+    border-color: rgba(59, 130, 246, 0.3);
+    
     &:hover {
-      background: rgba(37, 99, 235, 0.9) !important;
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
+      background: linear-gradient(135deg, vars.$primary-dark, vars.$primary-dark);
     }
   }
-
+  
   &.mobile-link--logout {
-    color: nav.$navbar-danger-color !important;
-    background: rgba(220, 38, 38, 0.1);
-    border-color: rgba(220, 38, 38, 0.3);
-
+    color: rgba(220, 38, 38, 0.9);
+    background: rgba(254, 226, 226, 0.15);
+    border-color: rgba(220, 38, 38, 0.2);
+    
     &:hover {
-      background: rgba(220, 38, 38, 0.2);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-    }
-
-    mat-icon {
-      color: nav.$navbar-danger-color;
+      background: rgba(254, 226, 226, 0.25);
+      border-color: rgba(220, 38, 38, 0.35);
+      color: rgba(220, 38, 38, 1);
     }
   }
-
+  
   mat-icon {
     font-size: 1.25rem;
     width: 1.25rem;
     height: 1.25rem;
-    color: nav.$navbar-secondary;
-  }
-}
-
-@include mq.reduce-motion {
-  * {
-    transition: none !important;
-    animation: none !important;
+    color: rgba(100, 116, 139, 0.9);
+    flex-shrink: 0;
   }
 }
