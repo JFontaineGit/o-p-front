@@ -136,6 +136,7 @@
               <app-cart-item
                 [item]="item"
                 [loading]="cartState.isLoading"
+                [isRemoving]="item.isRemoving"
                 [style.--item-index]="cartState.items.indexOf(item)"
                 (quantityChange)="onQuantityChange($event)"
                 (remove)="onRemoveItem($event)">
@@ -144,7 +145,7 @@
           } @else {
               @if (cartState.isEmpty) {
                   <div class="no-items-message">
-                      No hay ítems en el carrito.ck
+                      No hay ítems en el carrito.
                   </div>
               }
           }

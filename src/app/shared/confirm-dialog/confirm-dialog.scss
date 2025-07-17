@@ -1,0 +1,135 @@
+@use '../../styles/_ripple.scss' as mixins_r;
+@use '../../components/layout/_mixins.scss' as mixins_l; 
+@use '../../components/layout/_media-queries.scss' as mq;
+@use '../../styles/_variables-moderns.scss' as vars;
+@use '../../styles/_glass.scss' as glass;
+
+.dialog-container {
+  @include glass.glass-base(0.2, 10px);
+  & {
+    border-radius: vars.$border-radius-lg;
+    padding: 1.5rem;
+    max-width: 400px;
+    min-width: 300px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @include mq.mobile-only {
+    & {
+      min-width: 90vw;
+      padding: 1rem;
+    }
+  }
+}
+
+.dialog-header {
+  @include mixins_l.flex-center();
+  & {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .header-icon {
+    & {
+      font-size: 2rem;
+      color: vars.$primary;
+      text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .dialog-title {
+    & {
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      font-weight: 600;
+      color: rgba(30, 41, 59, 0.9);
+      margin: 0;
+      text-align: center;
+    }
+  }
+}
+
+.dialog-content {
+  & {
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    color: rgba(100, 116, 139, 0.9);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .additional-info {
+    & {
+      font-size: clamp(0.8rem, 1.2vw, 0.875rem);
+      color: rgba(100, 116, 139, 0.7);
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+.dialog-actions {
+  @include mixins_l.flex-between();
+  & {
+    gap: 0.5rem;
+  }
+
+  .btn {
+    @include mixins_l.button-base();
+    & {
+      flex: 1;
+      padding: 0.75rem;
+      font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+      border-radius: vars.$border-radius-md;
+      transition: all 0.2s ease;
+    }
+
+    &.btn--secondary {
+      @include mixins_r.ripple-light();
+      & {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: rgba(30, 41, 59, 0.95);
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &.btn--primary {
+      @include mixins_r.ripple-primary();
+      & {
+        background: linear-gradient(135deg, vars.$primary, vars.$primary-dark);
+        color: white;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      }
+
+      &:hover {
+        background: linear-gradient(135deg, vars.$primary-dark, vars.$primary-dark);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+      }
+    }
+
+    .material-symbols-outlined {
+      & {
+        font-size: 1.25rem;
+        margin-right: 0.25rem;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

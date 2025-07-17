@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, inject} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartItemResponse, CartItemConfig } from '../../services/interfaces/cart.interfaces';
@@ -13,6 +13,7 @@ interface ItemState {
   currency: string;
   quantity: number;
   isLoading: boolean;
+  isRemoving: boolean; // Added for removal state
   formattedPrice: string;
   formattedSubtotal: string;
   product_metadata_id: number;
@@ -30,12 +31,15 @@ export class CartItemComponent {
   logger = inject(LoggerService);
 
   @Input() set item(value: CartItemResponse | null) {
-    console.log('Valor del item recibido:', value); // <-- Revisión
+    console.log('Valor del item recibido:', value);
     console.trace();
     this.updateItemState(value);
   }
   @Input() set loading(value: boolean) {
     this.updateItemState({ isLoading: value });
+  }
+  @Input() set isRemoving(value: boolean) {
+    this.updateItemState({ isRemoving: value });
   }
 
   @Output() quantityChange = new EventEmitter<{ itemId: number; quantity: number }>();
@@ -50,6 +54,7 @@ export class CartItemComponent {
     currency: 'USD',
     quantity: 1,
     isLoading: false,
+    isRemoving: false,
     formattedPrice: '',
     formattedSubtotal: '',
     product_metadata_id: 0
@@ -60,10 +65,7 @@ export class CartItemComponent {
   }
 
   private updateItemState(newState: Partial<ItemState> | CartItemResponse | null): void {
-    // Si viene un CartItemResponse, extraemos sus campos
     if (newState && 'unit_price' in newState) {
-      console.log('[CartItemComponent] antes de updateItemState:', this.#itemState, 'nuevo value:', newState.id);
-      this.logger.debug('[CartItemComponent] antes de updateItemState:'+ this.#itemState + 'nuevo value:' + newState.id)
       const item = newState as CartItemResponse;
       const config = item.config as CartItemConfig | undefined;
       const id = (item as any).id ?? item.product_metadata_id;
@@ -77,6 +79,7 @@ export class CartItemComponent {
         currency: item.currency ?? 'USD',
         quantity: item.qty ?? 1,
         isLoading: this.#itemState.isLoading,
+        isRemoving: this.#itemState.isRemoving,
         formattedPrice: this.formatCurrency(item.unit_price ?? 0, item.currency),
         formattedSubtotal: this.formatCurrency(
           (item.unit_price ?? 0) * (item.qty ?? 1),
@@ -89,7 +92,6 @@ export class CartItemComponent {
       return;
     }
 
-    // Sino mezclamos estados parciales
     this.#itemState = {
       ...this.#itemState,
       ...(newState as Partial<ItemState>)

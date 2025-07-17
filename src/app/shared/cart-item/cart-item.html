@@ -1,4 +1,6 @@
-<article class="travel-cart-item" [class.travel-cart-item--loading]="itemState.isLoading"
+<article class="travel-cart-item" 
+  [class.travel-cart-item--loading]="itemState.isLoading"
+  [class.travel-cart-item--removing]="itemState.isRemoving"
   [attr.aria-label]="'Producto: ' + itemState.title">
   <div class="travel-cart-item__image-container">
     <img [src]="itemState.image" [alt]="itemState.title" class="travel-cart-item__image" loading="lazy">
@@ -22,16 +24,27 @@
   <div class="travel-cart-item__quantity-section">
     <label class="quantity-label" [for]="'quantity-' + itemState.id">Cantidad</label>
     <div class="travel-cart-item__quantity-controls">
-      <button type="button" class="quantity-btn quantity-btn--decrease" (click)="changeQuantity(itemState.quantity - 1)"
-        [disabled]="itemState.isLoading || itemState.quantity <= 1"
+      <button type="button" 
+        class="quantity-btn quantity-btn--decrease" 
+        (click)="changeQuantity(itemState.quantity - 1)"
+        [disabled]="itemState.isLoading || itemState.isRemoving || itemState.quantity <= 1"
         [attr.aria-label]="'Disminuir cantidad de ' + itemState.title">
         <span class="material-symbols-outlined">remove</span>
       </button>
-      <input type="number" class="quantity-input" [id]="'quantity-' + itemState.id" [value]="itemState.quantity"
-        [min]="1" [max]="99" (input)="onQuantityInput($event)" [disabled]="itemState.isLoading"
+      <input type="number" 
+        class="quantity-input" 
+        [id]="'quantity-' + itemState.id" 
+        [value]="itemState.quantity"
+        [min]="1" 
+        [max]="99" 
+        (input)="onQuantityInput($event)" 
+        [disabled]="itemState.isLoading || itemState.isRemoving"
         [attr.aria-label]="'Cantidad de ' + itemState.title">
-      <button type="button" class="quantity-btn quantity-btn--increase" (click)="changeQuantity(itemState.quantity + 1)"
-        [disabled]="itemState.isLoading" [attr.aria-label]="'Aumentar cantidad de ' + itemState.title">
+      <button type="button" 
+        class="quantity-btn quantity-btn--increase" 
+        (click)="changeQuantity(itemState.quantity + 1)"
+        [disabled]="itemState.isLoading || itemState.isRemoving"
+        [attr.aria-label]="'Aumentar cantidad de ' + itemState.title">
         <span class="material-symbols-outlined">add</span>
       </button>
     </div>
@@ -48,13 +61,18 @@
   </div>
 
   <div class="travel-cart-item__actions">
-    <button type="button" class="action-btn action-btn--remove" (click)="removeItem()" [disabled]="itemState.isLoading"
+    <button type="button" 
+      class="action-btn action-btn--remove" 
+      (click)="removeItem()" 
+      [disabled]="itemState.isLoading || itemState.isRemoving"
       [attr.aria-label]="'Eliminar ' + itemState.title + ' del carrito'">
       <span class="material-symbols-outlined">delete</span>
+      <span class="action-text" *ngIf="!itemState.isRemoving">Eliminar</span>
+      <span class="action-text" *ngIf="itemState.isRemoving">Eliminando...</span>
     </button>
   </div>
 
-  <div class="travel-cart-item__loading-overlay" *ngIf="itemState.isLoading">
+  <div class="travel-cart-item__loading-overlay" *ngIf="itemState.isLoading || itemState.isRemoving">
     <div class="loading-spinner">
       <span class="material-symbols-outlined">refresh</span>
     </div>

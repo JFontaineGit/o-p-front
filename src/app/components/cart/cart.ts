@@ -1,6 +1,10 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
+// Misma importación que tenías
+import {
+  Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { Subject, of, forkJoin } from 'rxjs';
 import { takeUntil, finalize, catchError } from 'rxjs/operators';
 import { CartItemComponent } from '../../shared/cart-item/cart-item';
@@ -10,8 +14,13 @@ import { NotificationService } from '../../core/notification/services/notificati
 import { AuthService } from '../../services/auth/auth.service';
 import { OrderPaymentService } from '../../services/orders/order.service';
 import { LoggerService } from '../../services/core/logger.service';
-import { CartResponse, CartItemResponse, CartItemQtyPatch } from '../../services/interfaces/cart.interfaces';
-import { StripeResponse, PaymentMethodIn } from '../../services/interfaces/order-payment.interfaces';
+import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
+import {
+  CartResponse, CartItemResponse, CartItemQtyPatch
+} from '../../services/interfaces/cart.interfaces';
+import {
+  StripeResponse, PaymentMethodIn
+} from '../../services/interfaces/order-payment.interfaces';
 
 interface SortOption {
   value: 'price-asc' | 'price-desc' | 'name';
@@ -25,9 +34,14 @@ interface Destination {
   icon: string;
 }
 
+interface ExtendedCartItemResponse extends CartItemResponse {
+  id: number;
+  isRemoving: boolean;
+}
+
 interface CartState {
   cart: CartResponse | null;
-  items: CartItemResponse[];
+  items: ExtendedCartItemResponse[];
   isLoading: boolean;
   isCheckoutLoading: boolean;
   error: string | null;
@@ -48,6 +62,7 @@ interface CartState {
 })
 export class CartComponent implements OnInit, OnDestroy {
   #destroy$ = new Subject<void>();
+
   #cartState: CartState = {
     cart: null,
     items: [],
@@ -68,7 +83,7 @@ export class CartComponent implements OnInit, OnDestroy {
   ];
 
   readonly suggestedDestinations: Destination[] = [
-    { key: 'caribe', label: 'Caribe', icon: 'beach_updateCartStateaccess' },
+    { key: 'caribe', label: 'Caribe', icon: 'beach_access' },
     { key: 'europa', label: 'Europa', icon: 'castle' },
     { key: 'asia', label: 'Asia', icon: 'temple_buddhist' },
     { key: 'aventura', label: 'Aventura', icon: 'hiking' }
@@ -81,6 +96,7 @@ export class CartComponent implements OnInit, OnDestroy {
   #notificationService = inject(NotificationService);
   #authService = inject(AuthService);
   #cdr = inject(ChangeDetectorRef);
+  #dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.loadCart();
@@ -96,7 +112,23 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private updateCartState(newState: Partial<CartState>): void {
-    const mergedItems = newState.cart?.items ?? this.#cartState.items;
+    let mergedItems: ExtendedCartItemResponse[] = [];
+
+    if (newState.cart?.items) {
+      mergedItems = newState.cart.items.map(item => ({
+        ...item,
+        id: (item as any).id ?? item.product_metadata_id,
+        isRemoving: false,
+      }));
+    } else if (newState.items) {
+      mergedItems = newState.items.map(item => ({
+        ...item,
+        id: (item as any).id ?? item.product_metadata_id,
+        isRemoving: item.isRemoving ?? false
+      }));
+    } else {
+      mergedItems = this.#cartState.items;
+    }
 
     this.#cartState = {
       ...this.#cartState,
@@ -118,6 +150,7 @@ export class CartComponent implements OnInit, OnDestroy {
     }
 
     this.updateCartState({ isLoading: true, error: null });
+
     this.#cartService.getCart()
       .pipe(
         takeUntil(this.#destroy$),
@@ -130,20 +163,20 @@ export class CartComponent implements OnInit, OnDestroy {
       )
       .subscribe(cart => {
         if (cart) {
-          this.#loggerService.debug('[CartComponent] raw cart:', cart);
-          const normalizedItems: CartItemResponse[] = cart.items.map(item => ({
+          const normalizedItems = cart.items.map(item => ({
             ...item,
-            id: (item as any).id ?? item.product_metadata_id
+            id: (item as any).id ?? item.product_metadata_id,
+            isRemoving: false
           }));
-          this.#loggerService.debug('[CartComponent] normalized cart:', normalizedItems);
+
           const normalizedCart: CartResponse = {
             ...cart,
             items: normalizedItems
           };
+
           this.updateCartState({ cart: normalizedCart });
           this.sortItems(this.#cartState.currentSort);
         }
-        console.trace('[CartComponent] entering loadCart subscribe');
       });
   }
 
@@ -163,7 +196,8 @@ export class CartComponent implements OnInit, OnDestroy {
         if (updatedCart) {
           const normalizedItems = updatedCart.items.map(item => ({
             ...item,
-            id: (item as any).id ?? item.product_metadata_id
+            id: (item as any).id ?? item.product_metadata_id,
+            isRemoving: false
           }));
           this.updateCartState({ cart: { ...updatedCart, items: normalizedItems } });
         }
@@ -173,104 +207,121 @@ export class CartComponent implements OnInit, OnDestroy {
   onRemoveItem(itemId: number): void {
     if (!this.#cartState.cart) return;
 
-    this.#cartService.deleteCartItem(itemId)
-      .pipe(
-        takeUntil(this.#destroy$),
-        catchError(error => {
-          this.#notificationService.error('Error al eliminar el producto');
-          return of(null);
-        })
-      )
-      .subscribe(updatedCart => {
-        if (updatedCart) {
-          const normalizedItems = updatedCart.items.map(item => ({
-            ...item,
-            id: (item as any).id ?? item.product_metadata_id
-          }));
-          this.updateCartState({ cart: { ...updatedCart, items: normalizedItems } });
-        }
-      });
+    const dialogRef = this.#dialog.open(ConfirmDialog, {
+      data: {
+        title: '¿Eliminar paquete?',
+        message: '¿Estás seguro de que quieres eliminar este paquete de tu carrito?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        const updatedItems = this.#cartState.items.map(item =>
+          item.id === itemId ? { ...item, isRemoving: true } : item
+        );
+        this.updateCartState({ items: updatedItems });
+
+        this.#cartService.deleteCartItem(itemId)
+          .pipe(
+            takeUntil(this.#destroy$),
+            finalize(() => {
+              const finalizedItems = this.#cartState.items.map(item =>
+                item.id === itemId ? { ...item, isRemoving: false } : item
+              );
+              this.updateCartState({ items: finalizedItems });
+            }),
+            catchError(error => {
+              this.#notificationService.error('Error al eliminar el paquete');
+              return of(null);
+            })
+          )
+          .subscribe(updatedCart => {
+            if (updatedCart) {
+              const normalizedItems = updatedCart.items.map(item => ({
+                ...item,
+                id: (item as any).id ?? item.product_metadata_id,
+                isRemoving: false
+              }));
+              this.updateCartState({ cart: { ...updatedCart, items: normalizedItems } });
+              this.#notificationService.success('Paquete eliminado');
+            }
+          });
+      }
+    });
   }
 
   onClearCart(): void {
     if (!this.#cartState.cart || !this.#cartState.hasItems) return;
 
-    if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
-      const deleteObservables = this.#cartState.items.map(item =>
-        this.#cartService.deleteCartItem(item.id)
-      );
-      forkJoin(deleteObservables)
-        .pipe(
-          takeUntil(this.#destroy$),
-          catchError(error => {
-            this.#notificationService.error('Error al vaciar el carrito');
-            return of(null);
-          })
-        )
-        .subscribe(() => {
-          this.loadCart();
-          this.#notificationService.success('Carrito vaciado');
-        });
-    }
+    const dialogRef = this.#dialog.open(ConfirmDialog, {
+      data: {
+        title: '¿Vaciar carrito?',
+        message: '¿Estás seguro de que quieres vaciar todo el carrito?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        const deleteObservables = this.#cartState.items.map(item =>
+          this.#cartService.deleteCartItem(item.id)
+        );
+        forkJoin(deleteObservables)
+          .pipe(
+            takeUntil(this.#destroy$),
+            catchError(error => {
+              this.#notificationService.error('Error al vaciar el carrito');
+              return of(null);
+            })
+          )
+          .subscribe(() => {
+            this.loadCart();
+            this.#notificationService.success('Carrito vaciado');
+          });
+      }
+    });
   }
 
-  /**
-   * Inicia el proceso de checkout y pago con Stripe.
-   * 1. Realiza el checkout del carrito para obtener el orderId.
-   * 2. Inicia el pago con el orderId y redirige a Stripe.
-   */
   onReserveNow(): void {
     if (!this.#cartState.cart || !this.#cartState.hasItems) {
-      this.#loggerService.error('Intento de pago con carrito vacío');
-      this.#notificationService.error('El carrito está vacío. Agrega productos primero.');
+      this.#notificationService.error('El carrito está vacío.');
       return;
     }
 
-    this.#loggerService.info('Iniciando proceso de checkout y pago');
-    this.updateCartState({ isCheckoutLoading: true, error: null });
+    this.updateCartState({ isCheckoutLoading: true });
 
-    // Paso 1: Realizar el checkout del carrito
-    this.#cartService.checkoutCart().pipe(
-      takeUntil(this.#destroy$),
-      catchError(err => {
-        this.#loggerService.error('Error al realizar el checkout', err);
-        this.updateCartState({
-          error: 'Error al procesar el checkout. Por favor, intenta de nuevo.',
-        });
-        this.#notificationService.error('Error al procesar el checkout. Por favor, intenta de nuevo.');
-        return of(null);
-      })
-    ).subscribe(checkoutResponse => {
-      if (!checkoutResponse || !checkoutResponse.order_id) {
-        this.updateCartState({ isCheckoutLoading: false });
-        return;
-      }
-
-      const orderId = checkoutResponse.order_id;
-      this.#loggerService.info('Checkout exitoso, orderId obtenido', { orderId });
-      this.#notificationService.success('Orden creada con éxito. Redirigiendo al pago...');
-
-      // Paso 2: Iniciar el pago con el orderId
-      const paymentMethod: PaymentMethodIn = { payment_method: 'card' };
-      const idempotencyKey = crypto.randomUUID();
-
-      this.#orderPaymentService.payOrder(orderId, paymentMethod, idempotencyKey).subscribe({
-        next: (response: StripeResponse) => {
-          this.#loggerService.info('Pago iniciado con éxito, redirigiendo a Stripe', { sessionUrl: response.session_url });
-          window.location.href = response.session_url;
-        },
-        error: (err) => {
-          this.#loggerService.error('Error al procesar el pago', err);
+    this.#cartService.checkoutCart()
+      .pipe(
+        takeUntil(this.#destroy$),
+        catchError(err => {
           this.updateCartState({
-            error: 'Error al procesar el pago. Por favor, intenta de nuevo.',
+            error: 'Error al procesar el checkout.'
           });
-          this.#notificationService.error('Error al procesar el pago. Por favor, intenta de nuevo.');
-        },
-        complete: () => {
+          return of(null);
+        })
+      )
+      .subscribe(checkoutResponse => {
+        if (!checkoutResponse?.order_id) {
           this.updateCartState({ isCheckoutLoading: false });
-        },
+          return;
+        }
+
+        const paymentMethod: PaymentMethodIn = { payment_method: 'card' };
+        const idempotencyKey = crypto.randomUUID();
+
+        this.#orderPaymentService.payOrder(checkoutResponse.order_id, paymentMethod, idempotencyKey).subscribe({
+          next: (res: StripeResponse) => {
+            window.location.href = res.session_url;
+          },
+          error: () => {
+            this.updateCartState({
+              error: 'Error al procesar el pago.'
+            });
+          },
+          complete: () => {
+            this.updateCartState({ isCheckoutLoading: false });
+          }
+        });
       });
-    });
   }
 
   onContinueShopping(): void {
@@ -290,8 +341,6 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   sortItems(sortBy: SortOption['value']): void {
-    if (!this.#cartState.cart) return;
-
     const items = [...this.#cartState.items];
     switch (sortBy) {
       case 'price-asc':
@@ -311,7 +360,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.#router.navigate(['/destinos'], { queryParams: { filter: destination } });
   }
 
-  trackByItemId(_: number, item: CartItemResponse): number {
+  trackByItemId(_: number, item: ExtendedCartItemResponse): number {
     return item.id;
   }
 }
