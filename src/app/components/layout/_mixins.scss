@@ -14,12 +14,13 @@
   justify-content: space-between;
 }
 
-
 @mixin flex-inline($gap: 1rem, $align: center, $justify: flex-start) {
-  display: flex;
-  align-items: $align;
-  justify-content: $justify;
-  gap: $gap;
+  & {
+    display: flex;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+  }
 }
 
 // Mixin para focus ring personalizado

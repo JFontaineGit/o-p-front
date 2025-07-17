@@ -6,22 +6,28 @@
 @use '../../../styles/_ripple.scss' as ripple;
 
 :host {
-  display: block;
-  position: sticky;
-  top: 0;
-  z-index: nav.$navbar-z-index;
+  & {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: nav.$navbar-z-index;
+  }
 }
 
 .header {
   @include glass.glass-base(0.2, 10px, 0);
-  box-shadow: var(--shadow-glass);
-  font-family: nav.$font-family-base;
-  min-height: 80px;
-  border-radius: var(--border-radius-md);
-  @include mq.nav-height-desktop;
+  & {
+    box-shadow: var(--shadow-glass);
+    font-family: nav.$font-family-base;
+    min-height: 80px;
+    border-radius: var(--border-radius-md);
+  }
 
+  @include mq.nav-height-desktop;
   @include mq.mobile-only {
-    min-height: 70px;
+    & {
+      min-height: 70px;
+    }
     @include mq.nav-height-mobile;
   }
 }
@@ -32,26 +38,34 @@
 
 .header__content {
   @include mixins.flex-between();
-  height: 100%;
+  & {
+    height: 100%;
+  }
   @include mq.nav-spacing-responsive;
 }
 
 .header__left {
   @include mixins.flex-inline(0.75rem);
-  flex-shrink: 0;
-  align-items: center;
-  height: 100%;
-  padding-left: 0.5rem;
+  & {
+    flex-shrink: 0;
+    align-items: center;
+    height: 100%;
+    padding-left: 0.5rem;
+  }
   
   @include mq.mobile-only {
-    padding-left: 0.25rem;
+    & {
+      padding-left: 0.25rem;
+    }
   }
 }
 
 .logo {
   @include mixins.flex-inline(0.75rem);
-  align-items: center;
-  height: 100%;
+  & {
+    align-items: center;
+    height: 100%;
+  }
 
   h1,
   svg {
@@ -61,29 +75,37 @@
 
 .logo-container {
   @include mixins.flex-center();
-  height: 100%;
+  & {
+    height: 100%;
+  }
 }
 
 .planet-logo {
   @include mq.nav-logo-responsive;
-  transition: nav.$navbar-transition;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1 !important;
-  vertical-align: middle !important;
+  & {
+    transition: nav.$navbar-transition;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+  }
   
   &.mat-icon {
-    font-size: 40px !important;
-    width: 40px !important;
-    height: 40px !important;
-    line-height: 40px !important;
+    & {
+      font-size: 40px !important;
+      width: 40px !important;
+      height: 40px !important;
+      line-height: 40px !important;
+    }
     
     @include mq.mobile-only {
-      font-size: 36px !important;
-      width: 36px !important;
-      height: 36px !important;
-      line-height: 36px !important;
+      & {
+        font-size: 36px !important;
+        width: 36px !important;
+        height: 36px !important;
+        line-height: 36px !important;
+      }
     }
   }
   
@@ -94,8 +116,10 @@
 
 .logo {
   @include mixins.flex-inline(0.75rem);
-  align-items: center;
-  height: 100%;
+  & {
+    align-items: center;
+    height: 100%;
+  }
   
   h1,
   svg,
@@ -106,15 +130,17 @@
 }
 
 .logo-link {
-  text-decoration: none;
-  color: inherit;
-  transition: nav.$navbar-transition;
+  & {
+    text-decoration: none;
+    color: inherit;
+    transition: nav.$navbar-transition;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+  }
   @include ripple.ripple-light();
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding: 0.25rem 0.5rem;
-  border-radius: 8px;
   
   &:hover {
     opacity: 0.9;
@@ -125,17 +151,21 @@
 }
 
 .logo h1 {
-  font-size: clamp(1.2rem, 2.5vw, nav.$font-size-logo);
-  font-weight: nav.$font-weight-bold;
-  color: rgba(30, 41, 59, 0.9);
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
-  margin: 0;
-  line-height: 1.2;
-  display: flex;
-  align-items: center;
+  & {
+    font-size: clamp(1.2rem, 2.5vw, nav.$font-size-logo);
+    font-weight: nav.$font-weight-bold;
+    color: rgba(30, 41, 59, 0.9);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    margin: 0;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+  }
   
   @include mq.mobile-only {
-    font-size: clamp(1rem, 2vw, calc(nav.$font-size-logo * 0.9));
+    & {
+      font-size: clamp(1rem, 2vw, calc(nav.$font-size-logo * 0.9));
+    }
   }
   
   a {
@@ -147,7 +177,9 @@
 
 .header__center {
   @include mixins.flex-center();
-  flex: 1;
+  & {
+    flex: 1;
+  }
 
   &.header__center--hidden {
     display: none !important;
@@ -165,14 +197,16 @@
 
 .nav-link {
   @include mixins.nav-link;
-  color: rgba(30, 41, 59, 0.95);
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
-  border-radius: 12px;
-  padding: vars.$spacing-sm vars.$spacing-md;
-  font-weight: 500;
-  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
-  background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  & {
+    color: rgba(30, 41, 59, 0.95);
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    padding: vars.$spacing-sm vars.$spacing-md;
+    font-weight: 500;
+    font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
   @include ripple.ripple-light();
 
   &:hover {
@@ -194,9 +228,11 @@
 
 .header__right {
   @include mixins.flex-inline(0.75rem);
-  flex-shrink: 0;
-  align-items: center;
-  height: 100%;
+  & {
+    flex-shrink: 0;
+    align-items: center;
+    height: 100%;
+  }
 
   &.header__right--hidden {
     display: none !important;
@@ -208,16 +244,18 @@
 }
 
 .user-btn {
-  color: rgba(30, 41, 59, 0.95);
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  & {
+    color: rgba(30, 41, 59, 0.95);
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
   @include ripple.ripple-light();
   
   &:hover {
@@ -237,9 +275,11 @@
 }
 
 .user-dropdown {
-  min-width: nav.$navbar-dropdown-width;
+  & {
+    min-width: nav.$navbar-dropdown-width;
+  }
 
-  .mat-menu-panel {
+  .mat-menu edu-panel {
     padding: 0;
     background: transparent;
     border: none;
@@ -248,10 +288,12 @@
 }
 
 .user-dropdown-header {
-  padding: 1rem;
-  border-radius: var(--border-radius-md);
+  & {
+    padding: 1rem;
+    border-radius: var(--border-radius-md);
+    position: relative;
+  }
   @include mixins.flex-inline(0.75rem);
-  position: relative;
 
   &::before {
     content: '';
@@ -266,8 +308,10 @@
 
 .user-avatar {
   @include mixins.avatar;
-  border: 2px solid rgba(59, 130, 246, 0.2);
-  box-shadow: var(--shadow-btn-primary);
+  & {
+    border: 2px solid rgba(59, 130, 246, 0.2);
+    box-shadow: var(--shadow-btn-primary);
+  }
 
   @include mq.mobile-only {
     @include mixins.avatar(nav.$navbar-avatar-size-mobile);
@@ -275,36 +319,44 @@
 }
 
 .user-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
+  & {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
 }
 
 .user-name {
-  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
-  font-weight: nav.$font-weight-bold;
-  color: rgba(30, 41, 59, 0.9);
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  & {
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+    font-weight: nav.$font-weight-bold;
+    color: rgba(30, 41, 59, 0.9);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  }
 }
 
 .user-email {
-  font-size: clamp(0.65rem, 1.2vw, 0.75rem);
-  color: rgba(100, 116, 139, 0.8);
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  & {
+    font-size: clamp(0.65rem, 1.2vw, 0.75rem);
+    color: rgba(100, 116, 139, 0.8);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  }
 }
 
 .dropdown-item {
-  padding: vars.$spacing-sm vars.$spacing-md !important;
-  color: rgba(30, 41, 59, 0.95) !important;
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8) !important;
-  margin: 0.25rem 0.5rem !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: vars.$spacing-sm !important;
-  min-height: 48px !important;
+  & {
+    padding: vars.$spacing-sm vars.$spacing-md !important;
+    color: rgba(30, 41, 59, 0.95) !important;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8) !important;
+    margin: 0.25rem 0.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: vars.$spacing-sm !important;
+    min-height: 48px !important;
+  }
   
   &:hover {
-    border-color: rgba(255, 255, 255, 0.35) !important;
+    border-color: rgba(255, 255, 0.35) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
     color: rgba(30, 41, 59, 1) !important;
   }
@@ -340,23 +392,27 @@
 }
 
 .cart-btn-container {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  
-  .cart-btn {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    color: rgba(30, 41, 59, 0.95);
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
-    @include ripple.ripple-light();
+  & {
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    height: 100%;
+  }
+  
+  .cart-btn {
+    & {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      color: rgba(30, 41, 59, 0.95);
+      text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    @include ripple.ripple-light();
     
     &:hover {
       background: rgba(255, 255, 255, 0.25);
@@ -368,37 +424,43 @@
     
     .mat-badge-content {
       @include mixins.badge(nav.$navbar-primary, white, nav.$navbar-badge-size);
-      top: -5px;
-      right: -5px;
-      font-size: 0.75rem;
-      background: linear-gradient(135deg, vars.$primary, vars.$primary-dark);
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      & {
+        top: -5px;
+        right: -5px;
+        font-size: 0.75rem;
+        background: linear-gradient(135deg, vars.$primary, vars.$primary-dark);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
     }
   }
 }
 
 .auth-actions {
   @include mixins.flex-inline(0.5rem);
-  align-items: center;
-  height: 100%;
+  & {
+    align-items: center;
+    height: 100%;
+  }
 }
 
 .btn {
-  padding: vars.$spacing-sm vars.$spacing-md;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  & {
+    padding: vars.$spacing-sm vars.$spacing-md;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
   @include mixins.focus-ring-nav;
-  white-space: nowrap;
   
   &.btn--primary {
     background: linear-gradient(135deg, vars.$primary, vars.$primary-dark);
@@ -431,18 +493,20 @@
 }
 
 .mobile-toggle {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  width: 48px;
-  height: 48px;
-  color: rgba(30, 41, 59, 0.95);
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+  & {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    width: 48px;
+    height: 48px;
+    color: rgba(30, 41, 59, 0.95);
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   @include ripple.ripple-light();
   @include mq.show-on-mobile-only;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   
   .mat-icon {
     font-size: 24px !important;
@@ -469,10 +533,12 @@
 
 .mobile-overlay {
   @include mixins.mobile-overlay(nav.$navbar-height);
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  z-index: nav.$navbar-overlay-z-index;
+  & {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: nav.$navbar-overlay-z-index;
+  }
 
   &.mobile-overlay--visible {
     opacity: 1;
@@ -485,81 +551,103 @@
 }
 
 .sidenav-container {
-  position: fixed;
-  top: nav.$navbar-height;
-  right: 0;
-  width: 0;
-  height: calc(100vh - nav.$navbar-height);
-  z-index: nav.$navbar-sidenav-z-index;
+  & {
+    position: fixed;
+    top: nav.$navbar-height;
+    right: 0;
+    width: 0;
+    height: calc(100vh - nav.$navbar-height);
+    z-index: nav.$navbar-sidenav-z-index;
+  }
 
   @include mq.mobile-only {
-    top: nav.$navbar-mobile-height;
-    height: calc(100vh - nav.$navbar-mobile-height);
+    & {
+      top: nav.$navbar-mobile-height;
+      height: calc(100vh - nav.$navbar-mobile-height);
+    }
   }
 }
 
 .mobile-menu.mat-sidenav {
   @include glass.glass-card(0);
-  width: min(nav.$navbar-mobile-menu-width-max, nav.$navbar-mobile-menu-width);
-  border-radius: var(--border-radius-md);
+  & {
+    width: min(nav.$navbar-mobile-menu-width-max, nav.$navbar-mobile-menu-width);
+    border-radius: var(--border-radius-md);
+  }
 }
 
 .mobile-content {
-  padding: 0;
-  height: 100%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+  & {
+    padding: 0;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .mobile-user-section {
   @include glass.glass-base(0.2, 20px);
-  border-radius: var(--border-radius-md);
-  padding: 1.25rem 1rem 1rem;
+  & {
+    border-radius: var(--border-radius-md);
+    padding: 1.25rem 1rem 1rem;
+  }
 }
 
 .mobile-user-info {
   @include mixins.flex-inline(0.75rem);
-  margin-bottom: 1rem;
-  align-items: center;
+  & {
+    margin-bottom: 1rem;
+    align-items: center;
+  }
 }
 
 .mobile-user-avatar {
   @include mixins.avatar(3rem);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  box-shadow: var(--shadow-glass);
-  flex-shrink: 0;
+  & {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: var(--shadow-glass);
+    flex-shrink: 0;
+  }
 }
 
 .mobile-user-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  justify-content: center;
+  & {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    justify-content: center;
+  }
 }
 
 .mobile-user-name {
-  font-size: clamp(0.85rem, 1.5vw, 1rem);
-  font-weight: nav.$font-weight-bold;
-  color: rgba(30, 41, 59, 0.9);
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
-  line-height: 1.2;
-  margin: 0;
+  & {
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    font-weight: nav.$font-weight-bold;
+    color: rgba(30, 41, 59, 0.9);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    line-height: 1.2;
+    margin: 0;
+  }
 }
 
 .mobile-user-email {
-  font-size: clamp(0.75rem, 1.2vw, 0.875rem);
-  color: rgba(100, 116, 139, 0.8);
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
-  line-height: 1.2;
-  margin: 0;
+  & {
+    font-size: clamp(0.75rem, 1.2vw, 0.875rem);
+    color: rgba(100, 116, 139, 0.8);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    line-height: 1.2;
+    margin: 0;
+  }
 }
 
 .mobile-section {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  & {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 
   &.mobile-section--logout {
     margin-top: auto;
@@ -569,17 +657,19 @@
 
 .mobile-link {
   @include mixins.flex-inline(0.75rem);
-  padding: vars.$spacing-sm vars.$spacing-md;
-  font-size: clamp(0.8rem, 1.5vw, nav.$font-size-nav);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(30, 41, 59, 0.95);
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  min-height: 3rem;
+  & {
+    padding: vars.$spacing-sm vars.$spacing-md;
+    font-size: clamp(0.8rem, 1.5vw, nav.$font-size-nav);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(30, 41, 59, 0.95);
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    min-height: 3rem;
+    align-items: center;
+  }
   @include ripple.ripple-light();
-  align-items: center;
   
   &:hover {
     background: rgba(255, 255, 255, 0.25);

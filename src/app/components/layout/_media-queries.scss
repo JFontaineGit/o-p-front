@@ -1,4 +1,3 @@
-// Media queries específicas para navegación
 @use './_variables.scss' as nav;
 
 // Breakpoints
@@ -71,20 +70,26 @@ $large-desktop: 1200px;
 
 // Altura específica para navegación
 @mixin nav-height-mobile {
-  height: nav.$navbar-mobile-height;
-  min-height: nav.$navbar-mobile-height;
+  & {
+    height: nav.$navbar-mobile-height;
+    min-height: nav.$navbar-mobile-height;
+  }
 }
 
 @mixin nav-height-desktop {
-  height: nav.$navbar-height;
-  min-height: nav.$navbar-height;
+  & {
+    height: nav.$navbar-height;
+    min-height: nav.$navbar-height;
+  }
 }
 
 // Container responsive
 @mixin nav-container {
-  max-width: $large-desktop;
-  margin: 0 auto;
-  padding: 0.6rem;
+  & {
+    max-width: $large-desktop;
+    margin: 0 auto;
+    padding: 0.6rem;
+  }
 
   @include mobile-only {
     padding: 0.6rem;
@@ -97,8 +102,10 @@ $large-desktop: 1200px;
 
 // Logo responsive
 @mixin nav-logo-responsive {
-  width: nav.$navbar-logo-size;
-  height: nav.$navbar-logo-size;
+  & {
+    width: nav.$navbar-logo-size;
+    height: nav.$navbar-logo-size;
+  }
 
   @include mobile-only {
     width: nav.$navbar-logo-size-mobile;
@@ -108,8 +115,10 @@ $large-desktop: 1200px;
 
 // Avatar responsive
 @mixin nav-avatar-responsive {
-  width: nav.$navbar-avatar-size;
-  height: nav.$navbar-avatar-size;
+  & {
+    width: nav.$navbar-avatar-size;
+    height: nav.$navbar-avatar-size;
+  }
 
   @include mobile-only {
     width: nav.$navbar-avatar-size-mobile;
@@ -126,7 +135,9 @@ $large-desktop: 1200px;
 
 // Mostrar solo en mobile
 @mixin show-on-mobile-only {
-  display: none;
+  & {
+    display: none;
+  }
 
   @include nav-mobile {
     display: block;
@@ -135,7 +146,9 @@ $large-desktop: 1200px;
 
 // Espaciado responsive
 @mixin nav-spacing-responsive {
-  gap: 1.5rem;
+  & {
+    gap: 1.5rem;
+  }
 
   @include tablet-only {
     gap: 1rem;
@@ -148,7 +161,9 @@ $large-desktop: 1200px;
 
 // Texto responsive
 @mixin nav-text-responsive {
-  font-size: nav.$font-size-nav;
+  & {
+    font-size: nav.$font-size-nav;
+  }
 
   @include mobile-only {
     font-size: calc(nav.$font-size-nav * 0.9);

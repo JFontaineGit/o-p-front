@@ -13,11 +13,13 @@
 
 @mixin glass-card($radius: var(--border-radius-md)) {
   @include glass-base();
-  border-radius: $radius;
-  box-shadow: var(--shadow-glass);
-  color: var(--text-primary);
-  text-shadow: 0 1px 2px var(--text-shadow);
-
+  &{
+    border-radius: $radius;
+    box-shadow: var(--shadow-glass);
+    color: var(--text-primary);
+    text-shadow: 0 1px 2px var(--text-shadow);
+  }
+  
   &:focus-within {
     outline: 2px solid vars.$primary;
     outline-offset: 2px;
