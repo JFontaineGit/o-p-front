@@ -67,7 +67,7 @@
       [disabled]="itemState.isLoading || itemState.isRemoving"
       [attr.aria-label]="'Eliminar ' + itemState.title + ' del carrito'">
       <span class="material-symbols-outlined">delete</span>
-      <span class="action-text" *ngIf="!itemState.isRemoving">Eliminar</span>
+      <span class="action-text" *ngIf="!itemState.isRemoving"></span>
       <span class="action-text" *ngIf="itemState.isRemoving">Eliminando...</span>
     </button>
   </div>

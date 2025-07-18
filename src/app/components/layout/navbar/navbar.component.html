@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header" *ngIf="!isLoading">
   <div class="container">
     <div class="header__content">
       <!-- Logo/Brand - Left -->
@@ -107,8 +107,8 @@
         <!-- Cart Button (No Menu) -->
         <div class="cart-btn-container" *ngIf="isLoggedIn">
           <a
-            mat-icon-button
-            routerLink="/cart"
+            mat-button
+            href="/cart"
             class="cart-btn"
             aria-label="Ir al carrito"
           >
@@ -117,9 +117,11 @@
               [matBadgeHidden]="cartItemCount === 0"
               matBadgeColor="primary"
               matBadgeSize="small"
+              [@badgeAnimation]="cartItemCount"
             >
               shopping_cart
             </mat-icon>
+            <span class="cart-label">{{ cartItemCount }}</span>
           </a>
         </div>
 
@@ -156,10 +158,11 @@
   class="mobile-overlay"
   [class.mobile-overlay--visible]="sidenav?.opened"
   (click)="closeMobileMenu()"
+  *ngIf="!isLoading"
 ></div>
 
 <!-- Mobile Menu (Sidenav) -->
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" *ngIf="!isLoading">
   <mat-sidenav
     #sidenav
     mode="over"
@@ -228,7 +231,7 @@
         <mat-divider></mat-divider>
 
         <a
-          routerLink="/cart"
+          href="/cart"
           mat-button
           class="mobile-link"
           (click)="closeMobileMenu()"
@@ -237,6 +240,7 @@
             [matBadge]="cartItemCount"
             [matBadgeHidden]="cartItemCount === 0"
             matBadgeSize="small"
+            [@badgeAnimation]="cartItemCount"
           >
             shopping_cart
           </mat-icon>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError, of } from 'rxjs';
-import { catchError, tap, timeout, retry } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, switchMap, tap, timeout, retry } from 'rxjs/operators';
 import { ApiService } from '../core/api.service';
 import { LoggerService } from '../core/logger.service';
 import { StorageService } from '../core/storage.service';
@@ -12,8 +12,15 @@ import {
   RefreshTokenResponse,
   ErrorResponse,
 } from '../interfaces/auth.interfaces';
-import { UserRead } from '../interfaces/user.interfaces';
-import {HttpHeaders} from "@angular/common/http";
+import { UserRead, UserMe } from '../interfaces/user.interfaces';
+import { HttpHeaders } from '@angular/common/http';
+import { UserService } from '../users/user.service';
+
+interface AuthState {
+  isLoggedIn: boolean;
+  user: UserMe | null;
+}
+
 /**
  * Servicio para manejar operaciones relacionadas con autenticación.
  */
@@ -23,12 +30,57 @@ import {HttpHeaders} from "@angular/common/http";
 export class AuthService {
   private readonly TIMEOUT_MS = 10000;
   private readonly RETRY_COUNT = 2;
+  private authState$ = new BehaviorSubject<AuthState>({ isLoggedIn: false, user: null });
 
   constructor(
     private readonly apiService: ApiService,
     private readonly logger: LoggerService,
-    private readonly storage: StorageService
-  ) {}
+    private readonly storage: StorageService,
+    private readonly userService: UserService
+  ) {
+    // Inicializar el estado de autenticación al crear el servicio
+    this.checkInitialAuthState();
+  }
+
+  /**
+   * Verifica el estado inicial de autenticación al cargar el servicio.
+   */
+  private checkInitialAuthState() {
+    if (this.isLoggedIn()) {
+      this.userService.getMe().pipe(
+        tap((user) => {
+          this.authState$.next({ isLoggedIn: true, user });
+          this.logger.debug('Estado inicial: usuario autenticado', user);
+        }),
+        catchError((error) => {
+          this.logger.error('Error al verificar estado inicial', error);
+          this.storage.clearStorage();
+          this.authState$.next({ isLoggedIn: false, user: null });
+          return of(null);
+        })
+      ).subscribe();
+    } else {
+      this.authState$.next({ isLoggedIn: false, user: null });
+      this.logger.debug('Estado inicial: usuario no autenticado');
+    }
+  }
+
+  /**
+   * Obtiene el estado de autenticación como un Observable.
+   * @returns Observable con el estado de autenticación (isLoggedIn y user).
+   */
+  getAuthState(): Observable<AuthState> {
+    return this.authState$.asObservable();
+  }
+
+  /**
+   * Actualiza el estado de autenticación.
+   * @param state Nuevo estado de autenticación.
+   */
+  updateAuthState(state: AuthState) {
+    this.authState$.next(state);
+    this.logger.debug('Estado de autenticación actualizado:', state);
+  }
 
   /**
    * Verifica si el usuario está autenticado.
@@ -58,22 +110,32 @@ export class AuthService {
    * @returns Observable con la respuesta de autenticación (tokens).
    */
   login(credentials: Auth): Observable<TokenUserResponse> {
-    return this.apiService
-      .post<TokenUserResponse>(AUTH_ENDPOINTS.LOGIN, credentials)
-      .pipe(
-        timeout(this.TIMEOUT_MS),
-        retry(this.RETRY_COUNT),
-        tap((response) => {
-          if (response.data?.access_token) {
-            this.storage.setToken(response.data.access_token);
-            if (response.data.refresh_token) {
-              this.storage.setRefreshToken(response.data.refresh_token);
-            }
-            this.logger.debug('Inicio de sesión exitoso');
+    return this.apiService.post<TokenUserResponse>(AUTH_ENDPOINTS.LOGIN, credentials).pipe(
+      timeout(this.TIMEOUT_MS),
+      retry(this.RETRY_COUNT),
+      switchMap((response) => {
+        if (response.data?.access_token) {
+          this.storage.setToken(response.data.access_token);
+          if (response.data.refresh_token) {
+            this.storage.setRefreshToken(response.data.refresh_token);
           }
-        }),
-        catchError((error) => this.handleError('Inicio de sesión', error))
-      );
+          this.logger.debug('Inicio de sesión exitoso');
+          // Cargar datos del usuario después del login
+          return this.userService.getMe().pipe(
+            tap((user) => {
+              this.authState$.next({ isLoggedIn: true, user });
+              this.logger.debug('Datos del usuario cargados tras login:', user);
+            }),
+            switchMap(() => of(response))
+          );
+        }
+        return of(response);
+      }),
+      catchError((error) => {
+        this.authState$.next({ isLoggedIn: false, user: null });
+        return this.handleError('Inicio de sesión', error);
+      })
+    );
   }
 
   /**
@@ -84,28 +146,42 @@ export class AuthService {
     const refreshToken = this.storage.getRefreshToken();
     if (!refreshToken) {
       this.storage.clearStorage();
+      this.authState$.next({ isLoggedIn: false, user: null });
       this.logger.error('No hay refresh token disponible');
       return throwError(() => new Error('No hay refresh token disponible'));
     }
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + refreshToken,
-    })
-    return this.apiService
-      .get<RefreshTokenResponse>(AUTH_ENDPOINTS.REFRESH, {
-        headers: headers,
+    });
+    return this.apiService.get<RefreshTokenResponse>(AUTH_ENDPOINTS.REFRESH, { headers }).pipe(
+      timeout(this.TIMEOUT_MS),
+      retry(this.RETRY_COUNT),
+      tap((response) => {
+        if (response.data?.access_token) {
+          this.storage.setToken(response.data.access_token);
+          this.logger.debug('Token refrescado exitosamente');
+          // Actualizar datos del usuario después de refrescar el token
+          this.userService.getMe().pipe(
+            tap((user) => {
+              this.authState$.next({ isLoggedIn: true, user });
+              this.logger.debug('Datos del usuario actualizados tras refresh:', user);
+            }),
+            catchError((error) => {
+              this.logger.error('Error al actualizar datos del usuario tras refresh', error);
+              this.storage.clearStorage();
+              this.authState$.next({ isLoggedIn: false, user: null });
+              return of(null);
+            })
+          ).subscribe();
+        }
+      }),
+      catchError((error) => {
+        this.storage.clearStorage();
+        this.authState$.next({ isLoggedIn: false, user: null });
+        return this.handleError('Refrescar token', error);
       })
-      .pipe(
-        timeout(this.TIMEOUT_MS),
-        retry(this.RETRY_COUNT),
-        tap((response) => {
-          if (response.data?.access_token) {
-            this.storage.setToken(response.data?.access_token);
-            this.logger.debug('Token refrescado exitosamente');
-          }
-        }),
-        catchError((error) => this.handleError('Refrescar token', error))
-      );
+    );
   }
 
   /**
@@ -114,6 +190,7 @@ export class AuthService {
    */
   logout(): Observable<void> {
     this.storage.clearStorage();
+    this.authState$.next({ isLoggedIn: false, user: null });
     this.logger.debug('Sesión cerrada exitosamente');
     return of(void 0);
   }
@@ -130,24 +207,16 @@ export class AuthService {
     let errorMessage = 'Ocurrió un error inesperado';
     if (error instanceof Error) {
       errorMessage = error.message;
-    } else if (
-      typeof error === 'object' &&
-      error !== null &&
-      'status' in error
-    ) {
+    } else if (typeof error === 'object' && error !== null && 'status' in error) {
       const httpError = error as { status: number; error?: ErrorResponse };
       switch (httpError.status) {
         case 400:
-          errorMessage =
-            httpError.error?.message ||
-            httpError.error?.detail ||
-            'Datos de solicitud inválidos';
+          errorMessage = httpError.error?.message || httpError.error?.detail || 'Datos de solicitud inválidos';
           break;
         case 401:
-          errorMessage =
-            httpError.error?.message ||
-            'Credenciales inválidas o token expirado';
+          errorMessage = httpError.error?.message || 'Credenciales inválidas o token expirado';
           this.storage.clearStorage();
+          this.authState$.next({ isLoggedIn: false, user: null });
           break;
         case 403:
           errorMessage = httpError.error?.message || 'Acción no permitida';

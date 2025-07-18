@@ -1,4 +1,3 @@
-// Misma importación que tenías
 import {
   Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject
 } from '@angular/core';
@@ -21,6 +20,11 @@ import {
 import {
   StripeResponse, PaymentMethodIn
 } from '../../services/interfaces/order-payment.interfaces';
+import { TransferState, makeStateKey } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
+
+const CART_STATE_KEY = makeStateKey<CartResponse>('cartState');
 
 interface SortOption {
   value: 'price-asc' | 'price-desc' | 'name';
@@ -97,6 +101,8 @@ export class CartComponent implements OnInit, OnDestroy {
   #authService = inject(AuthService);
   #cdr = inject(ChangeDetectorRef);
   #dialog = inject(MatDialog);
+  #transferState = inject(TransferState);
+  #platformId = inject(PLATFORM_ID);
 
   ngOnInit(): void {
     this.loadCart();
@@ -127,7 +133,7 @@ export class CartComponent implements OnInit, OnDestroy {
         isRemoving: item.isRemoving ?? false
       }));
     } else {
-      mergedItems = this.#cartState.items;
+      mergedItems = [...this.#cartState.items]; // Crear una copia para inmutabilidad
     }
 
     this.#cartState = {
@@ -139,10 +145,24 @@ export class CartComponent implements OnInit, OnDestroy {
       isEmpty: !mergedItems.length && !(newState.isLoading ?? this.#cartState.isLoading)
     };
 
-    this.#cdr.markForCheck();
+    this.#loggerService.debug('Estado del carrito actualizado:', this.#cartState);
+    // Usar detectChanges en lugar de markForCheck para forzar la actualización inmediata
+    if (isPlatformBrowser(this.#platformId)) {
+      this.#cdr.detectChanges();
+    }
   }
 
   private loadCart(): void {
+    if (this.#transferState.hasKey(CART_STATE_KEY)) {
+      const cart = this.#transferState.get(CART_STATE_KEY, null);
+      if (cart) {
+        this.updateCartState({ cart });
+        this.sortItems(this.#cartState.currentSort);
+        this.#loggerService.debug('Carrito cargado desde TransferState:', cart);
+        return;
+      }
+    }
+
     if (!this.#authService.isLoggedIn()) {
       this.updateCartState({ error: 'Debes iniciar sesión para ver el carrito.' });
       this.#router.navigate(['/login']);
@@ -158,6 +178,7 @@ export class CartComponent implements OnInit, OnDestroy {
         catchError(error => {
           this.updateCartState({ error: 'Error al cargar el carrito. Por favor, intenta de nuevo.' });
           this.#notificationService.error('Error al cargar el carrito');
+          this.#loggerService.error('Error al cargar el carrito', error);
           return of(null);
         })
       )
@@ -168,14 +189,14 @@ export class CartComponent implements OnInit, OnDestroy {
             id: (item as any).id ?? item.product_metadata_id,
             isRemoving: false
           }));
-
           const normalizedCart: CartResponse = {
             ...cart,
             items: normalizedItems
           };
-
+          this.#transferState.set(CART_STATE_KEY, normalizedCart);
           this.updateCartState({ cart: normalizedCart });
           this.sortItems(this.#cartState.currentSort);
+          this.#loggerService.debug('Carrito cargado desde el backend:', normalizedCart);
         }
       });
   }
@@ -189,6 +210,7 @@ export class CartComponent implements OnInit, OnDestroy {
         takeUntil(this.#destroy$),
         catchError(error => {
           this.#notificationService.error('Error al actualizar la cantidad');
+          this.#loggerService.error('Error al actualizar la cantidad del ítem', error);
           return of(null);
         })
       )
@@ -199,7 +221,13 @@ export class CartComponent implements OnInit, OnDestroy {
             id: (item as any).id ?? item.product_metadata_id,
             isRemoving: false
           }));
-          this.updateCartState({ cart: { ...updatedCart, items: normalizedItems } });
+          const normalizedCart: CartResponse = {
+            ...updatedCart,
+            items: normalizedItems
+          };
+          this.updateCartState({ cart: normalizedCart });
+          this.#transferState.set(CART_STATE_KEY, normalizedCart);
+          this.#loggerService.debug('Carrito actualizado tras cambio de cantidad:', normalizedCart);
         }
       });
   }
@@ -216,34 +244,48 @@ export class CartComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(confirmed => {
       if (confirmed) {
-        const updatedItems = this.#cartState.items.map(item =>
-          item.id === itemId ? { ...item, isRemoving: true } : item
-        );
-        this.updateCartState({ items: updatedItems });
+        // Eliminación optimista: Remover el ítem inmediatamente
+        const updatedItems = [...this.#cartState.items].filter(item => item.id !== itemId);
+        const updatedCart = {
+          ...this.#cartState.cart!,
+          items: updatedItems,
+          items_cnt: updatedItems.length,
+          total: updatedItems.reduce((sum, item) => sum + item.unit_price * item.qty, 0)
+        };
+        this.updateCartState({ cart: updatedCart });
+        this.#loggerService.debug('Eliminación optimista aplicada, nuevo estado:', this.#cartState);
 
         this.#cartService.deleteCartItem(itemId)
           .pipe(
             takeUntil(this.#destroy$),
-            finalize(() => {
-              const finalizedItems = this.#cartState.items.map(item =>
-                item.id === itemId ? { ...item, isRemoving: false } : item
-              );
-              this.updateCartState({ items: finalizedItems });
-            }),
             catchError(error => {
+              // Si falla, restaurar el carrito
               this.#notificationService.error('Error al eliminar el paquete');
+              this.#loggerService.error('Error al eliminar el ítem del carrito', error);
+              this.loadCart(); // Recargar el carrito para restaurar el estado
               return of(null);
             })
           )
-          .subscribe(updatedCart => {
-            if (updatedCart) {
-              const normalizedItems = updatedCart.items.map(item => ({
+          .subscribe(response => {
+            if (response) {
+              // Caso: Respuesta 200 con carrito actualizado
+              const normalizedItems = response.items.map(item => ({
                 ...item,
                 id: (item as any).id ?? item.product_metadata_id,
                 isRemoving: false
               }));
-              this.updateCartState({ cart: { ...updatedCart, items: normalizedItems } });
-              this.#notificationService.success('Paquete eliminado');
+              const normalizedCart: CartResponse = {
+                ...response,
+                items: normalizedItems
+              };
+              this.updateCartState({ cart: normalizedCart });
+              this.#transferState.set(CART_STATE_KEY, normalizedCart);
+              this.#loggerService.debug('Carrito actualizado desde el backend:', normalizedCart);
+            }
+            // Notificar éxito incluso en caso de 204
+            this.#notificationService.success('Paquete eliminado');
+            if (isPlatformBrowser(this.#platformId)) {
+              this.#cdr.detectChanges();
             }
           });
       }
@@ -270,11 +312,13 @@ export class CartComponent implements OnInit, OnDestroy {
             takeUntil(this.#destroy$),
             catchError(error => {
               this.#notificationService.error('Error al vaciar el carrito');
+              this.#loggerService.error('Error al vaciar el carrito', error);
               return of(null);
             })
           )
           .subscribe(() => {
             this.loadCart();
+            this.#transferState.remove(CART_STATE_KEY);
             this.#notificationService.success('Carrito vaciado');
           });
       }
@@ -296,6 +340,8 @@ export class CartComponent implements OnInit, OnDestroy {
           this.updateCartState({
             error: 'Error al procesar el checkout.'
           });
+          this.#notificationService.error('Error al procesar el checkout');
+          this.#loggerService.error('Error al procesar el checkout', err);
           return of(null);
         })
       )
@@ -312,10 +358,12 @@ export class CartComponent implements OnInit, OnDestroy {
           next: (res: StripeResponse) => {
             window.location.href = res.session_url;
           },
-          error: () => {
+          error: (err) => {
             this.updateCartState({
               error: 'Error al procesar el pago.'
             });
+            this.#notificationService.error('Error al procesar el pago');
+            this.#loggerService.error('Error al procesar el pago', err);
           },
           complete: () => {
             this.updateCartState({ isCheckoutLoading: false });
@@ -341,7 +389,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   sortItems(sortBy: SortOption['value']): void {
-    const items = [...this.#cartState.items];
+    const items = [...this.#cartState.items]; // Crear una copia para inmutabilidad
     switch (sortBy) {
       case 'price-asc':
         items.sort((a, b) => a.unit_price - b.unit_price);

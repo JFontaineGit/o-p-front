@@ -44,6 +44,7 @@ export interface PackageResponse {
   name: string;
   description: string;
   cover_image?: string;
+  images?: { id: number; image: string; description?: string; uploaded_at: string }[];
   base_price?: number;
   taxes?: number;
   final_price: number;
@@ -54,10 +55,6 @@ export interface PackageResponse {
   updated_at: string;
   duration_days?: number;
   currency: string;
-}
-
-export interface PackageDetailResponse extends PackageResponse {
-  components: ComponentPackageResponse[];
 }
 
 export interface ComponentPackageResponse {
@@ -71,6 +68,12 @@ export interface ComponentPackageResponse {
   product_type: string;
   product_name: string;
   currency: string;
+  available_id: number;
+  availability_data?: { [key: string]: any };
+}
+
+export interface PackageDetailResponse extends PackageResponse {
+  components: ComponentPackageResponse[];
 }
 
 export interface PackageSearchParams {

@@ -6,10 +6,11 @@ import { PackageService } from '../../../services/products/packages/package.serv
 import { ProductService } from '../../../services/products/product.service';
 import { LoggerService } from '../../../services/core/logger.service';
 import { NotificationService } from '../../../core/notification/services/notification.service';
-import { CartItemAdd } from '../../../services/interfaces/cart.interfaces';
-import { PackageResponse } from '../../../services/interfaces/package.interfaces';
+import { CartItemAdd, CartPackageAdd } from '../../../services/interfaces/cart.interfaces';
+import { PackageDetailResponse, PackageListResponse } from '../../../services/interfaces/package.interfaces';
 import { ProductMetadataResponse } from '../../../services/interfaces/product.interfaces';
 import { HttpParams } from '@angular/common/http';
+import { forkJoin } from 'rxjs';
 
 // Interfaz genérica para cubrir Product y TravelPackage en ProductCard
 interface CardItem {
@@ -31,8 +32,8 @@ interface CardItem {
   maxPeople?: number;
 }
 
-// Interfaz para paquetes, extendiendo PackageResponse
-interface TravelPackage extends PackageResponse {
+// Interfaz para paquetes, extendiendo PackageDetailResponse
+interface TravelPackage extends PackageDetailResponse {
   availability_id: number;
   title: string;
   price: number;
@@ -103,47 +104,64 @@ export class ProductList implements OnInit {
           let availability_id: number | undefined;
           let currency: string;
 
-          console.log(prod);
-
           this.logger.debug('Producto cargado', prod);
+
+          const defaultImageUrl =
+            'https://via.placeholder.com/400x300?text=Producto';
+          imageUrl =
+            prod.images && prod.images.length > 0 && prod.images[0].image
+              ? prod.images[0].image
+              : defaultImageUrl;
 
           switch (prod.product_type) {
             case 'activity':
               title = (prod.product as any).name ?? 'Actividad sin nombre';
-              description = (prod.product as any).description ?? 'Sin descripción disponible';
-              imageUrl = prod.images[0].image ?? 'https://via.placeholder.com/400x300?text=Actividad';
+              description =
+                (prod.product as any).description ??
+                'Sin descripción disponible';
               availability_id = (prod.product as any).availability_id?.[0]?.id;
               currency = prod.currency ?? 'USD';
               break;
             case 'lodgment':
               title = (prod.product as any).name ?? 'Alojamiento sin nombre';
-              description = (prod.product as any).description ?? 'Sin descripción disponible';
-              imageUrl = prod.images[0].image ?? 'https://via.placeholder.com/400x300?text=Alojamiento';
+              description =
+                (prod.product as any).description ??
+                'Sin descripción disponible';
               availability_id = undefined;
               currency = prod.currency ?? 'USD';
               break;
             case 'transportation':
               title = (prod.product as any).type
-                ? `${(prod.product as any).type} de ${(prod.product as any).origin?.city ?? 'Origen desconocido'} a ${(prod.product as any).destination?.city ?? 'Destino desconocido'}`
+                ? `${(prod.product as any).type} de ${
+                    (prod.product as any).origin?.city ?? 'Origen desconocido'
+                  } a ${
+                    (prod.product as any).destination?.city ??
+                    'Destino desconocido'
+                  }`
                 : 'Transporte sin nombre';
-              description = (prod.product as any).description ?? 'Sin descripción disponible';
-              imageUrl = prod.images[0].image ?? 'https://via.placeholder.com/400x300?text=Transporte';
+              description =
+                (prod.product as any).description ??
+                'Sin descripción disponible';
               availability_id = (prod.product as any).availability_id?.[0]?.id;
               currency = prod.currency ?? 'USD';
               break;
             case 'flight':
               title =
-                `Vuelo de ${(prod.product as any).origin?.city ?? 'Origen desconocido'} a ${(prod.product as any).destination?.city ?? 'Destino desconocido'}` ||
-                'Vuelo sin nombre';
-              description = (prod.product as any).description ?? 'Sin descripción disponible';
-              imageUrl = prod.images[0].image ?? 'https://via.placeholder.com/400x300?text=Vuelo';
+                `Vuelo de ${
+                  (prod.product as any).origin?.city ?? 'Origen desconocido'
+                } a ${
+                  (prod.product as any).destination?.city ??
+                  'Destino desconocido'
+                }` || 'Vuelo sin nombre';
+              description =
+                (prod.product as any).description ??
+                'Sin descripción disponible';
               availability_id = (prod.product as any).availability_id;
               currency = prod.currency ?? 'USD';
               break;
             default:
               title = 'Producto sin nombre';
               description = 'Sin descripción disponible';
-              imageUrl = 'https://via.placeholder.com/400x300?text=Producto';
               availability_id = undefined;
               currency = 'USD';
           }
@@ -158,49 +176,92 @@ export class ProductList implements OnInit {
             currency,
           };
         });
-        this.noProductsMessage = this.products.length === 0 ? 'No hay productos disponibles en este momento.' : null;
+        this.noProductsMessage =
+          this.products.length === 0
+            ? 'No hay productos disponibles en este momento.'
+            : null;
       },
       error: (error: unknown) => {
         this.logger.error('Error al cargar los productos', error);
-        this.noProductsMessage = 'Error al cargar los productos. Por favor, intenta de nuevo.';
-        this.notificationService.error('Error al cargar los productos', { duration: 5000 });
+        this.noProductsMessage =
+          'Error al cargar los productos. Por favor, intenta de nuevo.';
+        this.notificationService.error('Error al cargar los productos', {
+          duration: 5000,
+        });
       },
     });
   }
 
   private loadPackages(): void {
     this.packageService.listPackages().subscribe({
-      next: (packages: PackageResponse[]) => {
-        this.packages = packages.map((pkg) => {
-          const basePrice = pkg.base_price ?? 0;
-          const taxes = pkg.taxes ?? 0;
-          const finalPrice = pkg.final_price ?? 0;
+      next: (response: PackageListResponse) => {
+        const detailObservables = response.items.map((pkg) =>
+          this.packageService.getPackage(pkg.id)
+        );
+        forkJoin(detailObservables).subscribe({
+          next: (packages: PackageDetailResponse[]) => {
+            this.packages = packages.map((pkg) => {
+              const basePrice = pkg.base_price ?? 0;
+              const taxes = pkg.taxes ?? 0;
+              const finalPrice = pkg.final_price ?? 0;
+              const imageUrl =
+                pkg.cover_image ??
+                (pkg.images && pkg.images.length > 0 && pkg.images[0].image
+                  ? pkg.images[0].image
+                  : 'https://via.placeholder.com/400x300?text=Paquete+Turístico');
+              const availability_id =
+                pkg.components && pkg.components.length > 0
+                  ? pkg.components[0].available_id
+                  : 0;
 
-          return {
-            ...pkg,
-            availability_id: (pkg as any).availability_id || pkg.id,
-            title: pkg.name ?? 'Paquete sin nombre',
-            price: finalPrice,
-            currency: pkg.currency ?? 'USD',
-            rating: pkg.rating_average ?? 0,
-            reviewsCount: pkg.total_reviews ?? 0,
-            imageUrl: 'https://via.placeholder.com/400x300?text=Paquete+Turístico', // Eliminada referencia a main_image
-            originalPrice: basePrice && taxes ? basePrice + taxes : undefined,
-            discount:
-              basePrice && finalPrice && finalPrice < basePrice ? ((basePrice - finalPrice) / basePrice) * 100 : undefined,
-            features: [],
-            badge: pkg.rating_average && pkg.rating_average >= 4.8 ? 'Más vendido' : undefined,
-            destination: undefined,
-            duration: pkg.duration_days ? `${pkg.duration_days} días` : undefined,
-            maxPeople: undefined,
-          };
+              return {
+                ...pkg,
+                availability_id,
+                title: pkg.name ?? 'Paquete sin nombre',
+                price: finalPrice,
+                currency: pkg.currency ?? 'USD',
+                rating: pkg.rating_average ?? 0,
+                reviewsCount: pkg.total_reviews ?? 0,
+                imageUrl,
+                originalPrice: basePrice && taxes ? basePrice + taxes : undefined,
+                discount:
+                  basePrice && finalPrice && finalPrice < basePrice
+                    ? ((basePrice - finalPrice) / basePrice) * 100
+                    : undefined,
+                features: pkg.components?.map((comp) => comp.product_name) || [],
+                badge:
+                  pkg.rating_average && pkg.rating_average >= 4.8
+                    ? 'Más vendido'
+                    : undefined,
+                destination: pkg.components?.[0]?.title || undefined,
+                duration: pkg.duration_days
+                  ? `${pkg.duration_days} días`
+                  : undefined,
+                maxPeople: undefined,
+              };
+            });
+            this.noPackagesMessage =
+              this.packages.length === 0
+                ? 'No hay paquetes disponibles en este momento.'
+                : null;
+          },
+          error: (error: unknown) => {
+            this.logger.error('Error al cargar los detalles de los paquetes', error);
+            this.noPackagesMessage =
+              'Error al cargar los paquetes. Por favor, intenta de nuevo.';
+            this.notificationService.error('Error al cargar los paquetes', {
+              duration: 5000,
+            });
+          },
         });
-        this.noPackagesMessage = this.packages.length === 0 ? 'No hay paquetes disponibles en este momento.' : null;
       },
       error: (error: unknown) => {
-        this.logger.error('Error al cargar los paquetes', error);
-        this.noPackagesMessage = 'Error al cargar los paquetes. Por favor, intenta de nuevo.';
-        this.notificationService.error('Error al cargar los paquetes', { duration: 5000 });
+        this.logger.error('Error al cargar la lista de paquetes', error);
+        this.noPackagesMessage =
+          'Error al cargar los paquetes. Por favor, intenta de nuevo.';
+        this.notificationService.error('Error al cargar los paquetes', {
+          duration: 5000,
+        });
       },
     });
   }
@@ -217,11 +278,14 @@ export class ProductList implements OnInit {
     if (this.addingToCart.has(item.id)) return;
 
     if (item.availability_id === undefined) {
-      this.notificationService.error('No hay disponibilidad para este producto.', {
-        duration: 5000,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-      });
+      this.notificationService.error(
+        'No hay disponibilidad para este producto.',
+        {
+          duration: 5000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        }
+      );
       return;
     }
 
@@ -229,40 +293,6 @@ export class ProductList implements OnInit {
 
     const cartItem: CartItemAdd = {
       availability_id: item.availability_id,
-      product_metadata_id: item.id,
-      qty: 1,
-      unit_price: item.price,
-      currency: item.currency,
-      config: {
-        title: item.title,
-        description: item.description,
-        imageUrl: item.imageUrl,
-      },
-    };
-
-    this.cartService.addCartItem(cartItem).subscribe({
-      next: () => {
-        this.notificationService.success(`¡${item.title} agregado al carrito!`, {
-          duration: 4000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
-        this.addingToCart.delete(item.id);
-      },
-      error: (error: Error) => {
-        this.logger.error('Error al agregar al carrito', error);
-        this.addingToCart.delete(item.id);
-      },
-    });
-  }
-
-  onAddPackageToCart(item: CardItem) {
-    if (this.addingToCart.has(item.id)) return;
-
-    this.addingToCart.add(item.id);
-
-    const cartItem: CartItemAdd = {
-      availability_id: item.availability_id!,
       product_metadata_id: item.id,
       qty: 1,
       unit_price: item.price,
@@ -280,15 +310,85 @@ export class ProductList implements OnInit {
 
     this.cartService.addCartItem(cartItem).subscribe({
       next: () => {
-        this.notificationService.success(`¡${item.title} agregado al carrito!`, {
-          duration: 4000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
+        this.notificationService.success(
+          `¡${item.title} agregado al carrito!`,
+          {
+            duration: 4000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          }
+        );
         this.addingToCart.delete(item.id);
       },
       error: (error: Error) => {
-        this.logger.error('Error al agregar al carrito', error);
+        this.logger.error('Error al agregar el producto al carrito', error);
+        this.notificationService.error(
+          'Error al agregar el producto al carrito.',
+          {
+            duration: 5000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          }
+        );
+        this.addingToCart.delete(item.id);
+      },
+    });
+  }
+
+  onAddPackageToCart(item: CardItem) {
+    if (this.addingToCart.has(item.id)) return;
+
+    if (item.availability_id === undefined || item.availability_id === 0) {
+      this.notificationService.error(
+        'No hay disponibilidad para este paquete.',
+        {
+          duration: 5000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        }
+      );
+      return;
+    }
+
+    this.addingToCart.add(item.id);
+
+    const cartPackage: CartPackageAdd = {
+      package_id: item.id,
+      availability_id: item.availability_id,
+      qty: 1,
+      config: {
+        title: item.title,
+        description: item.description,
+        imageUrl: item.imageUrl,
+        duration: item.duration,
+        destination: item.destination,
+        maxPeople: item.maxPeople,
+        features: item.features,
+      },
+    };
+
+    this.cartService.addCartPackage(cartPackage).subscribe({
+      next: () => {
+        this.notificationService.success(
+          `¡${item.title} agregado al carrito!`,
+          {
+            duration: 4000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          }
+        );
+        this.addingToCart.delete(item.id);
+      },
+      error: (error: Error) => {
+        this.logger.error('Error al agregar el paquete al carrito', error);
+        this.notificationService.error(
+          'Error al agregar el paquete al carrito.',
+          {
+            duration: 5000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          }
+        );
         this.addingToCart.delete(item.id);
       },
     });
@@ -301,10 +401,14 @@ export class ProductList implements OnInit {
   onToggleFavorite(event: { id: number; isFavorite: boolean }) {
     if (event.isFavorite) {
       this.favoriteIds.add(event.id);
-      this.notificationService.success('Añadido a favoritos', { duration: 3000 });
+      this.notificationService.success('Añadido a favoritos', {
+        duration: 3000,
+      });
     } else {
       this.favoriteIds.delete(event.id);
-      this.notificationService.info('Eliminado de favoritos', { duration: 3000 });
+      this.notificationService.info('Eliminado de favoritos', {
+        duration: 3000,
+      });
     }
     this.logger.debug('Favoritos actualizados', Array.from(this.favoriteIds));
   }

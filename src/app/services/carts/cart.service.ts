@@ -6,7 +6,7 @@ import { LoggerService } from '../core/logger.service';
 import { StorageService } from '../core/storage.service';
 import { NotificationService } from '../../core/notification/services/notification.service';
 import { CART_ENDPOINTS } from './cart-endpoints';
-import {CartResponse, CartItemAdd, CartItemQtyPatch, OrderCreatedResponse} from '../interfaces/cart.interfaces';
+import { CartResponse, CartItemAdd, CartPackageAdd, CartItemQtyPatch, OrderCreatedResponse } from '../interfaces/cart.interfaces';
 import { environment } from '../../environments/environment';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
@@ -50,23 +50,18 @@ export class CartService {
       timeout(this.apiTimeout),
       retry({ count: this.retryAttempts, delay: this.retryDelay }),
       tap((response) => {
-        this.logger.debug(
-            'Carrito obtenido',
-            {
-              id: response.id,
-              items_cnt: response.items_cnt,
-              items: response.items.map(item => (
-                {
-                  id: item.id,
-                  availability_id: item.availability_id,
-                  product_metadata_id: item.product_metadata_id,
-                  qty: item.qty,
-                  unit_price: item.unit_price,
-                  currency: item.currency,
-                }
-              ))
-            }
-        )
+        this.logger.debug('Carrito obtenido', {
+          id: response.id,
+          items_cnt: response.items_cnt,
+          items: response.items.map(item => ({
+            id: item.id,
+            availability_id: item.availability_id,
+            product_metadata_id: item.product_metadata_id,
+            qty: item.qty,
+            unit_price: item.unit_price,
+            currency: item.currency,
+          })),
+        });
       }),
       catchError(this.handleError<CartResponse | null>('getCart'))
     );
@@ -85,19 +80,43 @@ export class CartService {
     const headers = new HttpHeaders({
       'Idempotency-Key': this.apiService.generateUUIDv4(),
     });
-    return this.apiService
-      .post<CartResponse, CartItemAdd>(CART_ENDPOINTS.ADD_ITEM, item, { headers })
-      .pipe(
-        timeout(this.apiTimeout),
-        retry({ count: this.retryAttempts, delay: this.retryDelay }),
-        tap((response) =>
-          this.logger.debug('Ítem agregado al carrito', {
-            cartId: response.id,
-            itemId: response.items[response.items.length - 1]?.id,
-          })
-        ),
-        catchError(this.handleError<CartResponse | null>('addCartItem'))
-      );
+    return this.apiService.post<CartResponse>(CART_ENDPOINTS.ADD_ITEM, item, { headers }).pipe(
+      timeout(this.apiTimeout),
+      retry({ count: this.retryAttempts, delay: this.retryDelay }),
+      tap((response) =>
+        this.logger.debug('Ítem agregado al carrito', {
+          cartId: response.id,
+          itemId: response.items[response.items.length - 1]?.id,
+        })
+      ),
+      catchError(this.handleError<CartResponse | null>('addCartItem'))
+    );
+  }
+
+  /**
+   * Agrega un paquete al carrito.
+   * @param packageItem Datos del paquete a agregar.
+   * @returns Observable con la respuesta del carrito actualizado o null si no está autenticado.
+   */
+  addCartPackage(packageItem: CartPackageAdd): Observable<CartResponse | null> {
+    if (!this.isLoggedIn()) {
+      this.logger.debug('Usuario no autenticado, retornando null');
+      return of(null);
+    }
+    const headers = new HttpHeaders({
+      'Idempotency-Key': this.apiService.generateUUIDv4(),
+    });
+    return this.apiService.post<CartResponse>(CART_ENDPOINTS.ADD_PACKAGE, packageItem, { headers }).pipe(
+      timeout(this.apiTimeout),
+      retry({ count: this.retryAttempts, delay: this.retryDelay }),
+      tap((response) =>
+        this.logger.debug('Paquete agregado al carrito', {
+          cartId: response.id,
+          packageId: packageItem.package_id,
+        })
+      ),
+      catchError(this.handleError<CartResponse | null>('addCartPackage'))
+    );
   }
 
   /**
@@ -111,17 +130,12 @@ export class CartService {
       this.logger.debug('Usuario no autenticado, retornando null');
       return of(null);
     }
-    return this.apiService
-      .patch<CartResponse, CartItemQtyPatch>(
-        CART_ENDPOINTS.UPDATE_ITEM.replace('{item_id}', itemId.toString()),
-        patch
-      )
-      .pipe(
-        timeout(this.apiTimeout),
-        retry({ count: this.retryAttempts, delay: this.retryDelay }),
-        tap((response) => this.logger.debug('Cantidad de ítem actualizada', { itemId, cartId: response.id })),
-        catchError(this.handleError<CartResponse | null>('updateCartItemQty'))
-      );
+    return this.apiService.patch<CartResponse>(CART_ENDPOINTS.UPDATE_ITEM.replace('{item_id}', itemId.toString()), patch).pipe(
+      timeout(this.apiTimeout),
+      retry({ count: this.retryAttempts, delay: this.retryDelay }),
+      tap((response) => this.logger.debug('Cantidad de ítem actualizada', { itemId, cartId: response.id })),
+      catchError(this.handleError<CartResponse | null>('updateCartItemQty'))
+    );
   }
 
   /**
@@ -134,14 +148,12 @@ export class CartService {
       this.logger.debug('Usuario no autenticado, retornando null');
       return of(null);
     }
-    return this.apiService
-      .delete<CartResponse>(CART_ENDPOINTS.DELETE_ITEM.replace('{item_id}', itemId.toString()))
-      .pipe(
-        timeout(this.apiTimeout),
-        retry({ count: this.retryAttempts, delay: this.retryDelay }),
-        tap((response) => this.logger.debug('Ítem eliminado del carrito', { itemId, cartId: response.id })),
-        catchError(this.handleError<CartResponse | null>('deleteCartItem'))
-      );
+    return this.apiService.delete<CartResponse>(CART_ENDPOINTS.DELETE_ITEM.replace('{item_id}', itemId.toString())).pipe(
+      timeout(this.apiTimeout),
+      retry({ count: this.retryAttempts, delay: this.retryDelay }),
+      tap((response) => this.logger.debug('Ítem eliminado del carrito', { itemId, cartId: response.id })),
+      catchError(this.handleError<CartResponse | null>('deleteCartItem'))
+    );
   }
 
   /**
@@ -184,7 +196,7 @@ export class CartService {
             });
             break;
           case 409:
-            errorMessage = 'No se pudo agregar el ítem: stock insuficiente o carrito cerrado.';
+            errorMessage = 'No se pudo agregar el ítem o paquete: stock insuficiente o carrito cerrado.';
             this.notificationService.error(errorMessage, {
               duration: 5000,
               horizontalPosition: 'right',
@@ -192,7 +204,7 @@ export class CartService {
             });
             break;
           case 422:
-            errorMessage = 'Conflicto de moneda. Por favor, verifica los productos en el carrito.';
+            errorMessage = 'Conflicto de moneda. Por favor, verifica los productos o paquetes en el carrito.';
             this.notificationService.error(errorMessage, {
               duration: 5000,
               horizontalPosition: 'right',

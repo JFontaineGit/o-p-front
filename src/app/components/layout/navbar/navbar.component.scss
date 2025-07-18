@@ -114,21 +114,6 @@
   }
 }
 
-.logo {
-  @include mixins.flex-inline(0.75rem);
-  & {
-    align-items: center;
-    height: 100%;
-  }
-  
-  h1,
-  svg,
-  .mat-icon {
-    vertical-align: middle;
-    line-height: 1;
-  }
-}
-
 .logo-link {
   & {
     text-decoration: none;
@@ -279,7 +264,7 @@
     min-width: nav.$navbar-dropdown-width;
   }
 
-  .mat-menu edu-panel {
+  .mat-menu-content {
     padding: 0;
     background: transparent;
     border: none;
@@ -356,7 +341,7 @@
   }
   
   &:hover {
-    border-color: rgba(255, 255, 0.35) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
     color: rgba(30, 41, 59, 1) !important;
   }
@@ -399,18 +384,21 @@
   }
   
   .cart-btn {
+    @include mixins.flex-inline(0.5rem);
     & {
       background: rgba(255, 255, 255, 0.15);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
+      border-radius: 10px;
+      padding: vars.$spacing-sm vars.$spacing-md;
       color: rgba(30, 41, 59, 0.95);
       text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      min-height: 44px;
+      font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+      font-weight: 500;
     }
     @include ripple.ripple-light();
     
@@ -420,6 +408,14 @@
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       color: rgba(30, 41, 59, 1);
+    }
+    
+    .mat-icon {
+      font-size: 1.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      line-height: 1.25rem;
+      color: rgba(100, 116, 139, 0.9);
     }
     
     .mat-badge-content {
@@ -432,6 +428,18 @@
         border-radius: 10px;
         box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    }
+    
+    .cart-label {
+      font-weight: 600;
+      color: inherit;
+      text-shadow: inherit;
+    }
+    
+    @include mq.mobile-only {
+      .cart-label {
+        display: none;
       }
     }
   }

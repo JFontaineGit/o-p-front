@@ -20,15 +20,15 @@ export class PackageService {
    * Retrieves the list of all packages.
    * @returns Observable with the list of packages.
    */
-  listPackages(params?: HttpParams): Observable<PackageResponse[]> {
+  listPackages(params?: HttpParams): Observable<PackageListResponse> {
     return this.apiService.get<PackageListResponse>(PACKAGE_ENDPOINTS.LIST, { params }).pipe(
-      map((response:any) => {
+      map((response: PackageListResponse) => {
         const packages = Array.isArray(response.items) ? response.items : [];
         this.logger.debug('Paquetes obtenidos del backend', { count: packages.length });
-        return packages;
+        return response;
       }),
-      tap((packages:any) => this.logger.debug('Paquetes procesados', { count: packages.length })),
-      catchError(this.handleError<PackageResponse[]>('listPackages'))
+      tap((response: PackageListResponse) => this.logger.debug('Paquetes procesados', { count: response.items.length })),
+      catchError(this.handleError<PackageListResponse>('listPackages'))
     );
   }
 
