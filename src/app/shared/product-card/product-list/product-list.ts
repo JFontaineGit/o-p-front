@@ -6,8 +6,14 @@ import { PackageService } from '../../../services/products/packages/package.serv
 import { ProductService } from '../../../services/products/product.service';
 import { LoggerService } from '../../../services/core/logger.service';
 import { NotificationService } from '../../../core/notification/services/notification.service';
-import { CartItemAdd, CartPackageAdd } from '../../../services/interfaces/cart.interfaces';
-import { PackageDetailResponse, PackageListResponse } from '../../../services/interfaces/package.interfaces';
+import {
+  CartItemAdd,
+  CartPackageAdd,
+} from '../../../services/interfaces/cart.interfaces';
+import {
+  PackageDetailResponse,
+  PackageListResponse,
+} from '../../../services/interfaces/package.interfaces';
 import { ProductMetadataResponse } from '../../../services/interfaces/product.interfaces';
 import { HttpParams } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
@@ -214,6 +220,10 @@ export class ProductList implements OnInit {
                   ? pkg.components[0].available_id
                   : 0;
 
+              const componentNames =
+                pkg.components?.map((c) => c.product_name).filter(Boolean) ||
+                [];
+
               return {
                 ...pkg,
                 availability_id,
@@ -223,12 +233,18 @@ export class ProductList implements OnInit {
                 rating: pkg.rating_average ?? 0,
                 reviewsCount: pkg.total_reviews ?? 0,
                 imageUrl,
-                originalPrice: basePrice && taxes ? basePrice + taxes : undefined,
+                originalPrice:
+                  basePrice && taxes ? basePrice + taxes : undefined,
                 discount:
                   basePrice && finalPrice && finalPrice < basePrice
                     ? ((basePrice - finalPrice) / basePrice) * 100
                     : undefined,
-                features: pkg.components?.map((comp) => comp.product_name) || [],
+                features: componentNames,
+                description:
+                  pkg.description ??
+                  (componentNames.length
+                    ? `Incluye: ${componentNames.join(', ')}.`
+                    : 'Incluye varias actividades y servicios.'),
                 badge:
                   pkg.rating_average && pkg.rating_average >= 4.8
                     ? 'Más vendido'
@@ -246,7 +262,10 @@ export class ProductList implements OnInit {
                 : null;
           },
           error: (error: unknown) => {
-            this.logger.error('Error al cargar los detalles de los paquetes', error);
+            this.logger.error(
+              'Error al cargar los detalles de los paquetes',
+              error
+            );
             this.noPackagesMessage =
               'Error al cargar los paquetes. Por favor, intenta de nuevo.';
             this.notificationService.error('Error al cargar los paquetes', {
