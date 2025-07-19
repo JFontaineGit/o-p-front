@@ -142,11 +142,11 @@
         class="mobile-toggle"
         [class.mobile-toggle--hidden]="!isMobile"
         (click)="toggleMobileMenu()"
-        [attr.aria-expanded]="sidenav?.opened"
+        [attr.aria-expanded]="sidenav.opened"
         aria-label="Abrir menú de navegación"
       >
         <mat-icon>
-          {{ sidenav?.opened ? "close" : "menu" }}
+          {{ sidenav.opened ? "close" : "menu" }}
         </mat-icon>
       </button>
     </div>
@@ -156,7 +156,7 @@
 <!-- Mobile Menu Overlay -->
 <div
   class="mobile-overlay"
-  [class.mobile-overlay--visible]="sidenav?.opened"
+  [class.mobile-overlay--visible]="sidenav.opened"
   (click)="closeMobileMenu()"
   *ngIf="!isLoading"
 ></div>
